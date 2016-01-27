@@ -569,7 +569,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
 # - graceful: allow everything inside "!--" comments?
 valid.child <- function(parent, children, validity, warn=FALSE, section=parent, node.names=NULL,
   caseSens=TRUE, graceful=TRUE){
-  if(isTRUE(graceful) && identical(parent, "!--")){
+  if(isTRUE(graceful) & identical(parent, "!--")){
     # skip all checks and return TRUE
     return(TRUE)
   } else {}
@@ -594,13 +594,15 @@ valid.child <- function(parent, children, validity, warn=FALSE, section=parent, 
   
   validAllChildren <- slot(validity, "allChildren")
   validChildren <- slot(validity, "children")[[parent]]
+  ignoreChildren <- slot(validity, "ignore")
   if(!isTRUE(caseSens)){
     node.names <- tolower(node.names)
     validAllChildren <- tolower(validAllChildren)
     validChildren <- tolower(validChildren)
+    ignoreChildren <- tolower(ignoreChildren)
   } else {}
 
-  invalid.sets <- !node.names %in% c(validAllChildren, validChildren)
+  invalid.sets <- !node.names %in% c(validAllChildren, validChildren, ignoreChildren)
   if(any(invalid.sets)){
     return.message <- paste0("Invalid XML nodes for <", section, "> section: ", paste(node.names[invalid.sets], collapse=", "))
     if(isTRUE(warn)){
@@ -626,22 +628,28 @@ valid.attribute <- function(node, attrs, validity, warn=FALSE, caseSens=TRUE){
     attrsNames <- names(attrs)
     validAllAttrs <- slot(validity, "allAttrs")
     validAttrs <- slot(validity, "attrs")[[node]]
+    ignoreNodes <- slot(validity, "ignore")
     if(!isTRUE(caseSens)){
       attrsNames <- tolower(attrsNames)
       validAllAttrs <- tolower(validAllAttrs)
       validAttrs <- tolower(validAttrs)
+      ignoreNodes <- tolower(ignoreNodes)
     } else {}
-    invalid.sets <- !attrsNames %in% c(validAllAttrs, validAttrs)
-    if(any(invalid.sets)){
-      return.message <- paste0("Invalid XML attributes for <", node, "> node: ", paste(attrsNames[invalid.sets], collapse=", "))
-      if(isTRUE(warn)){
-        warning(return.message, call.=FALSE)
-        return(FALSE)
-      } else {
-        stop(simpleError(return.message))
-      }
+    if(node %in% ignoreNodes){
+      return(NULL)
     } else {
-      return(TRUE)
+      invalid.sets <- !attrsNames %in% c(validAllAttrs, validAttrs)
+      if(any(invalid.sets)){
+        return.message <- paste0("Invalid XML attributes for <", node, "> node: ", paste(attrsNames[invalid.sets], collapse=", "))
+        if(isTRUE(warn)){
+          warning(return.message, call.=FALSE)
+          return(FALSE)
+        } else {
+          stop(simpleError(return.message))
+        }
+      } else {
+        return(TRUE)
+      }
     }
   } else {
     return(NULL)

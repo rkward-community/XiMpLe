@@ -24,7 +24,7 @@
 #' XiMpLe can't handle DOM specifications yet, but this method can be used to construct
 #' validation schemes.
 #' 
-#' @note: If no \code{parent} is specified, \code{obj} will be checked recursively. If 
+#' @note: If no \code{parent} is specified, \code{obj} will be checked recursively.
 #'
 #' @param obj An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL}, this object
 #'    will be checked for validity, including its child nodes. If \code{parent} is either a character string

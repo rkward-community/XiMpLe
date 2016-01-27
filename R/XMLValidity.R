@@ -28,6 +28,7 @@
 #' @param allChildren Character vector, names of globally valid child nodes for all nodes, if any.
 #' @param allAttrs Character vector, names of globally valid attributes for all nodes, if any.
 #' @param empty Character vector, names of nodes that must be empty nodes (i.e., no closing tag), if any.
+#' @param ignore Character vector, names of nodes that should be ignored, if any.
 #' @return An object of class \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}}
 #' @seealso
 #'    \code{\link[XiMpLe:validXML]{validXML}}
@@ -52,7 +53,7 @@
 #'    allAttrs=c("id", "class"),
 #'    empty=c("br")
 #' )
-XMLValidity <- function(children=NULL, attrs=NULL, allChildren=NULL, allAttrs=NULL, empty=NULL){
+XMLValidity <- function(children=NULL, attrs=NULL, allChildren=NULL, allAttrs=NULL, empty=NULL, ignore=NULL){
 
   if(is.null(children)){
     children <- list()
@@ -69,13 +70,17 @@ XMLValidity <- function(children=NULL, attrs=NULL, allChildren=NULL, allAttrs=NU
   if(is.null(empty)){
     empty <- character()
   } else {}
+  if(is.null(ignore)){
+    ignore <- character()
+  } else {}
   
   newValidity <- new("XiMpLe.validity",
     children=children,
     attrs=attrs,
     allChildren=allChildren,
     allAttrs=allAttrs,
-    empty=empty
+    empty=empty,
+    ignore=ignore
   )
 
   return(newValidity)
