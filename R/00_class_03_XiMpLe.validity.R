@@ -65,25 +65,30 @@ setValidity("XiMpLe.validity", function(object){
   obj.children <- slot(object, "children")
   obj.attrs <- slot(object, "attrs")
 
-  for (thisChild in obj.children){
-    if(is.list(thisChild)){
+  characterOrValidity <- function(entry, slot){
+    if(is.list(entry)){
       # check for XiMpLe.validity object
-      isValidity <- which(sapply(thisChild, is.XiMpLe.validity))
+      isValidity <- which(sapply(entry, is.XiMpLe.validity))
       if(length(isValidity) == 1){
-        thisChild[[isValidity]] <- NULL
-        thisChild <- unlist(thisChild)
+        entry[[isValidity]] <- NULL
+        entry <- unlist(entry)
+        if(is.null(entry)){
+          entry <- ""
+        } else {}
       } else if(length(isValidity) > 1){
         stop(simpleError("Invalid object: all \"children\" can only have one value of class XiMpLe.validity for recursion!"))
       } else {}
     } else {}
-    if(!is.character(thisChild)){
+    if(!is.character(entry)){
       stop(simpleError("Invalid object: all \"children\" must be of class character or XiMpLe.validity!"))
     } else {}
   }
+  
+  for (thisChild in obj.children){
+    characterOrValidity(entry=thisChild, slot="children")
+  }
   for (thisAttr in obj.attrs){
-    if(!is.character(thisAttr)){
-      stop(simpleError("Invalid object: all \"attrs\" must be of class character or XiMpLe.validity!"))
-    } else {}
+    characterOrValidity(entry=thisAttr, slot="attrs")
   }
   return(TRUE)
 })

@@ -594,6 +594,14 @@ valid.child <- function(parent, children, validity, warn=FALSE, section=parent, 
   
   validAllChildren <- slot(validity, "allChildren")
   validChildren <- slot(validity, "children")[[parent]]
+  # check for recursion
+  if(is.list(validChildren)){
+    # check for XiMpLe.validity object; each list can only have one
+    validRecursion <- validChildren[[which(sapply(entry, is.XiMpLe.validity))]]
+  } else {
+    validRecursion <- ""
+  } ## TODO: actually use this info
+  
   ignoreChildren <- slot(validity, "ignore")
   if(!isTRUE(caseSens)){
     node.names <- tolower(node.names)
