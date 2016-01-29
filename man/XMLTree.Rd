@@ -11,13 +11,16 @@ XMLTree(..., xml = NULL, dtd = NULL, .children = list(...))
 \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} or character strings,
 which are treated as simple text values.}
 
-\item{xml}{A named list, XML declaration of the XML tree. Currently just pasted, no checking is done.}
+\item{xml}{A named list, XML declaration of the XML tree. Currently just pasted,
+      no checking is done.}
 
-\item{dtd}{A named list, doctype definition of the XML tree. Valid elements are \code{doctype} (root element), \code{decl}
+\item{dtd}{A named list,
+      doctype definition of the XML tree. Valid elements are \code{doctype} (root element), \code{decl}
 ("PUBLIC" or "SYSTEM"), \code{id} (the identifier) and \code{refer} (URI to .dtd).
    Currently just pasted, no checking is done.}
 
-\item{.children}{Alternative way of specifying children, if you have them already as a list.}
+\item{.children}{Alternative way of specifying children,
+      if you have them already as a list.}
 }
 \value{
 An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}

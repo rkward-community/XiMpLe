@@ -1,8 +1,10 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.03-24 (2015-11-24)
+changes in version 0.03-24 (2016-01-29)
+unreleased:
+  - this release is under development
 added:
-  - new method validXML() for some basic validity checks (WIP)
+  - new method validXML() for some basic validity checks
   - new class XiMpLe.validity to define valid child nodes and attributes
   - new function is.XiMpLe.validity()
 changed:

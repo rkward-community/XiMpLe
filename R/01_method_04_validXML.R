@@ -200,6 +200,11 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
               caseSens=caseSens
             )
             # check grandchildren
+            # first see if there's also recursion in the validity object
+            validChildren <- slot(validity, "children")[[parentName]]
+            if(is.XiMpLe.validity(validChildren)){
+              validity <- validChildren
+            } else {}
             grandChildValidity <- validXML(
               thisChild,
               validity=validity,
@@ -243,6 +248,11 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
         attributeValidityRecursive <- all(sapply(
           nodeChildren,
           function(thisChild){
+            # see if there's also recursion in the validity object
+            validChildren <- slot(validity, "children")[[parentName]]
+            if(is.XiMpLe.validity(validChildren)){
+              validity <- validChildren
+            } else {}
             # because of the recursion this checks the attributes of "thisChild"
             thisChildValidity <- validXML(
               thisChild,

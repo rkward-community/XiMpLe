@@ -24,7 +24,8 @@ This class is used for objects that are returned by \code{\link[XiMpLe:parseXMLT
 
 \item{\code{dtd}}{A named list, Doctype definition of the file.}
 
-\item{\code{children}}{A list of objects of class XiMpLe.node, representing the DOM structure of the XML document.}
+\item{\code{children}}{A list of objects of class XiMpLe.node,
+      representing the DOM structure of the XML document.}
 }}
 \keyword{classes}
 

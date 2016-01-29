@@ -22,10 +22,10 @@
 #' 
 #' You should use \code{\link[XiMpLe:XMLValidity]{XMLValidity}} to create objects of this class.
 #'
-#' @slot children Named list of vectors or lists. The element name defines the parent node
+#' @slot children Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
 #'   name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
 #'   this object will be used for recursive validation of deeper nodes.
-#' @slot attrs Named list of vectors or lists. The element name defines the parent node
+#' @slot attrs Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
 #'   name and each character string a valid attribute name. If a value is in turn of class XiMpLe.validity,
 #'   this object will be used for recursive validation of deeper nodes.
 #' @slot allChildren Character vector, names of globally valid child nodes for all nodes, if any.
@@ -40,6 +40,45 @@
 #'    \code{\link[XiMpLe:XMLValidity]{XMLValidity}},
 #'    \code{\link[XiMpLe:validXML]{validXML}}
 #' @rdname XiMpLe.validity-class
+#' @examples
+#' HTMLish <- XMLValidity(
+#'    children=list(
+#'      body=c("a", "p", "ol", "ul", "strong"),
+#'      head=c("title"),
+#'      html=c("head", "body"),
+#'      li=c("a", "br", "strong"),
+#'      ol=c("li"),
+#'      p=c("a", "br", "ol", "ul", "strong"),
+#'      ul=c("li")
+#'    ),
+#'    attrs=list(
+#'      a=c("href", "name"),
+#'      p=c("align")
+#'    ),
+#'    allChildren=c("!--"),
+#'    allAttrs=c("id", "class"),
+#'    empty=c("br")
+#' )
+#' 
+#' # this example uses recursion: the <b> node can have the "foo"
+#' # attribute only below an <a> node; the <d> node is also only valid
+#' # in an <a> node
+#' XMLRecursion <- XMLValidity(
+#'    children=list(
+#'      a=XMLValidity(
+#'        children=list(
+#'          b=c("c")
+#'        ),
+#'        attrs=list(
+#'          b=c("foo")
+#'        ),
+#'        allChildren=c("d")
+#'      )
+#'    ),
+#'    attrs=list(
+#'      b=c("bar")
+#'    )
+#'  )
 #' @export
 
 setClass("XiMpLe.validity",
@@ -66,21 +105,8 @@ setValidity("XiMpLe.validity", function(object){
   obj.attrs <- slot(object, "attrs")
 
   characterOrValidity <- function(entry, slot){
-    if(is.list(entry)){
-      # check for XiMpLe.validity object
-      isValidity <- which(sapply(entry, is.XiMpLe.validity))
-      if(length(isValidity) == 1){
-        entry[[isValidity]] <- NULL
-        entry <- unlist(entry)
-        if(is.null(entry)){
-          entry <- ""
-        } else {}
-      } else if(length(isValidity) > 1){
-        stop(simpleError("Invalid object: all \"children\" can only have one value of class XiMpLe.validity for recursion!"))
-      } else {}
-    } else {}
-    if(!is.character(entry)){
-      stop(simpleError("Invalid object: all \"children\" must be of class character or XiMpLe.validity!"))
+    if(!is.XiMpLe.validity(entry) & !is.character(entry)){
+      stop(simpleError(paste0("Invalid object: all \"", slot, "\" must be of class character or XiMpLe.validity!")))
     } else {}
   }
   
