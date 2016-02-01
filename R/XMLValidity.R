@@ -21,10 +21,10 @@
 #' Create validity definitions for XiMpLe nodes, to be used by
 #' \code{\link[XiMpLe:validXML]{validXML}}.
 #'
-#' @slot children Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
+#' @param children Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
 #'   name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
 #'   this object will be used for recursive validation of deeper nodes.
-#' @slot attrs Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
+#' @param attrs Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
 #'   name and each character string a valid attribute name. If a value is in turn of class XiMpLe.validity,
 #'   this object will be used for recursive validation of deeper nodes.
 #' @param allChildren Character vector, names of globally valid child nodes for all nodes, if any.
