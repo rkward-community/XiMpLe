@@ -129,13 +129,13 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
   if(is.XiMpLe.doc(obj)){
     # we're only checking the XML tree for now,
     # if this is a full doc we need to go through the whole list
-    result <- all(unlist(sapply(
+    return(all(unlist(sapply(
       XMLChildren(obj),
       function(thisPart){
         validXML(obj=thisPart, validity=validity, parent=parent, children=children, attributes=attributes,
         warn=warn, section=section, caseSens=caseSens)
       }
-    )))
+    ))))
   } else {}
   # two possibilities:
   # a) there's no "parent" value
