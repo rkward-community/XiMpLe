@@ -51,7 +51,7 @@ Returns \code{TRUE} if tests pass,
    an error if a test fails.
 }
 \description{
-Check whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+Checks whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 or \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} have valid child nodes.
 }
 \details{
