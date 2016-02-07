@@ -190,7 +190,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
             if(length(thisNodeChildNames > 1)){
               rxdocChildren <- paste0(
                 "#' @param ", thisNodeChildNames,
-                " An objects of class \\code{XiMpLe.node} (or list of) to define \\code{<", thisNodeChildNames, ">} child nodes for this node. Ignored if \\cdoe{NULL.}"
+                " An objects of class \\code{XiMpLe.node} (or list of) to define \\code{<", thisNodeChildNames, ">} child nodes for this node. Ignored if \\code{NULL.}"
               )
             } else {
               rxdocChildren <- NULL
@@ -205,7 +205,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
           if(!identical(thisNodeAttrNames, character())){
             rxdocAttrs <- paste0(
               "#' @param ", thisNodeAttrNames,
-              " Character string, used to set the \\code{", thisNodeAttrNames,"} attribute of this node. Ignored if \\cdoe{NULL.}"
+              " Character string, used to set the \\code{", thisNodeAttrNames,"} attribute of this node. Ignored if \\code{NULL.}"
             )
           } else {
             rxdocAttrs <- NULL
@@ -216,7 +216,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
           rxdocParams <- c(rxdocParams,
               paste0(
                 "#' @param validity ",
-                " An object of class \\code{XiMpLe.validity} to check the validity of this node. Ignored if \\cdoe{NULL.}"
+                " An object of class \\code{XiMpLe.validity} to check the validity of this node. Ignored if \\code{NULL.}"
               )
             )
           } else {}
