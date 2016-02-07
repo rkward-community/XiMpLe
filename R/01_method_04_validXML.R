@@ -1,4 +1,4 @@
-# Copyright 2015 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2015-2016 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -18,7 +18,7 @@
 
 #' Validate S4 objects of XiMpLe XML classes
 #' 
-#' Check whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+#' Checks whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 #' or \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} have valid child nodes.
 #' 
 #' XiMpLe can't handle DOM specifications yet, but this method can be used to construct
