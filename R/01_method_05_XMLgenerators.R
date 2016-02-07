@@ -198,7 +198,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
           } else {
               rxdocChildren <- paste0(
                 "#' @param ... ",
-                " An object of class \\code{XiMpLe.node} (or list of) to define \\code{<", thisNodeChildNames, ">} child nodes for this node. Ignored if empty."
+                " Object(s) of class \\code{XiMpLe.node} to define \\code{<", thisNodeChildNames, ">} child nodes for this node. Ignored if empty."
               )
           }
 
