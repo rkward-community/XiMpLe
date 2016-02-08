@@ -32,7 +32,7 @@
 #'    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
 #' @keywords methods
 #' @docType methods
-#' @exportMethod show
+#' @export
 #' @rdname show-methods
 #' @include 00_class_01_XiMpLe.node.R
 #' @include 00_class_02_XiMpLe.doc.R
