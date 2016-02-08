@@ -27,8 +27,9 @@
 #'    \item{Each child node gets its own argument, except if there is only one valid child
 #'      node. It will use the dots element instead then.}
 #'    \item{Each attribute will also get its own argument.}
-#'    \item{If \code{CheckValidity=TRUE}, one extra argument \code{validity will be added}}
-#'    \item{All arguments are set to \code{NULL} by default}
+#'    \item{If \code{CheckValidity=TRUE}, one extra argument named after the value of \code{valParam} will be added.}
+#'    \item{All arguments are set to \code{NULL} by default.}
+#'    \item{Only the main level of \code{"allAttrs"} will be taken into account, there's no recursion for this slot.}
 #' }
 #'
 #' @param validity An dobject of class \code{XiMpLe.validity}.
@@ -36,6 +37,10 @@
 #' @param checkValidity Logical, whether all functions should include a check for valid XML.
 #' @param indent.by A charachter string defining how indentation should be done.
 #' @param roxygenDocs Logical, whether a skeleton for roxygen2-ish documentation should be added.
+#' @param valParam A charachter string, name of the additional parameter to use for validation if
+#'    \code{checkValidity=TRUE}.
+#' @param replaceChar A (single) character to be used as an replacement for invalid characters for
+#'    \code{R} parameter names.
 #' @return A named vector of character strings.
 #' @aliases
 #'    XMLgenerators,-methods
@@ -48,7 +53,8 @@
 #' @export
 #' @rdname XMLgenerators
 #' @include 00_class_03_XiMpLe.validity.R
-setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE, indent.by="\t", roxygenDocs=FALSE){standardGeneric("XMLgenerators")})
+setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE, indent.by="\t", roxygenDocs=FALSE,
+  valParam="validity", replaceChar="_"){standardGeneric("XMLgenerators")})
 
 #' @rdname XMLgenerators
 #' @export
@@ -72,52 +78,60 @@ setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE,
 #'    empty=c("br")
 #' )
 #' XMLgenerators(HTMLish)
-setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(validity, prefix="XML", checkValidity=TRUE, indent.by="\t", roxygenDocs=FALSE){
-    children <- slot(validity, "children")
-    children <- children[sapply(children, is.character)]
-    ## TODO: support full recursion
-#     childrenVal <- which(sapply(children, is.XiMple.validity))
-#     for (thisChildVal in childrenVal){
-#       
-#     }
-    
-    childNames <- names(children)
-    attrs <- slot(validity, "attrs")
-    attrNames <- names(attrs)
-    ## TODO:
-    # allChildren <- slot(validity, "allChildren")
-    # allAttrs <- slot(validity, "allAttrs")
-    allKnownNodes <- sort(unique(c(childNames, attrNames)))
+setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(validity, prefix="XML", checkValidity=TRUE,
+  indent.by="\t", roxygenDocs=FALSE, valParam="validity", replaceChar="_"){
+    validitySource <- XMLgenRecursion(validity=validity)
+    allKnownNodes  <- validitySource[["allKnownNodes"]]
+    children <- validitySource[["children"]]
+    childNames <- validitySource[["childNames"]]
+    allChildren <- validitySource[["allChildren"]]
+    attrs <- validitySource[["attrs"]]
+    attrNames  <- validitySource[["attrNames"]]
+    allAttrs <- validitySource[["allAttrs"]]
+    empty <- validitySource[["empty"]]
+    ignore <- validitySource[["ignore"]]
+
     result <- sapply(
       allKnownNodes,
       function(thisNode){
         thisNodeOptions <- dotsOption <- character()
         attrsInNode <- childrenInNode <- functionBodyAttrs <- functionBodyChildren <- functionBodyValidation <- rxdoc <- NULL
-        genStart <- paste0(prefix, thisNode, " <- function(")
+        genStart <- paste0(prefix, validParamName(thisNode), " <- function(")
         # check for child nodes
         if(thisNode %in% childNames){
-          thisNodeChildNames <- children[[thisNode]]
+          thisNodeChildNames <- c(children[[thisNode]], allChildren)
           if(length(thisNodeChildNames) == 1){
             # replace the only child node with dots parameter
             dotsOption <- "..."
           } else {
-            thisNodeOptions <- paste0(thisNodeChildNames, "=NULL")
+            thisNodeOptions <- paste0(validParamName(thisNodeChildNames), "=NULL")
           }
+        } else if(length(allChildren) > 0){
+          thisNodeChildNames <- allChildren
+          thisNodeOptions <- paste0(validParamName(thisNodeChildNames), "=NULL")
         } else {
           thisNodeChildNames <- character()
         }
         # check for attributes
+        haveAttrs <- FALSE
         if(thisNode %in% attrNames){
           thisNodeAttrNames <- attrs[[thisNode]]
-          thisNodeOptions <- c(thisNodeOptions, paste0(thisNodeAttrNames, "=NULL"))
-          functionBodyAttrs <- paste0(indent.by, "attrs.list <- list()")
-          attrsInNode <- paste0(indent.by, "attrs=attrs.list")
+          thisNodeOptions <- c(thisNodeOptions, paste0(validParamName(thisNodeAttrNames), "=NULL"))
+          haveAttrs <- TRUE
         } else {
           thisNodeAttrNames <- character()
         }
+        if(length(allAttrs) > 0){
+          haveAttrs <- TRUE
+          thisNodeAttrNames <- c(thisNodeAttrNames, allAttrs)
+          thisNodeOptions <- c(thisNodeOptions, paste0(validParamName(allAttrs), "=NULL"))
+        } else {}
+        if(isTRUE(haveAttrs)){
+          functionBodyAttrs <- paste0(indent.by, "attrs.list <- list()")
+          attrsInNode <- paste0(indent.by, "attrs=attrs.list")
+        } else {}
         if(isTRUE(checkValidity)){
-          ## TODO: configurable varname
-          thisNodeOptions <- c(thisNodeOptions, "validity=NULL")
+          thisNodeOptions <- c(thisNodeOptions, paste0(validParamName(valParam), "=NULL"))
         } else {}
         genFormals <- paste0(paste0(c(dotsOption, thisNodeOptions), collapse=", "), "){\n")
 
@@ -125,8 +139,8 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
         for (thisNodeAttr in thisNodeAttrNames){
           functionBodyAttrs <- paste(
             functionBodyAttrs,
-            paste0("if(!is.null(", thisNodeAttr, ")){"),
-            paste0(indent.by, "attrs.list[[\"", thisNodeAttr, "\"]] <- ", thisNodeAttr),
+            paste0("if(!is.null(", validParamName(thisNodeAttr), ")){"),
+            paste0(indent.by, "attrs.list[[\"", thisNodeAttr, "\"]] <- ", validParamName(thisNodeAttr)),
             "} else {}",
             sep=paste0("\n", indent.by)
           )
@@ -135,7 +149,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
           if(length(thisNodeChildNames > 1)){
             childrenInNode <- paste(
               paste0(indent.by, "all.children <- list()"),
-              paste0("for (thisNode in list(", paste0(thisNodeChildNames, collapse=", "), ")){"),
+              paste0("for (thisNode in list(", paste0(validParamName(thisNodeChildNames), collapse=", "), ")){"),
               paste0(indent.by, "if(!is.null(thisNode)){"),
               paste0(indent.by, indent.by, "all.children <- append(all.children, thisNode)"),
               paste0(indent.by, "} else {}"),
@@ -165,8 +179,8 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
         }
         if(isTRUE(checkValidity)){
           functionBodyValidation <- paste(
-            paste0(indent.by, "if(!is.null(validity)){"),
-            paste0(indent.by, "validXML(results, validity=validity)"),
+            paste0(indent.by, "if(!is.null(", validParamName(valParam), ")){"),
+            paste0(indent.by, "validXML(results, validity=", validParamName(valParam), ")"),
             "} else {}",
             sep=paste0("\n", indent.by)
           )
@@ -189,8 +203,8 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
           if(identical(dotsOption, character())){
             if(length(thisNodeChildNames > 1)){
               rxdocChildren <- paste0(
-                "#' @param ", thisNodeChildNames,
-                " An objects of class \\code{XiMpLe.node} (or list of) to define \\code{<", thisNodeChildNames, ">} child nodes for this node. Ignored if \\code{NULL.}"
+                "#' @param ", validParamName(thisNodeChildNames),
+                " An object of class \\code{XiMpLe.node} (or list of) to define \\code{<", thisNodeChildNames, ">} child nodes for this node. Ignored if \\code{NULL.}"
               )
             } else {
               rxdocChildren <- NULL
@@ -204,7 +218,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
 
           if(!identical(thisNodeAttrNames, character())){
             rxdocAttrs <- paste0(
-              "#' @param ", thisNodeAttrNames,
+              "#' @param ", validParamName(thisNodeAttrNames),
               " Character string, used to set the \\code{", thisNodeAttrNames,"} attribute of this node. Ignored if \\code{NULL.}"
             )
           } else {
@@ -215,7 +229,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
           if(isTRUE(checkValidity)){
           rxdocParams <- c(rxdocParams,
               paste0(
-                "#' @param validity ",
+                "#' @param ", validParamName(valParam), " ",
                 " An object of class \\code{XiMpLe.validity} to check the validity of this node. Ignored if \\code{NULL.}"
               )
             )
@@ -240,3 +254,62 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
     return(result)
   }
 )
+
+
+
+## function XMLgenRecursion()
+# helper function to get all child nodes and attributes out of nested validity objects
+XMLgenRecursion <- function(validity){
+  children <- slot(validity, "children")
+  childrenVal <- which(sapply(children, is.XiMpLe.validity))
+  childrenValNames <- names(children)[childrenVal]
+  childrenChr <- children[sapply(children, is.character)]
+  childNames <- names(children)
+  attrs <- slot(validity, "attrs")
+  attrNames <- names(attrs)
+  allChildren <- slot(validity, "allChildren")
+  allAttrs <- slot(validity, "allAttrs")
+  empty <- slot(validity, "empty")
+  ignore <- slot(validity, "ignore")
+  allKnownNodes <- unique(c(childNames, unlist(childrenChr), allChildren, attrNames, empty, ignore))
+
+  # full recursion
+  if(length(childrenVal) > 0){
+    for (thisChildValNum in childrenVal){
+      recursiveResult <- XMLgenRecursion(validity=children[[thisChildValNum]])
+      for (thisRecChildName in names(recursiveResult[["children"]])){
+        if(thisRecChildName %in% names(childrenChr)){
+          childrenChr[[thisRecChildName]] <- sort(unique(c(childrenChr[[thisRecChildName]], recursiveResult[["children"]][[thisRecChildName]])))
+        } else {
+          childrenChr <- append(childrenChr, recursiveResult[["children"]][thisRecChildName])
+        }
+      }
+      for (thisRecAttrName in names(recursiveResult[["attrs"]])){
+        if(thisRecAttrName %in% attrNames){
+          attrs[[thisRecAttrName]] <- sort(unique(c(attrs[[thisRecAttrName]], recursiveResult[["attrs"]][[thisRecAttrName]])))
+        } else {
+          attrs <- append(attrs, recursiveResult[["attrs"]][thisRecAttrName])
+        }
+      }
+      childNames <- unique(c(childNames, recursiveResult[["childNames"]]))
+      attrNames <- unique(c(attrNames, recursiveResult[["attrNames"]]))
+      empty <- unique(c(empty, recursiveResult[["empty"]]))
+      ignore <- unique(c(ignore, recursiveResult[["ignore"]]))
+      allKnownNodes <- unique(c(allKnownNodes, recursiveResult[["allKnownNodes"]]))
+    }
+  } else {}
+
+  result <- list(
+    allKnownNodes=sort(allKnownNodes),
+    children=childrenChr[sort(names(childrenChr))],
+    childNames=sort(childNames),
+    allChildren=sort(allChildren),
+    attrs=attrs[sort(names(attrs))],
+    attrNames=sort(attrNames),
+    allAttrs=sort(allAttrs),
+    empty=sort(empty),
+    ignore=sort(ignore)
+  )
+
+  return(result)
+} ## end function XMLgenRecursion()

@@ -8,10 +8,12 @@
 \title{Generate XML generator functions from XiMpLe.valisity object}
 \usage{
 XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
-  indent.by = "\\t", roxygenDocs = FALSE)
+  indent.by = "\\t", roxygenDocs = FALSE, valParam = "validity",
+  replaceChar = "_")
 
 \S4method{XMLgenerators}{XiMpLe.validity}(validity, prefix = "XML",
-  checkValidity = TRUE, indent.by = "\\t", roxygenDocs = FALSE)
+  checkValidity = TRUE, indent.by = "\\t", roxygenDocs = FALSE,
+  valParam = "validity", replaceChar = "_")
 }
 \arguments{
 \item{validity}{An dobject of class \code{XiMpLe.validity}.}
@@ -24,6 +26,13 @@ XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
 
 \item{roxygenDocs}{Logical,
       whether a skeleton for roxygen2-ish documentation should be added.}
+
+\item{valParam}{A charachter string,
+      name of the additional parameter to use for validation if
+\code{checkValidity=TRUE}.}
+
+\item{replaceChar}{A (single) character to be used as an replacement for invalid characters for
+\code{R} parameter names.}
 }
 \value{
 A named vector of character strings.
@@ -39,8 +48,11 @@ The resulting code follows these rules:
    \item{Each child node gets its own argument, except if there is only one valid child
      node. It will use the dots element instead then.}
    \item{Each attribute will also get its own argument.}
-   \item{If \code{CheckValidity=TRUE}, one extra argument \code{validity will be added}}
-   \item{All arguments are set to \code{NULL} by default}
+   \item{If \code{CheckValidity=TRUE},
+      one extra argument named after the value of \code{valParam} will be added.}
+   \item{All arguments are set to \code{NULL} by default.}
+   \item{Only the main level of \code{"allAttrs"} will be taken into account,
+      there's no recursion for this slot.}
 }
 }
 \examples{

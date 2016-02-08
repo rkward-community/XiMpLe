@@ -662,4 +662,11 @@ valid.attribute <- function(node, attrs, validity, warn=FALSE, caseSens=TRUE){
   } else {
     return(NULL)
   }
-}
+} ## end function valid.attribute()
+
+
+## function validParamName()
+# called by XMLgenerators() to ensure valid parameter names in the generated function calls
+validParamName <- function(name, replacement="_"){
+  return(gsub(pattern="[^a-zA-Z0-9_.]", replacement=replacement, x=name))
+} ## end function validParamName()
