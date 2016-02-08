@@ -23,11 +23,10 @@
 #' You should use \code{\link[XiMpLe:XMLValidity]{XMLValidity}} to create objects of this class.
 #'
 #' @slot children Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
-#'   name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
-#'   this object will be used for recursive validation of deeper nodes.
-#' @slot attrs Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
-#'   name and each character string a valid attribute name. If a value is in turn of class XiMpLe.validity,
-#'   this object will be used for recursive validation of deeper nodes.
+#'    name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
+#'    this object will be used for recursive validation of deeper nodes.
+#' @slot attrs Named list of character vectors. The element name defines the parent node name and each character
+#'    string a valid attribute name.
 #' @slot allChildren Character vector, names of globally valid child nodes for all nodes, if any.
 #' @slot allAttrs Character vector, names of globally valid attributes for all nodes, if any.
 #' @slot empty Character vector, names of nodes that must be empty nodes (i.e., no closing tag), if any.
@@ -104,17 +103,17 @@ setValidity("XiMpLe.validity", function(object){
   obj.children <- slot(object, "children")
   obj.attrs <- slot(object, "attrs")
 
-  characterOrValidity <- function(entry, slot){
-    if(!is.XiMpLe.validity(entry) & !is.character(entry)){
-      stop(simpleError(paste0("Invalid object: all \"", slot, "\" must be of class character or XiMpLe.validity!")))
+  for (thisChild in obj.children){
+    if(!is.XiMpLe.validity(thisChild) & !is.character(thisChild)){
+      stop(simpleError(paste0("Invalid object: all \"children\" must be of class character or XiMpLe.validity!")))
     } else {}
   }
   
-  for (thisChild in obj.children){
-    characterOrValidity(entry=thisChild, slot="children")
-  }
   for (thisAttr in obj.attrs){
-    characterOrValidity(entry=thisAttr, slot="attrs")
+    if(!is.character(thisAttr)){
+      stop(simpleError(paste0("Invalid object: all \"attrs\" must be of class character!")))
+    } else {}
   }
+
   return(TRUE)
 })

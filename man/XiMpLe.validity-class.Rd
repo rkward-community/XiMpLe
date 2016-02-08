@@ -25,9 +25,8 @@ You should use \code{\link[XiMpLe:XMLValidity]{XMLValidity}} to create objects o
 name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
 this object will be used for recursive validation of deeper nodes.}
 
-\item{\code{attrs}}{Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
-name and each character string a valid attribute name. If a value is in turn of class XiMpLe.validity,
-this object will be used for recursive validation of deeper nodes.}
+\item{\code{attrs}}{Named list of character vectors. The element name defines the parent node name and each character
+string a valid attribute name.}
 
 \item{\code{allChildren}}{Character vector,
       names of globally valid child nodes for all nodes, if any.}

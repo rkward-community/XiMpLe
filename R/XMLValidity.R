@@ -24,9 +24,8 @@
 #' @param children Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
 #'   name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
 #'   this object will be used for recursive validation of deeper nodes.
-#' @param attrs Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
-#'   name and each character string a valid attribute name. If a value is in turn of class XiMpLe.validity,
-#'   this object will be used for recursive validation of deeper nodes.
+#' @param attrs Named list of character vectors. The element name defines the parent node name and each character
+#'    string a valid attribute name.
 #' @param allChildren Character vector, names of globally valid child nodes for all nodes, if any.
 #' @param allAttrs Character vector, names of globally valid attributes for all nodes, if any.
 #' @param empty Character vector, names of nodes that must be empty nodes (i.e., no closing tag), if any.

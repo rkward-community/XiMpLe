@@ -12,9 +12,8 @@ XMLValidity(children = NULL, attrs = NULL, allChildren = NULL,
 name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
 this object will be used for recursive validation of deeper nodes.}
 
-\item{attrs}{Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
-name and each character string a valid attribute name. If a value is in turn of class XiMpLe.validity,
-this object will be used for recursive validation of deeper nodes.}
+\item{attrs}{Named list of character vectors. The element name defines the parent node name and each character
+string a valid attribute name.}
 
 \item{allChildren}{Character vector, names of globally valid child nodes for all nodes,
       if any.}
