@@ -256,13 +256,11 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
 )
 
 
-
 ## function XMLgenRecursion()
 # helper function to get all child nodes and attributes out of nested validity objects
 XMLgenRecursion <- function(validity){
   children <- slot(validity, "children")
   childrenVal <- which(sapply(children, is.XiMpLe.validity))
-  childrenValNames <- names(children)[childrenVal]
   childrenChr <- children[sapply(children, is.character)]
   childNames <- names(children)
   attrs <- slot(validity, "attrs")
@@ -277,6 +275,12 @@ XMLgenRecursion <- function(validity){
   if(length(childrenVal) > 0){
     for (thisChildValNum in childrenVal){
       recursiveResult <- XMLgenRecursion(validity=children[[thisChildValNum]])
+      # this adds child nodes for the current node to the list
+      thisRecNodeName <- childNames[[thisChildValNum]]
+      if(length(recursiveResult[["childNames"]]) > 0){
+        childrenChr[[thisRecNodeName]] <- sort(unique(c(childrenChr[[thisRecNodeName]], recursiveResult[["childNames"]])))
+      } else {}
+      # this now also adds children's child nodes
       for (thisRecChildName in names(recursiveResult[["children"]])){
         if(thisRecChildName %in% names(childrenChr)){
           childrenChr[[thisRecChildName]] <- sort(unique(c(childrenChr[[thisRecChildName]], recursiveResult[["children"]][[thisRecChildName]])))
