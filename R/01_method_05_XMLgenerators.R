@@ -41,7 +41,14 @@
 #'    \code{checkValidity=TRUE}.
 #' @param replaceChar A (single) character to be used as an replacement for invalid characters for
 #'    \code{R} parameter names.
-#' @return A named vector of character strings.
+#' @param dir A charachter string, path to write files to. If \code{dir=NULL}, no files are being
+#'    written, but the results returned in form of a character vector. If \code{dir} is set and the
+#'    directory does not yet exist, it will be created.
+#' @param overwrite Logical, whether existing files should be replaced when \code{dir} is set.
+#' @param oneFile A charachter string. If set, all functions are to be documented in one single *.Rd file,
+#'    named like the string.
+#' @return If \code{dir=NULL} a named vector of character strings. Otherwise one or more files are
+#'    written do the location specified via \code{dir}.
 #' @aliases
 #'    XMLgenerators,-methods
 #'    XMLgenerators,XiMpLe.validity-method
@@ -54,7 +61,7 @@
 #' @rdname XMLgenerators
 #' @include 00_class_03_XiMpLe.validity.R
 setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE, indent.by="\t", roxygenDocs=FALSE,
-  valParam="validity", replaceChar="_"){standardGeneric("XMLgenerators")})
+  valParam="validity", replaceChar="_", dir=NULL, overwrite=FALSE, oneFile=NULL){standardGeneric("XMLgenerators")})
 
 #' @rdname XMLgenerators
 #' @export
@@ -79,7 +86,7 @@ setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE,
 #' )
 #' XMLgenerators(HTMLish)
 setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(validity, prefix="XML", checkValidity=TRUE,
-  indent.by="\t", roxygenDocs=FALSE, valParam="validity", replaceChar="_"){
+  indent.by="\t", roxygenDocs=FALSE, valParam="validity", replaceChar="_", dir=NULL, overwrite=FALSE, oneFile=NULL){
     validitySource <- XMLgenRecursion(validity=validity)
     allKnownNodes  <- validitySource[["allKnownNodes"]]
     children <- validitySource[["children"]]
@@ -235,6 +242,11 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
             )
           } else {}
           
+          if(is.null(oneFile)){
+            rdFile <- paste0(prefix, validParamName(thisNode))
+          } else {
+            rdFile <- validParamName(gsub("\\.rd$|\\.Rd$", "", oneFile))
+          }
           rxdoc <- paste(
             paste0("#' Generate <", thisNode, "> XML nodes"),
             "#'",
@@ -242,6 +254,7 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
             "#'",
             paste0(rxdocParams, collapse="\n"),
             "#' @return An object of class \\code{\\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.",
+            paste0("#' @rdname ", rdFile),
             "#' @export",
             sep="\n"
           )
@@ -251,7 +264,30 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
         return(genResult) 
       }
     )
-    return(result)
+    if(is.null(dir)){
+      return(result)
+    } else {
+      if(!file_test("-d", dir)){
+        stopifnot(dir.create(dir, recursive=TRUE))
+        message(paste0("created directory: ", dir))
+      } else {}
+      for (thisFile in names(result)){
+        thisFileName <- paste0(prefix, validParamName(thisFile), ".R")
+        thisFilePath <- file.path(dir, thisFileName)
+        if(file.exists(thisFilePath)){
+          if(isTRUE(overwrite)){
+            cat(result[thisFile], file=thisFilePath)
+            message(paste0("file exists, overwriting: ", thisFilePath))
+          } else {
+            warning(paste0("file exists, skipping: ", thisFilePath), call.=FALSE)
+          }
+        } else {
+          cat(result[thisFile], file=thisFilePath)
+          message(paste0("written new file: ", thisFilePath))
+        }
+      }
+      return(invisible(NULL))
+    }
   }
 )
 
