@@ -73,13 +73,21 @@ pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.e
   new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
   comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
 
-  # three special cases: value pseudotags, comments and CDATA
+  # four special cases: value pseudotags, XML declarations, comments and CDATA
   if(isTRUE(nchar(tag) == 0) | length(tag) == 0){
     if(isTRUE(tidy)){
       child <- trim(child)
       child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=2, indent.by=indent.by)))
     }
     full.tag <- paste0(child, " ")
+  } else if (grepl("^\\?", tag)){
+    if(is.null(child)){
+      full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent,
+        all.attributes, new.attr, new.attr.indent, " ?>", new.node
+      )
+    } else {
+      stop(simpleError("child nodes for XML declaraions are not supported!"))
+    }
   } else {
     switch(tag,
      "!--"={
