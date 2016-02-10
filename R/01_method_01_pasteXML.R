@@ -122,12 +122,12 @@ setMethod("pasteXML",
         doc.xml <- pasteXMLTag("?xml", attr=tree.xml, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=min(1, shine), indent.by=indent.by, tidy=tidy)
       } else {}
     } else if(all(sapply(tree.xml, is.XiMpLe.node))){
-      doc.xml <- paste(unlist(sapply(
+      doc.xml <- paste0(unlist(sapply(
         tree.xml,
         function(this.decl){
           pasteXML(this.decl, level=1, shine=shine, indent.by=indent.by, tidy=tidy)
         }
-      )), sep=new.node)
+      )), collapse=new.node)
     } else {}
 
     if(any(nchar(unlist(tree.doctype)) > 0)) {
