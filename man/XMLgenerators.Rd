@@ -9,11 +9,12 @@
 \usage{
 XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
   indent.by = "\\t", roxygenDocs = FALSE, valParam = "validity",
-  replaceChar = "_")
+  replaceChar = "_", dir = NULL, overwrite = FALSE, oneFile = NULL)
 
 \S4method{XMLgenerators}{XiMpLe.validity}(validity, prefix = "XML",
   checkValidity = TRUE, indent.by = "\\t", roxygenDocs = FALSE,
-  valParam = "validity", replaceChar = "_")
+  valParam = "validity", replaceChar = "_", dir = NULL,
+  overwrite = FALSE, oneFile = NULL)
 }
 \arguments{
 \item{validity}{An dobject of class \code{XiMpLe.validity}.}
@@ -33,9 +34,23 @@ XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
 
 \item{replaceChar}{A (single) character to be used as an replacement for invalid characters for
 \code{R} parameter names.}
+
+\item{dir}{A charachter string, path to write files to. If \code{dir=NULL},
+      no files are being
+written,
+      but the results returned in form of a character vector. If \code{dir} is set and the
+directory does not yet exist, it will be created.}
+
+\item{overwrite}{Logical,
+      whether existing files should be replaced when \code{dir} is set.}
+
+\item{oneFile}{A charachter string. If set,
+      all functions are to be documented in one single *.Rd file,
+named like the string.}
 }
 \value{
-A named vector of character strings.
+If \code{dir=NULL} a named vector of character strings. Otherwise one or more files are
+   written do the location specified via \code{dir}.
 }
 \description{
 Takes an object of class \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}}

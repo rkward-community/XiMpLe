@@ -127,7 +127,7 @@ setMethod("pasteXML",
         function(this.decl){
           pasteXML(this.decl, level=1, shine=shine, indent.by=indent.by, tidy=tidy)
         }
-      )), collapse=new.node)
+      )), collapse="")
     } else {}
 
     if(any(nchar(unlist(tree.doctype)) > 0)) {
