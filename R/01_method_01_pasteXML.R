@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2016 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -115,15 +115,22 @@ setMethod("pasteXML",
     tree.doctype <- slot(obj, "dtd")
     tree.nodes <- slot(obj, "children")
 
-    if(any(nchar(unlist(tree.xml)) > 0)) {
-      doc.xml <- pasteXMLTag("?xml", attr=tree.xml, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=min(1, shine), indent.by=indent.by, tidy=tidy)
-      doc.xml <- gsub("/>", "\\?>", doc.xml)
-    } else {
-      doc.xml <- ""
-    }
+    doc.xml <- ""
+    new.node <- ifelse(shine > 0, "\n", "")
+    if(all(sapply(tree.xml, is.character))){
+      if(any(nchar(unlist(tree.xml)) > 0)) {
+        doc.xml <- pasteXMLTag("?xml", attr=tree.xml, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=min(1, shine), indent.by=indent.by, tidy=tidy)
+      } else {}
+    } else if(all(sapply(tree.xml, is.XiMpLe.node))){
+      doc.xml <- paste(unlist(sapply(
+        tree.xml,
+        function(this.decl){
+          pasteXML(this.decl, level=1, shine=shine, indent.by=indent.by, tidy=tidy)
+        }
+      )), sep=new.node)
+    } else {}
 
     if(any(nchar(unlist(tree.doctype)) > 0)) {
-      new.node   <- ifelse(shine > 0, "\n", "")
       doc.doctype <- paste("<!DOCTYPE", tree.doctype[["doctype"]], tree.doctype[["decl"]], sep=" ")
       for (elmt in c("id", "refer")){
         if(length(tree.doctype[[elmt]]) > 0) {

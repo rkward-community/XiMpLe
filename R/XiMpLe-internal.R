@@ -262,11 +262,14 @@ parseXMLAttr <- function(tag){
     parsed.list <- eval(parse(text=paste("list(", separated.tag, ")")))
   }
   if(XML.declaration(tag)){
-    valid.attr <- c("version", "encoding", "standalone")
-    parsed.list <- parsed.list[tolower(names(parsed.list)) %in% valid.attr]
-    for (miss.attr in valid.attr[!valid.attr %in% tolower(names(parsed.list))]){
-      parsed.list[[miss.attr]] <- ""
-    }
+    # only enforce validation for <?xml ... ?>
+    if(identical(XML.tagName(tag), tolower("?xml"))){
+      valid.attr <- c("version", "encoding", "standalone")
+      parsed.list <- parsed.list[tolower(names(parsed.list)) %in% valid.attr]
+      for (miss.attr in valid.attr[!valid.attr %in% tolower(names(parsed.list))]){
+        parsed.list[[miss.attr]] <- ""
+      }
+    } else {}
   } else {}
 
   return(parsed.list)
