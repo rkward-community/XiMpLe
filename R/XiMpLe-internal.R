@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2016 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -673,3 +673,82 @@ valid.attribute <- function(node, attrs, validity, warn=FALSE, caseSens=TRUE){
 validParamName <- function(name, replacement="_"){
   return(gsub(pattern="[^a-zA-Z0-9_.]", replacement=replacement, x=name))
 } ## end function validParamName()
+
+
+## function pasteDTDNode()
+# heler function that is being called by pasteXMLTag()
+pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE, DTD=NULL){
+
+  new.node   <- ifelse(shine > 0, "\n", "")
+  new.indent <- ifelse(shine > 0, indent(level, by=indent.by), "")
+  new.attr   <- ifelse(shine > 1, "\n", "")
+  new.attr.indent <- ifelse(shine > 1, indent(level, by=indent.by), "")
+  new.cmmt   <- ifelse(shine > 0, "\n", " ")
+  new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
+  comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
+  dtd.space <- ifelse(shine > 1, "", " ")
+
+  # clean up values if needed
+  if(!is.null(child)){
+    if(isTRUE(tidy)){
+      child <- trim(child)
+      child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
+    }
+  } else {}
+  if(!is.null(DTD)){
+    allValidDTDNames <- c("element", "publicID", "systemID", "decl", "local")
+    invalidDTDNames <- !names(DTD) %in% allValidDTDNames
+    if(any(invalidDTDNames)){
+      warning(
+        paste0("Invalid element names in \"DTD\", will be ignored:\n  ",
+        paste0(names(DTD)[invalidDTDNames], collapse=", "))
+      )
+    } else {}
+  } else {}
+
+  tag.end <- ">"
+  tag.start <- paste0("<", tag, dtd.space, new.attr, new.cmmt.indent)
+  
+  if(identical(tag, "!--")){
+    tag.body <- paste0(tag.start, child, " ", new.attr, new.attr.indent)
+    tag.end <- "-->"
+  } else if(identical(tag, "![CDATA[")){
+    tag.body <- paste0("<![CDATA[", dtd.space, new.attr, comment.indent, child, " ", new.cmmt, new.indent)
+    tag.end <- "]]>"
+  } else if(identical(tag, "*![CDATA[")){
+    tag.body <- paste0("/* <![CDATA[ */ ", new.cmmt, comment.indent,
+      child, " ", new.cmmt, new.indent)
+    tag.end <- "/* ]]> */"
+  } else if(identical(tag, "!DOCTYPE") | identical(tag, "!NOTATION")){
+    tag.body <- paste0(tag.start, DTD[["element"]])
+    if(!is.null(DTD[["publicID"]])){
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, "PUBLIC \"", DTD[["publicID"]], "\"")
+    } else {}
+    if(!is.null(DTD[["systemID"]])){
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, "\"", DTD[["systemID"]], "\"")
+    } else {}
+    if(identical(tag, "!DOCTYPE") & !is.null(DTD[["local"]])){
+      if(isTRUE(tidy)){
+        DTD[["local"]] <- gsub("\n", new.cmmt, trim(setMinIndent(DTD[["local"]], level=level + 1, indent.by=indent.by)))
+      } else {}
+      tag.body <- paste0(tag.body, " [", new.attr, new.cmmt.indent, DTD[["local"]])
+      tag.end <- "]>"
+    } else {}
+  } else if(identical(tag, "!ELEMENT")){
+    tag.body <- paste0(tag.start, DTD[["element"]])
+    if(!is.null(DTD[["decl"]])){
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
+    } else {}
+  } else if(identical(tag, "!ATTLIST")){
+    tag.body <- paste0(tag.start, DTD[["element"]])
+    if(!is.null(DTD[["decl"]])){
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
+    } else {}
+  } else if(identical(tag, "!ENTITY")){
+    tag.body <- paste0(tag.start, DTD[["element"]])
+  } else {}
+
+  full.tag <- paste0(new.indent, tag.body, tag.end, new.node)
+  
+  return(full.tag)
+} ## function pasteDTDNode()

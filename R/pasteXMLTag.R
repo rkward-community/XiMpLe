@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2016 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -61,137 +61,57 @@
 #'   empty=FALSE)
 
 pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=2, indent.by="\t", tidy=TRUE, DTD=NULL){
-  # what attributes do we have?
-  all.attributes <- pasteXMLAttr(attr, tag=tag, level=level, rename=rename, shine=shine, indent.by=indent.by, tidy=tidy)
-  # probaly don't produce empty tags
-  if(!isTRUE(allow.empty) & is.null(all.attributes)){
-    return("")
-  } else {}
-
-  new.node   <- ifelse(shine > 0, "\n", "")
-  new.indent <- ifelse(shine > 0, indent(level, by=indent.by), "")
-  new.attr   <- ifelse(shine > 1, "\n", "")
-  new.attr.indent <- ifelse(shine > 1, indent(level, by=indent.by), "")
-  attr.space <- ifelse(nchar(all.attributes) > 0, " ", "")
-  new.cmmt   <- ifelse(shine > 0, "\n", " ")
-  new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
-  comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
-  dtd.space <- ifelse(shine > 1, "", " ")
-
-  # test variuos special cases: value pseudotags, XML declarations, comments and CDATA
-  if(isTRUE(nchar(tag) == 0) | length(tag) == 0){
-    if(isTRUE(tidy)){
-      child <- trim(child)
-      child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=2, indent.by=indent.by)))
-    }
-    full.tag <- paste0(child, " ")
-  } else if(grepl("^\\?", tag)){
-    if(is.null(child)){
-      full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent,
-        all.attributes, new.attr, new.attr.indent, " ?>", new.node
-      )
-    } else {
-      stop(simpleError("child nodes for XML declaraions are not supported!"))
-    }
-  } else if(identical(tag, "!--")){
-    # clean up value if needed
-    if(!is.null(child)){
-      if(isTRUE(tidy)){
-        child <- trim(child)
-        child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
-      }
-    } else {}
-    full.tag <- paste0(new.indent, "<!-- ", new.attr, new.cmmt.indent,
-      child, " ", new.attr, new.attr.indent,
-      "-->", new.node)
-  } else if(identical(tag, "![CDATA[")){
-    # clean up value if needed
-    if(!is.null(child)){
-      child <- trim(child)
-      if(isTRUE(tidy)){
-        child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
-      }
-    } else {}
-    full.tag <- paste0(new.indent, "<![CDATA[ ", new.cmmt, comment.indent,
-      child, " ", new.cmmt, new.indent,
-      "]]>", new.node)
-  } else if(identical(tag, "*![CDATA[")){
-    # clean up value if needed
-    if(!is.null(child)){
-      child <- trim(child)
-      if(isTRUE(tidy)){
-        child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
-      }
-    } else {}
-    full.tag <- paste0(new.indent, "/* <![CDATA[ */ ", new.cmmt, comment.indent,
-      child, " ", new.cmmt, new.indent,
-      "/* ]]> */", new.node)
-  } else if(grepl("^!", tag)){
-    tag.end <- ">"
-    if(!is.null(DTD)){
-      allValidDTDNames <- c("element", "publicID", "systemID", "decl", "local")
-      invalidDTDNames <- !names(DTD) %in% allValidDTDNames
-      if(any(invalidDTDNames)){
-        warning(
-          paste0("Invalid element names in \"DTD\", will be ignored:\n  ",
-          paste0(names(DTD)[invalidDTDNames], collapse=", "))
-        )
-      } else {}
-    } else {}
-    if(identical(tag, "!DOCTYPE") | identical(tag, "!NOTATION")){
-      child <- paste0(dtd.space, DTD[["element"]])
-      if(!is.null(DTD[["publicID"]])){
-        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, "PUBLIC \"", DTD[["publicID"]], "\"")
-      } else {}
-      if(!is.null(DTD[["systemID"]])){
-        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, "\"", DTD[["systemID"]], "\"")
-      } else {}
-      if(identical(tag, "!DOCTYPE") & !is.null(DTD[["local"]])){
-        if(isTRUE(tidy)){
-          DTD[["local"]] <- gsub("\n", new.cmmt, trim(setMinIndent(DTD[["local"]], level=level + 1, indent.by=indent.by)))
-        } else {}
-        child <- paste0(child, " [", new.attr, new.cmmt.indent, DTD[["local"]])
-        tag.end <- "]>"
-      } else {}
-    } else if(identical(tag, "!ELEMENT")){
-      child <- paste0(dtd.space, DTD[["element"]])
-      if(!is.null(DTD[["decl"]])){
-        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
-      } else {}
-    } else if(identical(tag, "!ATTLIST")){
-      child <- paste0(dtd.space, DTD[["element"]])
-      if(!is.null(DTD[["decl"]])){
-        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
-      } else {}
-    } else if(identical(tag, "!ENTITY")){
-      child <- paste0(dtd.space, DTD[["element"]])
-    } else {
-      if(!is.null(child)){
-        child <- trim(child)
-        if(isTRUE(tidy)){
-          child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
-        }
-      } else {}
-    }
-    full.tag <- paste0(new.indent, "<", tag, new.attr, new.cmmt.indent,
-      child, all.attributes, new.attr, new.attr.indent,
-      tag.end, new.node)
+  if(grepl("^!", tag)){
+    full.tag <- pasteDTDNode(tag=tag, child=child, level=level, shine=shine, indent.by=indent.by, tidy=tidy, DTD=DTD)
   } else {
-    # last but not least, the default value
-    # only put attributes in new lines if there's more than one
-    new.attr <- ifelse((length(attr) > 1), new.attr, "")
-    new.attr.indent <- ifelse((length(attr) > 1), new.attr.indent, "")
-    new.cmmt.indent <- ifelse((length(attr) > 1), new.cmmt.indent, "")
-    val.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
-    # empty decides whether this is a empty tag or a pair of start and end tags
-    if(isTRUE(empty)){
-      full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, " />", new.node)
+    # what attributes do we have?
+    all.attributes <- pasteXMLAttr(attr, tag=tag, level=level, rename=rename, shine=shine, indent.by=indent.by, tidy=tidy)
+    # probaly don't produce empty tags
+    if(!isTRUE(allow.empty) & is.null(all.attributes)){
+      return("")
+    } else {}
+
+    new.node   <- ifelse(shine > 0, "\n", "")
+    new.indent <- ifelse(shine > 0, indent(level, by=indent.by), "")
+    new.attr   <- ifelse(shine > 1, "\n", "")
+    new.attr.indent <- ifelse(shine > 1, indent(level, by=indent.by), "")
+    attr.space <- ifelse(nchar(all.attributes) > 0, " ", "")
+    new.cmmt   <- ifelse(shine > 0, "\n", " ")
+    new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
+
+    # test variuos special cases: value pseudotags, XML declarations, comments and CDATA
+    if(isTRUE(nchar(tag) == 0) | length(tag) == 0){
+      if(isTRUE(tidy)){
+        child <- trim(child)
+        child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=2, indent.by=indent.by)))
+      }
+      full.tag <- paste0(child, " ")
+    } else if(grepl("^\\?", tag)){
+      if(is.null(child)){
+        full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent,
+          all.attributes, new.attr, new.attr.indent, " ?>", new.node
+        )
+      } else {
+        stop(simpleError("child nodes for XML declaraions are not supported!"))
+      }
     } else {
-      full.tag <- paste0(
-        new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ">", new.node,
-        if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
-        new.indent, "</", tag, ">", new.node)
+      # last but not least, the default value
+      # only put attributes in new lines if there's more than one
+      new.attr <- ifelse((length(attr) > 1), new.attr, "")
+      new.attr.indent <- ifelse((length(attr) > 1), new.attr.indent, "")
+      new.cmmt.indent <- ifelse((length(attr) > 1), new.cmmt.indent, "")
+      val.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
+      # empty decides whether this is a empty tag or a pair of start and end tags
+      if(isTRUE(empty)){
+        full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, " />", new.node)
+      } else {
+        full.tag <- paste0(
+          new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ">", new.node,
+          if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
+          new.indent, "</", tag, ">", new.node)
+      }
     }
   }
+
   return(full.tag)
 }
