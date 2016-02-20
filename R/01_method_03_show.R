@@ -39,3 +39,10 @@
 setMethod("show", signature(object="XiMpLe.XML"), function(object){
   cat(pasteXML(object))
 })
+
+#' @docType methods
+#' @export
+#' @rdname show-methods
+setMethod("show", signature(object="XiMpLe.DTD"), function(object){
+  cat(pasteXML(object))
+})

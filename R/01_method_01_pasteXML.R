@@ -157,6 +157,50 @@ setMethod("pasteXML",
   }
 )
 
+#' @rdname pasteXML-methods
+setMethod("pasteXML",
+  signature=signature(obj="XiMpLe.DTD"),
+  function(obj, level=1, shine=1, indent.by="\t", tidy=TRUE){
+
+    new.indent <- ifelse(shine > 0, indent(level+1, by=indent.by), "")
+    new.node   <- ifelse(shine > 0, "\n", "")
+
+    # get the slot contents
+    objName <- slot(obj, "name")
+    objElement <- slot(obj, "element")
+    objPublicID <- slot(obj, "publicID")
+    objSystemID <- slot(obj, "systemID")
+    objDecl <- slot(obj, "decl")
+    objLocal <- slot(obj, "local")
+
+    if(identical(objPublicID, character())){
+      objPublicID <- NULL
+    } else {}
+    if(identical(objSystemID, character())){
+      objSystemID <- NULL
+    } else {}
+    if(identical(objDecl, list())){
+      objDecl <- NULL
+    } else {}
+    if(identical(objLocal, list())){
+      objLocal <- NULL
+    } else {}
+
+    pasted.node <- pasteXMLTag(objName, level=level, allow.empty=TRUE, rename=NULL, shine=shine, indent.by=indent.by, tidy=tidy,
+      DTD=list(
+        element=objElement,
+        publicID=objPublicID,
+        systemID=objSystemID,
+        decl=objDecl,
+        local=objLocal
+      )
+    )
+    
+    return(pasted.node)
+  }
+)
+
+
 # for compatibility reasons, deploy wrapper functions
 #' @export
 pasteXMLNode <- function(node, level=1, shine=1, indent.by="\t", tidy=TRUE){

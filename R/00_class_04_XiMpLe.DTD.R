@@ -21,7 +21,8 @@
 #' This class is used to create XML document type defintions to be used in the \code{dtd} slot in
 #' \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} objects, e.g. by calling \code{\link[XiMpLe:XMLTree]{XMLTree}}.
 #' 
-#' The name of a node defines how slots are used and how nodes can be nested. You should use the function XMLDTD to create elements of this class.
+#' The name of a node defines how slots are used and how nodes can be nested. You should use the function
+#' \code{\link[XiMpLe:DTDNode]{DTDNode}} to create elements of this class.
 #'
 #' @slot name A character string, name of this element (i.e., the XML tag identifier). Must be one of "!DOCTYPE", "!ENTITY", "!ELEMENT",
 #'    "!ATTLIST", or "!NOTATION".
@@ -70,7 +71,6 @@ setClass("XiMpLe.DTD",
   prototype(
     name=character(),
     element=character(),
-    id=character(),
     publicID=character(),
     systemID=character(),
     decl=list(),
@@ -102,6 +102,35 @@ setClass("XiMpLe.DTD",
 # - #REQUIRED/#IMPLIED/#FIXED
 # - "..." -- default value if not set
 
-# setValidity("XiMpLe.DTD", function(object){
-#   return(TRUE)
-# })
+setValidity("XiMpLe.DTD", function(object){
+  allValidNames <- c("!DOCTYPE", "!ENTITY", "!ELEMENT", "!ATTLIST", "!NOTATION")
+  
+  objName <- slot(object, "name")
+  objElement <- slot(object, "element")
+  objPublicID <- slot(object, "publicID")
+  objSystemID <- slot(object, "systemID")
+  objDecl <- slot(object, "decl")
+  objLocal <- slot(object, "local")
+
+  if(!objName %in% allValidNames){
+    stop(simpleError(paste0("Invalid name: \"", objName, "\"\n  Must be one of ", paste0(allValidNames, collapse=", "))))
+  } else {}
+  
+  if(!objName %in% c("!DOCTYPE", "!NOTATION")){
+    if(!identical(character(), objPublicID)){
+      stop(simpleError("Invalid object: \"publicID\" is only allowed in <!DOCTYPE> or <!NOTATION> nodes"))
+    } else {}
+    if(!identical(character(), objSystemID)){
+      stop(simpleError("Invalid object: \"systemID\" is only allowed in <!DOCTYPE> or <!NOTATION> nodes"))
+    } else {}
+  } else {
+    if(!identical(list(), objDecl)){
+      stop(simpleError("Invalid object: \"decl\" is not allowed in <!DOCTYPE> or <!NOTATION> nodes"))
+    } else {}
+  }
+  if(!objName %in% c("!DOCTYPE") & !identical(list(), objLocal)){
+    stop(simpleError("Invalid object: \"local\" is only allowed in <!DOCTYPE> nodes"))
+  } else {}
+
+  return(TRUE)
+})

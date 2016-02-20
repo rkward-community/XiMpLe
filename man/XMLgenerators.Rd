@@ -5,7 +5,7 @@
 \alias{XMLgenerators}
 \alias{XMLgenerators,-methods}
 \alias{XMLgenerators,XiMpLe.validity-method}
-\title{Generate XML generator functions from XiMpLe.valisity object}
+\title{Generate XML generator functions from XiMpLe.validity object}
 \usage{
 XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
   indent.by = "\\t", roxygenDocs = FALSE, valParam = "validity",

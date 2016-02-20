@@ -6,7 +6,7 @@
 \usage{
 pasteXMLTag(tag, attr = NULL, child = NULL, empty = TRUE, level = 1,
   allow.empty = FALSE, rename = NULL, shine = 2, indent.by = "\\t",
-  tidy = TRUE)
+  tidy = TRUE, DTD = NULL)
 }
 \arguments{
 \item{tag}{Character string, name of the XML tag.}
@@ -43,6 +43,10 @@ names represent the element names in \code{attr} and their values the names the 
 "&lt;", "&gt;" and "&amp;" in attribute values. For comment or CDATA tags,
       if the text includes newline characters
 they will also be indented.}
+
+\item{DTD}{A named list of extra elements for document type defining nodes. Only slot names of class
+\code{\link[XiMpLe:XiMpLe.DTD-class]{XiMpLe.DTD}} are valid element names. Will be ignored if the value of \code{tag}
+does not start with "!".}
 }
 \value{
 A character string.
@@ -67,6 +71,7 @@ sample.XML.tag <- pasteXMLTag("a",
 \seealso{
 \code{\link[XiMpLe:XMLNode]{XMLNode}},
    \code{\link[XiMpLe:XMLTree]{XMLTree}},
-   \code{\link[XiMpLe:pasteXML]{pasteXML}}
+   \code{\link[XiMpLe:pasteXML]{pasteXML}},
+   \code{\link[XiMpLe:XiMpLe.DTD-class]{XiMpLe.DTD}}
 }
 

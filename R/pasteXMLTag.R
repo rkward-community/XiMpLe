@@ -45,10 +45,14 @@
 #' @param tidy Logical, if \code{TRUE} the special characters "<", ">" and "&" will be replaced with the entities
 #'    "&lt;", "&gt;" and "&amp;" in attribute values. For comment or CDATA tags, if the text includes newline characters
 #'    they will also be indented.
+#' @param DTD A named list of extra elements for document type defining nodes. Only slot names of class
+#'    \code{\link[XiMpLe:XiMpLe.DTD-class]{XiMpLe.DTD}} are valid element names. Will be ignored if the value of \code{tag}
+#'    does not start with "!".
 #' @return A character string.
 #' @seealso \code{\link[XiMpLe:XMLNode]{XMLNode}},
 #'    \code{\link[XiMpLe:XMLTree]{XMLTree}},
-#'    \code{\link[XiMpLe:pasteXML]{pasteXML}}
+#'    \code{\link[XiMpLe:pasteXML]{pasteXML}},
+#'    \code{\link[XiMpLe:XiMpLe.DTD-class]{XiMpLe.DTD}}
 #' @export
 #' @examples
 #' sample.XML.tag <- pasteXMLTag("a",
@@ -56,7 +60,7 @@
 #'   child="klick here!",
 #'   empty=FALSE)
 
-pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=2, indent.by="\t", tidy=TRUE){
+pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=2, indent.by="\t", tidy=TRUE, DTD=NULL){
   # what attributes do we have?
   all.attributes <- pasteXMLAttr(attr, tag=tag, level=level, rename=rename, shine=shine, indent.by=indent.by, tidy=tidy)
   # probaly don't produce empty tags
@@ -72,6 +76,7 @@ pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.e
   new.cmmt   <- ifelse(shine > 0, "\n", " ")
   new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
   comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
+  dtd.space <- ifelse(shine > 1, "", " ")
 
   # test variuos special cases: value pseudotags, XML declarations, comments and CDATA
   if(isTRUE(nchar(tag) == 0) | length(tag) == 0){
@@ -122,15 +127,55 @@ pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.e
       child, " ", new.cmmt, new.indent,
       "/* ]]> */", new.node)
   } else if(grepl("^!", tag)){
-    if(!is.null(child)){
-      child <- trim(child)
-      if(isTRUE(tidy)){
-        child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
-      }
+    tag.end <- ">"
+    if(!is.null(DTD)){
+      allValidDTDNames <- c("element", "publicID", "systemID", "decl", "local")
+      invalidDTDNames <- !names(DTD) %in% allValidDTDNames
+      if(any(invalidDTDNames)){
+        warning(
+          paste0("Invalid element names in \"DTD\", will be ignored:\n  ",
+          paste0(names(DTD)[invalidDTDNames], collapse=", "))
+        )
+      } else {}
     } else {}
+    if(identical(tag, "!DOCTYPE") | identical(tag, "!NOTATION")){
+      child <- paste0(dtd.space, DTD[["element"]])
+      if(!is.null(DTD[["publicID"]])){
+        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, "PUBLIC \"", DTD[["publicID"]], "\"")
+      } else {}
+      if(!is.null(DTD[["systemID"]])){
+        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, "\"", DTD[["systemID"]], "\"")
+      } else {}
+      if(identical(tag, "!DOCTYPE") & !is.null(DTD[["local"]])){
+        if(isTRUE(tidy)){
+          DTD[["local"]] <- gsub("\n", new.cmmt, trim(setMinIndent(DTD[["local"]], level=level + 1, indent.by=indent.by)))
+        } else {}
+        child <- paste0(child, " [", new.attr, new.cmmt.indent, DTD[["local"]])
+        tag.end <- "]>"
+      } else {}
+    } else if(identical(tag, "!ELEMENT")){
+      child <- paste0(dtd.space, DTD[["element"]])
+      if(!is.null(DTD[["decl"]])){
+        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
+      } else {}
+    } else if(identical(tag, "!ATTLIST")){
+      child <- paste0(dtd.space, DTD[["element"]])
+      if(!is.null(DTD[["decl"]])){
+        child <- paste0(child, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
+      } else {}
+    } else if(identical(tag, "!ENTITY")){
+      child <- paste0(dtd.space, DTD[["element"]])
+    } else {
+      if(!is.null(child)){
+        child <- trim(child)
+        if(isTRUE(tidy)){
+          child <- gsub("\n", new.cmmt, trim(setMinIndent(child, level=level, indent.by=indent.by)))
+        }
+      } else {}
+    }
     full.tag <- paste0(new.indent, "<", tag, new.attr, new.cmmt.indent,
-      child, " ", all.attributes, new.attr, new.attr.indent,
-      ">", new.node)
+      child, all.attributes, new.attr, new.attr.indent,
+      tag.end, new.node)
   } else {
     # last but not least, the default value
     # only put attributes in new lines if there's more than one

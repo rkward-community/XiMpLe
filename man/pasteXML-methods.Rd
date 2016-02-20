@@ -4,6 +4,7 @@
 \name{pasteXML}
 \alias{pasteXML}
 \alias{pasteXML,-methods}
+\alias{pasteXML,XiMpLe.DTD-method}
 \alias{pasteXML,XiMpLe.doc-method}
 \alias{pasteXML,XiMpLe.node-method}
 \alias{pasteXMLNode}
@@ -17,6 +18,9 @@ pasteXML(obj, ...)
 
 \S4method{pasteXML}{XiMpLe.doc}(obj, shine = 1, indent.by = "\\t",
   tidy = TRUE)
+
+\S4method{pasteXML}{XiMpLe.DTD}(obj, level = 1, shine = 1,
+  indent.by = "\\t", tidy = TRUE)
 }
 \arguments{
 \item{obj}{An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}.}

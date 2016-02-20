@@ -1,6 +1,6 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.03-24 (2016-02-10)
+changes in version 0.03-24 (2016-02-20)
 unreleased:
   - this release is under development
 added:
@@ -9,8 +9,10 @@ added:
   - new function is.XiMpLe.validity()
   - new method XMLgenerators() for objects of class XiMpLe.validity
   - new tests for validity checks
-  - XMLTree() (and hence objects of class XiMpLe.doc) now also accept a
-    list of XiMpLe nodes with <?... ?> style tags as the "xml" slot
+  - XMLTree() (and hence objects of class XiMpLe.doc) now also accept a list
+    of XiMpLe nodes with <?... ?> style tags as the "xml" slot
+  - new class XiMpLe.DTD, constructor function DTDNode() and methods show()
+    and pasteXML() as steps towards doctype definition support
 changed:
   - moved documentation of is.XiMpLe.node() and is.XiMpLe.doc() to the
     respective classes
