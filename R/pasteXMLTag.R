@@ -79,7 +79,7 @@ pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.e
     new.cmmt   <- ifelse(shine > 0, "\n", " ")
     new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
 
-    # test variuos special cases: value pseudotags, XML declarations, comments and CDATA
+    # test variuos special cases: value pseudotags, XML prologs, comments and CDATA
     if(isTRUE(nchar(tag) == 0) | length(tag) == 0){
       if(isTRUE(tidy)){
         child <- trim(child)
@@ -92,7 +92,7 @@ pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.e
           all.attributes, new.attr, new.attr.indent, " ?>", new.node
         )
       } else {
-        stop(simpleError("child nodes for XML declaraions are not supported!"))
+        stop(simpleError("child nodes for XML prologs are not supported!"))
       }
     } else {
       # last but not least, the default value

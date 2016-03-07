@@ -53,7 +53,8 @@ is.XiMpLe.validity <- function(x){
 #'    \item{\code{XMLChildren()}: }{get/set the XML child nodes (slot \code{children} of both classes \code{XiMpLe.node}
 #'      and  \code{XiMpLe.doc})}
 #'    \item{\code{XMLFile()}: }{get/set the XML document file name  (slot \code{file} of class \code{XiMpLe.doc})}
-#'    \item{\code{XMLDecl()}: }{get/set the XML document declaration (slot \code{xml} of class \code{XiMpLe.doc})}
+#'    \item{\code{XMLProl()}: }{get/set the XML document prolog (slot \code{xml} of class \code{XiMpLe.doc})}
+#'    \item{\code{XMLDecl()}: }{deprecated, replaced by \code{XMLProl()}.}
 #'    \item{\code{XMLDTD()}: }{get/set the XML document doctype definition (slot \code{dtd} of class \code{XiMpLe.doc})}
 #' }
 #'
@@ -315,6 +316,7 @@ setGeneric("XMLDecl", function(obj){standardGeneric("XMLDecl")})
 setMethod("XMLDecl",
   signature=signature(obj="XiMpLe.doc"),
   function(obj){
+    message("XMLDecl() is deprecated, please use XMLProl() instead.")
     return(obj@xml)
   }
 )
@@ -331,6 +333,44 @@ setGeneric("XMLDecl<-", function(obj, value){standardGeneric("XMLDecl<-")})
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLDecl<-",
+  signature=signature(obj="XiMpLe.doc"),
+  function(obj, value){
+    message("XMLDecl() is deprecated, please use XMLProl() instead.")
+    obj@xml <- value
+    return(obj)
+  }
+)
+
+#' @rdname XMLGetters-methods
+#' @docType methods
+#' @export
+setGeneric("XMLProl", function(obj){standardGeneric("XMLProl")})
+
+#' @rdname XMLGetters-methods
+#' @aliases
+#'    XMLProl,-methods
+#'    XMLProl,XiMpLe.doc-method
+#' @docType methods
+#' @include 00_class_02_XiMpLe.doc.R
+setMethod("XMLProl",
+  signature=signature(obj="XiMpLe.doc"),
+  function(obj){
+    return(obj@xml)
+  }
+)
+
+#' @rdname XMLGetters-methods
+#' @docType methods
+#' @export
+setGeneric("XMLProl<-", function(obj, value){standardGeneric("XMLProl<-")})
+
+#' @rdname XMLGetters-methods
+#' @aliases
+#'    XMLProl<-,-methods
+#'    XMLProl<-,XiMpLe.doc-method
+#' @docType methods
+#' @include 00_class_02_XiMpLe.doc.R
+setMethod("XMLProl<-",
   signature=signature(obj="XiMpLe.doc"),
   function(obj, value){
     obj@xml <- value

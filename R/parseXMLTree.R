@@ -20,14 +20,14 @@
 #'
 #' @param file Character string, valid path to the XML file which should be parsed.
 #' @param drop Character vector with the possible values \code{"comments"}, \code{"cdata"}
-#'    \code{"declarations"} and \code{"doctype"}, defining element classes to be dropped
+#'    \code{"prolog"} and \code{"doctype"}, defining element classes to be dropped
 #'    from the resulting object.
 #' @param object Logical, if \code{TRUE}, \code{file} will not be treated as a path name but as a
 #'    character vector to be parsed as XML directly.
 #' @return An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} with four slots:
 #'    \describe{
 #'      \item{\code{file}:}{Full path to the parsed file, or \code{"object"} if \code{object=TRUE}.}
-#'      \item{\code{xml}:}{XML declaration, if found.}
+#'      \item{\code{xml}:}{XML prolog, if found.}
 #'      \item{\code{dtd}:}{Doctype definition, if found.}
 #'      \item{\code{children}:}{A list of objects of class \code{XiMpLe.node}, with the elements
 #'        \code{"name"} (the node name), \code{"attributes"} (list of attributes, if found),
@@ -62,24 +62,24 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
 
   single.tags <- XML.single.tags(xml.raw, drop=drop)
 
-  # check for XML declaration and doctype first
-  thisXMLdecl <- single.tags[1]
-  if(XML.declaration(thisXMLdecl)){
-    XML.decl <- list()
-    while(isTRUE(XML.declaration(thisXMLdecl))){
-      XML.decl <- append(XML.decl,
+  # check for XML prolog and doctype first
+  thisXMLprol <- single.tags[1]
+  if(XML.prolog(thisXMLprol)){
+    XML.prol <- list()
+    while(isTRUE(XML.prolog(thisXMLprol))){
+      XML.prol <- append(XML.prol,
         XMLNode(
-          name=paste0("?", XML.tagName(thisXMLdecl)),
-          attrs=parseXMLAttr(thisXMLdecl)
+          name=paste0("?", XML.tagName(thisXMLprol)),
+          attrs=parseXMLAttr(thisXMLprol)
         )
       )
       single.tags <- single.tags[-1]
-      thisXMLdecl <- single.tags[1]
+      thisXMLprol <- single.tags[1]
     }
   } else {
-    XML.decl <- list(version="", encoding="", standalone="")
+    XML.prol <- list(version="", encoding="", standalone="")
   }
-  rm(thisXMLdecl)
+  rm(thisXMLprol)
   if(any(XML.doctype(single.tags[1]))){
     XML.doct <- parseXMLAttr(single.tags[1])
     single.tags <- single.tags[-1]
@@ -91,7 +91,7 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
   
   results <- new("XiMpLe.doc",
     file=filePath,
-    xml=XML.decl,
+    xml=XML.prol,
     dtd=XML.doct,
     children=children)
   

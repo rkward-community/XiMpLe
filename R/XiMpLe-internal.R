@@ -90,7 +90,8 @@ split.chars <- function(txt, pattern, perl=FALSE){
 ## function XML.single.tags()
 # Splits one character string or vector with an XML tree into a vector with its single tags.
 # - tree: The XML tree, must be character.
-# - drop: A character vector with the possible contens \code{c("comments","declarations","cdata","value")}
+# - drop: A character vector with the possible contens \code{c("comments","prolog","doctype","cdata")}
+#   "prolog" used to be called "declarations", therefore the latter is still accepted with a warning
 XML.single.tags <- function(tree, drop=NULL){
   if(!is.character(tree)){
     stop(simpleError("'tree' must be character!"))
@@ -125,7 +126,11 @@ XML.single.tags <- function(tree, drop=NULL){
     single.tags <- single.tags[!XML.comment(single.tags)]
   } else {}
   if("declarations" %in% drop){
-    single.tags <- single.tags[!XML.declaration(single.tags)]
+    message("The use of \"declarations\" is deprecated, please use \"prolog\" instead.")
+    single.tags <- single.tags[!XML.prolog(single.tags)]
+  } else {}
+  if("prolog" %in% drop){
+    single.tags <- single.tags[!XML.prolog(single.tags)]
   } else {}
   if("doctype" %in% drop){
     single.tags <- single.tags[!XML.doctype(single.tags)]
@@ -261,7 +266,7 @@ parseXMLAttr <- function(tag){
     ###################################################################################
     parsed.list <- eval(parse(text=paste("list(", separated.tag, ")")))
   }
-  if(XML.declaration(tag)){
+  if(XML.prolog(tag)){
     # only enforce validation for <?xml ... ?>
     if(identical(XML.tagName(tag), tolower("?xml"))){
       valid.attr <- c("version", "encoding", "standalone")
@@ -385,21 +390,21 @@ XML.value <- function(tag, get=FALSE, trim=TRUE){
   return(all.values)
 } ## end function XML.value()
 
-## function XML.declaration()
-# checks for a declaration, like <?xml bar?>
-XML.declaration <- function(tag, get=FALSE){
+## function XML.prolog()
+# checks for a prolog, like <?xml bar?>
+XML.prolog <- function(tag, get=FALSE){
   decl.tags <- sapply(tag, function(this.tag){
-      declaration <- grepl("<\\?((?i)xml).*\\?>", this.tag, perl=TRUE)
+      prolog <- grepl("<\\?((?i)xml).*\\?>", this.tag, perl=TRUE)
       if(isTRUE(get)){
-        result <- ifelse(isTRUE(declaration), XML.tagName(this.tag), "")
+        result <- ifelse(isTRUE(prolog), XML.tagName(this.tag), "")
       } else {
-        result <- declaration
+        result <- prolog
       }
       return(result)
     })
   names(decl.tags) <- NULL
   return(decl.tags)
-} ## end function XML.declaration()
+} ## end function XML.prolog()
 
 ## function XML.doctype()
 # checks for a doctype declaration, like <!DOCTYPE foo>
@@ -504,7 +509,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     } else {
       child.attr <- parseXMLAttr(this.tag)
     }
-    if(XML.declaration(this.tag)){
+    if(XML.prolog(this.tag)){
       children[nxt.child] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr)
