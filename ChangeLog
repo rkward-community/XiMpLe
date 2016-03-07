@@ -20,6 +20,14 @@ changed:
     with "?>" instead of "/>"
   - parseXMLTree() now accepts more than one XML declaration at the beginning
     of a file
+  - to make it clear that "XML declaration" is the prolog and not the DTD
+    declaration, the term and all occurances in the code were renamed into
+    "prolog"
+  - the "drop" option in parseXMLTree() now expects "prolog" instead of
+    "declarations" as value (the old value still works but throws a message)
+  - the method XMLDecl() are now deprecated and should be replaced by
+    XMLProl() (the old method still works but throws a message)
+  - the internal function XML.declaration() was renamed into  XML.prolog()
 
 changes in version 0.03-23 (2015-11-24)
 changed:
