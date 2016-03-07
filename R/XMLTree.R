@@ -23,7 +23,7 @@
 #' @param ... Optional children for the XML tree. Must be either objects of class
 #'    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} or character strings,
 #'    which are treated as simple text values.
-#' @param xml A named list, XML declaration of the XML tree. Currently just pasted, no checking is done.
+#' @param xml A named list, XML prolog of the XML tree. Currently just pasted, no checking is done.
 #' @param dtd A named list, doctype definition of the XML tree. Valid elements are \code{doctype} (root element), \code{decl}
 #' ("PUBLIC" or "SYSTEM"), \code{id} (the identifier) and \code{refer} (URI to .dtd).
 #'    Currently just pasted, no checking is done.
