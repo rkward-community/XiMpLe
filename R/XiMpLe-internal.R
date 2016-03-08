@@ -681,7 +681,7 @@ validParamName <- function(name, replacement="_"){
 
 
 ## function pasteDTDNode()
-# heler function that is being called by pasteXMLTag()
+# helper function that is being called by pasteXMLTag()
 pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE, DTD=NULL){
 
   new.node   <- ifelse(shine > 0, "\n", "")
@@ -733,6 +733,8 @@ pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE
       tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, "\"", DTD[["systemID"]], "\"")
     } else {}
     if(identical(tag, "!DOCTYPE") & !is.null(DTD[["local"]])){
+      ## TODO: pasteXMLTag(DTD[["local"]])
+      # otherwise trim() goes AWOL here
       if(isTRUE(tidy)){
         DTD[["local"]] <- gsub("\n", new.cmmt, trim(setMinIndent(DTD[["local"]], level=level + 1, indent.by=indent.by)))
       } else {}
@@ -742,11 +744,13 @@ pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE
   } else if(identical(tag, "!ELEMENT")){
     tag.body <- paste0(tag.start, DTD[["element"]])
     if(!is.null(DTD[["decl"]])){
+      ## TODO: format DTD[["decl"]]
       tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
     } else {}
   } else if(identical(tag, "!ATTLIST")){
     tag.body <- paste0(tag.start, DTD[["element"]])
     if(!is.null(DTD[["decl"]])){
+      ## TODO: format DTD[["decl"]]
       tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
     } else {}
   } else if(identical(tag, "!ENTITY")){
