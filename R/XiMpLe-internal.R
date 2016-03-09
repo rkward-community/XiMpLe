@@ -692,6 +692,9 @@ pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE
   new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
   comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
   dtd.space <- ifelse(shine > 1, "", " ")
+  dtd.indent <- ifelse(shine > 0, indent.by, "")
+  dtd.local.indent <- ifelse(shine > 0, paste0(new.node, indent(level=level + 1, by=indent.by)), "")
+  dtd.close <- ifelse(shine > 1, indent(level - 1, by=indent.by), "")
 
   # clean up values if needed
   if(!is.null(child)){
@@ -712,7 +715,7 @@ pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE
   } else {}
 
   tag.end <- ">"
-  tag.start <- paste0("<", tag, dtd.space, new.attr, new.cmmt.indent)
+  tag.start <- paste0("<", tag, dtd.space, new.attr, new.attr.indent)
   
   if(identical(tag, "!--")){
     tag.body <- paste0(tag.start, child, " ", new.attr, new.attr.indent)
@@ -733,28 +736,36 @@ pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE
       tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, "\"", DTD[["systemID"]], "\"")
     } else {}
     if(identical(tag, "!DOCTYPE") & !is.null(DTD[["local"]])){
-      ## TODO: pasteXMLTag(DTD[["local"]])
-      # otherwise trim() goes AWOL here
+      DTDLocal <- paste0(
+        sapply(
+          DTD[["local"]],
+          function(thisDef){
+            return(trim(pasteXML(thisDef, level=level, shine=shine, indent.by=indent.by, tidy=tidy)))
+          }
+        ),
+        collapse=dtd.local.indent
+      )
       if(isTRUE(tidy)){
-        DTD[["local"]] <- gsub("\n", new.cmmt, trim(setMinIndent(DTD[["local"]], level=level + 1, indent.by=indent.by)))
+        DTDLocal <- gsub("\n", new.cmmt, DTDLocal)
       } else {}
-      tag.body <- paste0(tag.body, " [", new.attr, new.cmmt.indent, DTD[["local"]])
-      tag.end <- "]>"
+      tag.body <- paste0(tag.body, " [", new.node, comment.indent, DTDLocal)
+      tag.end <- paste0(new.node, new.indent, "]>")
     } else {}
   } else if(identical(tag, "!ELEMENT")){
-    tag.body <- paste0(tag.start, DTD[["element"]])
+#     tag.body <- paste0(tag.start, DTD[["element"]])
     if(!is.null(DTD[["decl"]])){
       ## TODO: format DTD[["decl"]]
-      tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.attr.indent, DTD[["decl"]], new.attr, dtd.close)
     } else {}
   } else if(identical(tag, "!ATTLIST")){
-    tag.body <- paste0(tag.start, DTD[["element"]])
+    tag.body <- paste0(tag.start, DTD[["element"]], new.attr)
     if(!is.null(DTD[["decl"]])){
       ## TODO: format DTD[["decl"]]
-      tag.body <- paste0(tag.body, dtd.space, new.attr, new.cmmt.indent, DTD[["decl"]])
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.attr.indent, DTD[["decl"]], new.attr, dtd.close)
     } else {}
   } else if(identical(tag, "!ENTITY")){
-    tag.body <- paste0(tag.start, DTD[["element"]])
+    ## TODO: indentation of shine=2
+    tag.body <- paste0(tag.start, DTD[["element"]], new.attr, dtd.close)
   } else {}
 
   full.tag <- paste0(new.indent, tag.body, tag.end, new.node)

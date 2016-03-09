@@ -61,7 +61,8 @@
 #'   empty=FALSE)
 
 pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=2, indent.by="\t", tidy=TRUE, DTD=NULL){
-  if(grepl("^!", tag)){
+  if(grepl("^!|^\\*!", tag)){
+    # test variuos special cases: value pseudotags, XML prologs, comments and CDATA
     full.tag <- pasteDTDNode(tag=tag, child=child, level=level, shine=shine, indent.by=indent.by, tidy=tidy, DTD=DTD)
   } else {
     # what attributes do we have?
@@ -79,7 +80,6 @@ pasteXMLTag <- function(tag, attr=NULL, child=NULL, empty=TRUE, level=1, allow.e
     new.cmmt   <- ifelse(shine > 0, "\n", " ")
     new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
 
-    # test variuos special cases: value pseudotags, XML prologs, comments and CDATA
     if(isTRUE(nchar(tag) == 0) | length(tag) == 0){
       if(isTRUE(tidy)){
         child <- trim(child)

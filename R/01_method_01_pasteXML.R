@@ -162,9 +162,6 @@ setMethod("pasteXML",
   signature=signature(obj="XiMpLe.DTD"),
   function(obj, level=1, shine=1, indent.by="\t", tidy=TRUE){
 
-    new.indent <- ifelse(shine > 0, indent(level+1, by=indent.by), "")
-    new.node   <- ifelse(shine > 0, "\n", "")
-
     # get the slot contents
     objName <- slot(obj, "name")
     objElement <- slot(obj, "element")
