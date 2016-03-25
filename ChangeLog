@@ -1,8 +1,10 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.03-24 (2016-02-20)
+changes in version 0.03-24 (2016-03-25)
 unreleased:
   - this release is under development
+fixed:
+  - XMLValue() didn't return values in "!value!" special child nodes
 added:
   - new method validXML() for some basic validity checks
   - new class XiMpLe.validity to define valid child nodes and attributes

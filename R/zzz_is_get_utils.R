@@ -242,7 +242,24 @@ setGeneric("XMLValue", function(obj){standardGeneric("XMLValue")})
 setMethod("XMLValue",
   signature=signature(obj="XiMpLe.node"),
   function(obj){
-    return(obj@value)
+    directValue <- slot(obj, "value")
+    children <- XMLChildren(obj)
+    if("!value!" %in% names(children)){
+      indirectValue <- sapply(children[names(children) %in% "!value!"], XMLValue)
+      names(indirectValue) <- NULL
+    } else {
+      indirectValue <- NULL
+    }
+    # if there's only values in the child node, omit the direct one
+    if(identical(directValue, "")){
+      if(!is.null(indirectValue)){
+        return(indirectValue)
+      } else {
+        return(directValue)
+      }
+    } else {
+      return(directValue)
+    }
   }
 )
 
