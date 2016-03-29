@@ -680,6 +680,90 @@ validParamName <- function(name, replacement="_"){
 } ## end function validParamName()
 
 
+## function pasteDTDAttlist()
+# attribute: character string, the attribute name
+# values: character vectro of length 1-3, the values for the attribute
+# minCols: minimum number of characters for each column
+pasteDTDAttlist <- function(attribute, values, minCols=c(6,6), indent.by="\t", level=2){
+  ## TODO:
+  ## - support &entities;
+  ## - support -- comments --
+  ## - use minCols in output (?sprintf -> %nns)
+  thisAttType <- thisAttValues <- thisAttCondition <- thisAttDefault <- NULL
+  thisAttValuesSpace <- thisAttConditionSpace <- thisAttDefaultSpace <- ""
+  validAttTypes <- c("CDATA", "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS", "ENTITY", "ENTITIES", "NOTATION")
+  validAttConditions <- c("#REQUIRED", "#IMPLIED", "#FIXED")
+  # set a length counter to check for n+1 values later on
+  minValues <- 2
+  if(isTRUE(values[1] %in% validAttTypes)){
+    thisAttType <- values[1]
+  } else if(grepl("\\(", values[1])){
+    thisAttValues <- values[1]
+    thisAttValuesSpace <- " "
+  } else {
+    stop(simpleError(paste0("Invalid ATTLIST for \"", attribute,"\": Undefined attribute type \"", values[1], "\"!")))
+  }
+
+  if(length(values) > 1){
+    if(grepl("\\(", values[2])){
+      if(is.null(thisAttValues)){
+        if(isTRUE(thisAttType %in% "NOTATION")){
+          thisAttDefault <- values[2]
+          thisAttDefaultSpace <- " "
+        } else {
+          thisAttValues <- values[2]
+          thisAttValuesSpace <- " "
+          minValues <- 3
+        }
+      } else {
+        stop(simpleError(paste0("Invalid ATTLIST for \"", attribute, "\": Too many brackets in values!")))
+      }
+    } else if(isTRUE(values[2] %in% validAttConditions)){
+      thisAttCondition <- values[2]
+      thisAttConditionSpace <- " "
+    } else if(!is.null(thisAttValues)){
+      # expecting the default value here
+      thisAttDefault <- paste0("\"", values[2], "\"")
+      thisAttDefaultSpace <- " "
+    } else {
+      stop(simpleError(paste0("Invalid ATTLIST for \"", attribute,"\": Undefined condition \"", values[2], "\"!")))
+    }
+  } else {}
+
+  # make sure there is a default value after the last one used that demands such defaults
+  if(!is.null(thisAttValues) | isTRUE(thisAttCondition %in% "#FIXED")){
+    if(!length(values) >= minValues){
+      stop(simpleError(paste0("Invalid ATTLIST for \"", attribute,"\": Not enough values!")))
+    } else {
+      # expecting the default value here
+      thisAttDefault <- paste0("\"", values[length(values)], "\"")
+      thisAttDefaultSpace <- " "
+    }
+  } else if(isTRUE(thisAttType %in% "NOTATION")){
+    thisAttDefault <- values[2]
+    thisAttDefaultSpace <- " "
+  } else {}
+
+  ## TODO: sanity checks
+  ## - default %in% thisAttValues?
+
+  result <- paste0(
+    indent(level=level, by=indent.by),
+    attribute,
+    " ",
+    thisAttType,
+    thisAttValuesSpace,
+    thisAttValues,
+    thisAttConditionSpace,
+    thisAttCondition,
+    thisAttDefaultSpace,
+    thisAttDefault
+  )
+  
+  return(result)
+} ## end function pasteDTDAttlist()
+
+
 ## function pasteDTDNode()
 # helper function that is being called by pasteXMLTag()
 pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE, DTD=NULL){
@@ -760,8 +844,20 @@ pasteDTDNode <- function(tag, child, level=1, shine=2, indent.by="\t", tidy=TRUE
   } else if(identical(tag, "!ATTLIST")){
     tag.body <- paste0(tag.start, DTD[["element"]], new.attr)
     if(!is.null(DTD[["decl"]])){
+      DTD.decl <- paste0(sapply(
+        names(DTD[["decl"]]),
+        function(thisAttr){
+          pasteDTDAttlist(
+            attribute=thisAttr,
+            values=DTD[["decl"]][[thisAttr]],
+            ## TODO: minCols=c(?,?),
+            indent.by=indent.by,
+            level=level + 1
+          )
+        }
+      ), collapse="\n")
       ## TODO: format DTD[["decl"]]
-      tag.body <- paste0(tag.body, dtd.space, new.attr, new.attr.indent, DTD[["decl"]], new.attr, dtd.close)
+      tag.body <- paste0(tag.body, dtd.space, new.attr, new.attr.indent, DTD.decl, new.attr, dtd.close)
     } else {}
   } else if(identical(tag, "!ENTITY")){
     ## TODO: indentation of shine=2
