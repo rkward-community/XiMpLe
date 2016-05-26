@@ -509,7 +509,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     } else {
       child.attr <- parseXMLAttr(this.tag)
     }
-    if(XML.declaration(this.tag)){
+    if(XML.prolog(this.tag)){
       children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr)
