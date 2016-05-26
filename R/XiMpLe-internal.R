@@ -487,7 +487,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     } else {}
     # we must test for commented CDATA first, because XML.value() would be TRUE, too
     if(XML.commcdata(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="*![CDATA[",
         value=XML.commcdata(this.tag, get=TRUE))
       names(children)[nxt.child] <- "*![CDATA["
@@ -495,7 +495,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       next
     } else {}
     if(XML.value(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="",
         value=XML.value(this.tag, get=TRUE))
       names(children)[nxt.child] <- "!value!"
@@ -505,7 +505,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       child.attr <- parseXMLAttr(this.tag)
     }
     if(XML.declaration(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr)
       names(children)[nxt.child] <- child.name
@@ -513,7 +513,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       next
     } else {}
     if(XML.comment(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="!--",
         value=XML.comment(this.tag, get=TRUE))
       names(children)[nxt.child] <- "!--"
@@ -521,7 +521,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       next
     } else {}
     if(XML.cdata(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="![CDATA[",
         value=XML.cdata(this.tag, get=TRUE))
       names(children)[nxt.child] <- "![CDATA["
@@ -535,7 +535,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     ## uncomment to debug:
     # cat(child.name, ":", tag.no, "-", child.end.tag,"\n")
       rec.nodes <- XML.nodes(single.tags.env, end.here=child.name, start=tag.no + 1)
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr,
         children=rec.nodes$children,
@@ -546,7 +546,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       tag.no <- rec.nodes$tag.no + 1
       next
     } else {
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr)
       names(children)[nxt.child] <- child.name
