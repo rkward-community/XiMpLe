@@ -5,6 +5,7 @@ unreleased:
   - this release is under development
 fixed:
   - XMLValue() didn't return values in "!value!" special child nodes
+  - adjusted internal function XML.nodes() to work with R 3.3 (embedding S4 objects in lists)
 added:
   - new method validXML() for some basic validity checks
   - new class XiMpLe.validity to define valid child nodes and attributes
