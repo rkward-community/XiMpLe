@@ -3,13 +3,13 @@
 \docType{methods}
 \name{node}
 \alias{node}
-\alias{node,-methods}
 \alias{node,XiMpLe.XML-method}
+\alias{node,-methods}
 \alias{node,XiMpLe.doc-method}
 \alias{node,XiMpLe.node-method}
 \alias{node<-}
-\alias{node<-,-methods}
 \alias{node<-,XiMpLe.XML-method}
+\alias{node<-,-methods}
 \alias{node<-,XiMpLe.doc-method}
 \alias{node<-,XiMpLe.node-method}
 \title{Extract/manipulate a node or parts of it from an XML tree}
@@ -64,4 +64,3 @@ node(my.xml.tree, node=list("html","body"), what="attributes")
 node(my.xml.tree, node=list("html","head","title"), what="value") <- "foobar"
 }
 }
-

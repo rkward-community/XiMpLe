@@ -2,8 +2,8 @@
 % Please edit documentation in R/01_method_03_show.R
 \docType{methods}
 \name{show,XiMpLe.XML-method}
-\alias{show,-methods}
 \alias{show,XiMpLe.XML-method}
+\alias{show,-methods}
 \alias{show,XiMpLe.doc-method}
 \alias{show,XiMpLe.node-method}
 \title{Show method for S4 objects of XiMpLe XML classes}
@@ -22,4 +22,3 @@ and \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
 }
 \keyword{methods}
-

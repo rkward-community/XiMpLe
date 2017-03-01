@@ -4,9 +4,10 @@
 \name{validXML}
 \alias{validXML}
 \alias{validXML,-methods}
-\alias{validXML,XiMpLe.XML-method}
 \alias{validXML,XiMpLe.doc-method}
 \alias{validXML,XiMpLe.node-method}
+\alias{validXML,XiMpLe.XML-method}
+\alias{validXML,XiMpLe.XML-method}
 \title{Validate S4 objects of XiMpLe XML classes}
 \usage{
 validXML(obj, validity = XMLValidity(), parent = NULL, children = TRUE,
@@ -123,4 +124,3 @@ validXML(
    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
 }
 \keyword{methods}
-

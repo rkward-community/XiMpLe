@@ -56,4 +56,3 @@ HTMLish <- XMLValidity(
 \seealso{
 \code{\link[XiMpLe:validXML]{validXML}}
 }
-

@@ -5,6 +5,7 @@
 \alias{XMLgenerators}
 \alias{XMLgenerators,-methods}
 \alias{XMLgenerators,XiMpLe.validity-method}
+\alias{XMLgenerators,XiMpLe.validity-method}
 \title{Generate XML generator functions from XiMpLe.valisity object}
 \usage{
 XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
@@ -96,4 +97,3 @@ XMLgenerators(HTMLish)
    \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}}
 }
 \keyword{methods}
-

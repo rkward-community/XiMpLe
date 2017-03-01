@@ -5,9 +5,10 @@
 \alias{pasteXML}
 \alias{pasteXML,-methods}
 \alias{pasteXML,XiMpLe.doc-method}
-\alias{pasteXML,XiMpLe.node-method}
 \alias{pasteXMLNode}
 \alias{pasteXMLTree}
+\alias{pasteXML,XiMpLe.node-method}
+\alias{pasteXML,XiMpLe.doc-method}
 \title{Paste methods for XiMpLe XML objects}
 \usage{
 pasteXML(obj, ...)
@@ -53,4 +54,3 @@ The functions pasteXMLNode() and pasteXMLTree() have been replaced by the pasteX
    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 }
 \keyword{methods}
-

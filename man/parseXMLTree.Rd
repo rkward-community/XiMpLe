@@ -43,4 +43,3 @@ sample.XML.object <- parseXMLTree("~/data/sample_file.xml")
 \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}},
    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 }
-

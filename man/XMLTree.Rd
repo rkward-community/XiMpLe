@@ -45,4 +45,3 @@ sample.XML.tree <- XMLTree(sample.XML.html,
 \code{\link[XiMpLe:XMLNode]{XMLNode}},
    \code{\link[XiMpLe:pasteXML]{pasteXML}}
 }
-

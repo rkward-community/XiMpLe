@@ -28,5 +28,5 @@ or a list of XiMpLe.nodes with tags whose names must start with a "?".}
 \item{\code{children}}{A list of objects of class XiMpLe.node,
       representing the DOM structure of the XML document.}
 }}
-\keyword{classes}
 
+\keyword{classes}

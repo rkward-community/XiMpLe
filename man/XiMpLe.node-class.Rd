@@ -45,5 +45,5 @@ There are certain special values predefined for the \code{name} slot to easily c
 \item{\code{value}}{Plain text to be used as the enclosed value of this node. Set to \code{value=""} if you
 want a childless node to be forced into an non-empty pair of start and end tags by \code{\link[XiMpLe:pasteXMLNode]{pasteXMLNode}}.}
 }}
-\keyword{classes}
 
+\keyword{classes}

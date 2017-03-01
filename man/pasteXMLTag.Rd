@@ -69,4 +69,3 @@ sample.XML.tag <- pasteXMLTag("a",
    \code{\link[XiMpLe:XMLTree]{XMLTree}},
    \code{\link[XiMpLe:pasteXML]{pasteXML}}
 }
-

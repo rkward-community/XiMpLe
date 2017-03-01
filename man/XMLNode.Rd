@@ -43,4 +43,3 @@ sample.XML.node <- XMLNode("a",
 \code{\link[XiMpLe:XMLTree]{XMLTree}},
    \code{\link[XiMpLe:pasteXML]{pasteXML}}
 }
-
