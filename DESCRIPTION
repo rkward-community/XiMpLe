@@ -1,6 +1,8 @@
 Package: XiMpLe
 Type: Package
 Title: A Simple XML Tree Parser and Generator
+Author: Meik Michalke [aut, cre]
+Maintainer: Meik Michalke <meik.michalke@hhu.de>
 Depends: R (>= 2.9.0),methods
 Suggests: testthat
 Description: Provides a simple XML tree parser/generator. It includes functions to read XML files into R objects, get information out
