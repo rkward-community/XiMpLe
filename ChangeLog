@@ -1,5 +1,9 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.10-2 (2017-04-10)
+unreleased:
+  - thir release is under development
+
 changes in version 0.10-1 (2017-04-10)
 fixed:
   - XMLValue() didn't return values in "!value!" special child nodes
