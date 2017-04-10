@@ -14,5 +14,5 @@ Encoding: UTF-8
 LazyLoad: yes
 URL: https://reaktanz.de/?c=hacking&s=XiMpLe
 Authors@R: c(person(given="Meik", family="Michalke", email="meik.michalke@hhu.de", role=c("aut", "cre")))
-Version: 0.03-24
-Date: 2017-03-01
+Version: 0.10-1
+Date: 2017-04-10

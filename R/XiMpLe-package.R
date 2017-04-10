@@ -3,8 +3,8 @@
 #' \tabular{ll}{
 #' Package: \tab XiMpLe\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.03-24\cr
-#' Date: \tab 2017-03-01\cr
+#' Version: \tab 0.10-1\cr
+#' Date: \tab 2017-04-10\cr
 #' Depends: \tab R (>= 2.9.0),methods\cr
 #' Encoding: \tab UTF-8\cr
 #' License: \tab GPL (>= 3)\cr

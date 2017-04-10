@@ -3,6 +3,7 @@
 \docType{methods}
 \name{node}
 \alias{node}
+\alias{XiMpLe.XML-class}
 \alias{node,XiMpLe.XML-method}
 \alias{node,-methods}
 \alias{node,XiMpLe.doc-method}
@@ -57,6 +58,8 @@ elements will be returned.}
 \description{
 This method can be used to get parts of a parsed XML tree object,
       or to fill it with new values.
+
+\code{XiMpLe.XML} is a class union for objects of classes \code{XiMpLe.node} and \code{XiMpLe.doc}.
 }
 \examples{
 \dontrun{

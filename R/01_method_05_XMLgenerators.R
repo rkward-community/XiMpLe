@@ -64,6 +64,7 @@ setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE,
   valParam="validity", replaceChar="_", dir=NULL, overwrite=FALSE, oneFile=NULL){standardGeneric("XMLgenerators")})
 
 #' @rdname XMLgenerators
+#' @importFrom utils file_test
 #' @export
 #' @examples
 #' HTMLish <- XMLValidity(
