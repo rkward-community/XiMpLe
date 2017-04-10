@@ -20,11 +20,13 @@ This class is used for objects that are returned by \code{\link[XiMpLe:parseXMLT
 \describe{
 \item{\code{file}}{Character string, Name of the file.}
 
-\item{\code{xml}}{A named list, XML declaration of the file.}
+\item{\code{xml}}{Either a named list of character values (attributes for the XML declaration of the file),
+or a list of XiMpLe.nodes with tags whose names must start with a "?".}
 
-\item{\code{dtd}}{A named list, Doctype definition of the file.}
+\item{\code{dtd}}{A named list, attributes for the doctype definition of the file.}
 
-\item{\code{children}}{A list of objects of class XiMpLe.node, representing the DOM structure of the XML document.}
+\item{\code{children}}{A list of objects of class XiMpLe.node,
+      representing the DOM structure of the XML document.}
 }}
-\keyword{classes}
 
+\keyword{classes}

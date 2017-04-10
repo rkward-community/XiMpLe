@@ -35,6 +35,8 @@
 setGeneric("node", function(obj, node=list(), what=NULL, cond.attr=NULL, cond.value=NULL, element=NULL){standardGeneric("node")})
 
 # define class union to make life easier
+#' @description \code{XiMpLe.XML} is a class union for objects of classes \code{XiMpLe.node} and \code{XiMpLe.doc}.
+#' @rdname node
 #' @export
 setClassUnion("XiMpLe.XML", members=c("XiMpLe.node", "XiMpLe.doc"))
 

@@ -1,4 +1,4 @@
-# Copyright 2015 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2015-2016 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -18,13 +18,13 @@
 
 #' Validate S4 objects of XiMpLe XML classes
 #' 
-#' Check whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+#' Checks whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 #' or \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} have valid child nodes.
 #' 
 #' XiMpLe can't handle DOM specifications yet, but this method can be used to construct
 #' validation schemes.
 #' 
-#' @note: If no \code{parent} is specified, \code{obj} will be checked recursively. If 
+#' @note: If no \code{parent} is specified, \code{obj} will be checked recursively.
 #'
 #' @param obj An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL}, this object
 #'    will be checked for validity, including its child nodes. If \code{parent} is either a character string
@@ -126,6 +126,17 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
       ", should be XiMpLe.validity!"))
     )
   }
+  if(is.XiMpLe.doc(obj)){
+    # we're only checking the XML tree for now,
+    # if this is a full doc we need to go through the whole list
+    return(all(unlist(sapply(
+      XMLChildren(obj),
+      function(thisPart){
+        validXML(obj=thisPart, validity=validity, parent=parent, children=children, attributes=attributes,
+        warn=warn, section=section, caseSens=caseSens)
+      }
+    ))))
+  } else {}
   # two possibilities:
   # a) there's no "parent" value
   #    we're checking "obj" as the parent node itself
@@ -200,6 +211,11 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
               caseSens=caseSens
             )
             # check grandchildren
+            # first see if there's also recursion in the validity object
+            validChildren <- slot(validity, "children")[[parentName]]
+            if(is.XiMpLe.validity(validChildren)){
+              validity <- validChildren
+            } else {}
             grandChildValidity <- validXML(
               thisChild,
               validity=validity,
@@ -243,6 +259,11 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
         attributeValidityRecursive <- all(sapply(
           nodeChildren,
           function(thisChild){
+            # see if there's also recursion in the validity object
+            validChildren <- slot(validity, "children")[[parentName]]
+            if(is.XiMpLe.validity(validChildren)){
+              validity <- validChildren
+            } else {}
             # because of the recursion this checks the attributes of "thisChild"
             thisChildValidity <- validXML(
               thisChild,

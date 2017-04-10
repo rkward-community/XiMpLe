@@ -262,11 +262,14 @@ parseXMLAttr <- function(tag){
     parsed.list <- eval(parse(text=paste("list(", separated.tag, ")")))
   }
   if(XML.declaration(tag)){
-    valid.attr <- c("version", "encoding", "standalone")
-    parsed.list <- parsed.list[tolower(names(parsed.list)) %in% valid.attr]
-    for (miss.attr in valid.attr[!valid.attr %in% tolower(names(parsed.list))]){
-      parsed.list[[miss.attr]] <- ""
-    }
+    # only enforce validation for <?xml ... ?>
+    if(identical(XML.tagName(tag), tolower("?xml"))){
+      valid.attr <- c("version", "encoding", "standalone")
+      parsed.list <- parsed.list[tolower(names(parsed.list)) %in% valid.attr]
+      for (miss.attr in valid.attr[!valid.attr %in% tolower(names(parsed.list))]){
+        parsed.list[[miss.attr]] <- ""
+      }
+    } else {}
   } else {}
 
   return(parsed.list)
@@ -484,7 +487,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     } else {}
     # we must test for commented CDATA first, because XML.value() would be TRUE, too
     if(XML.commcdata(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="*![CDATA[",
         value=XML.commcdata(this.tag, get=TRUE))
       names(children)[nxt.child] <- "*![CDATA["
@@ -492,7 +495,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       next
     } else {}
     if(XML.value(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="",
         value=XML.value(this.tag, get=TRUE))
       names(children)[nxt.child] <- "!value!"
@@ -502,7 +505,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       child.attr <- parseXMLAttr(this.tag)
     }
     if(XML.declaration(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr)
       names(children)[nxt.child] <- child.name
@@ -510,7 +513,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       next
     } else {}
     if(XML.comment(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="!--",
         value=XML.comment(this.tag, get=TRUE))
       names(children)[nxt.child] <- "!--"
@@ -518,7 +521,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       next
     } else {}
     if(XML.cdata(this.tag)){
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name="![CDATA[",
         value=XML.cdata(this.tag, get=TRUE))
       names(children)[nxt.child] <- "![CDATA["
@@ -532,7 +535,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     ## uncomment to debug:
     # cat(child.name, ":", tag.no, "-", child.end.tag,"\n")
       rec.nodes <- XML.nodes(single.tags.env, end.here=child.name, start=tag.no + 1)
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr,
         children=rec.nodes$children,
@@ -543,7 +546,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       tag.no <- rec.nodes$tag.no + 1
       next
     } else {
-      children[nxt.child] <- new("XiMpLe.node",
+      children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr)
       names(children)[nxt.child] <- child.name
@@ -569,7 +572,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
 # - graceful: allow everything inside "!--" comments?
 valid.child <- function(parent, children, validity, warn=FALSE, section=parent, node.names=NULL,
   caseSens=TRUE, graceful=TRUE){
-  if(isTRUE(graceful) && identical(parent, "!--")){
+  if(isTRUE(graceful) & identical(parent, "!--")){
     # skip all checks and return TRUE
     return(TRUE)
   } else {}
@@ -591,16 +594,26 @@ valid.child <- function(parent, children, validity, warn=FALSE, section=parent, 
         }
       }))
   } else {}
-  
+
   validAllChildren <- slot(validity, "allChildren")
   validChildren <- slot(validity, "children")[[parent]]
+  # check for recursion
+  if(is.XiMpLe.validity(validChildren)){
+    validChildren <- c(
+      names(slot(validChildren, "children")), 
+      slot(validChildren, "allChildren")
+    )
+  } else {}
+  
+  ignoreChildren <- slot(validity, "ignore")
   if(!isTRUE(caseSens)){
     node.names <- tolower(node.names)
     validAllChildren <- tolower(validAllChildren)
     validChildren <- tolower(validChildren)
+    ignoreChildren <- tolower(ignoreChildren)
   } else {}
 
-  invalid.sets <- !node.names %in% c(validAllChildren, validChildren)
+  invalid.sets <- !node.names %in% c(validAllChildren, validChildren, ignoreChildren)
   if(any(invalid.sets)){
     return.message <- paste0("Invalid XML nodes for <", section, "> section: ", paste(node.names[invalid.sets], collapse=", "))
     if(isTRUE(warn)){
@@ -626,24 +639,37 @@ valid.attribute <- function(node, attrs, validity, warn=FALSE, caseSens=TRUE){
     attrsNames <- names(attrs)
     validAllAttrs <- slot(validity, "allAttrs")
     validAttrs <- slot(validity, "attrs")[[node]]
+    ignoreNodes <- slot(validity, "ignore")
     if(!isTRUE(caseSens)){
       attrsNames <- tolower(attrsNames)
       validAllAttrs <- tolower(validAllAttrs)
       validAttrs <- tolower(validAttrs)
+      ignoreNodes <- tolower(ignoreNodes)
     } else {}
-    invalid.sets <- !attrsNames %in% c(validAllAttrs, validAttrs)
-    if(any(invalid.sets)){
-      return.message <- paste0("Invalid XML attributes for <", node, "> node: ", paste(attrsNames[invalid.sets], collapse=", "))
-      if(isTRUE(warn)){
-        warning(return.message, call.=FALSE)
-        return(FALSE)
-      } else {
-        stop(simpleError(return.message))
-      }
+    if(node %in% ignoreNodes){
+      return(NULL)
     } else {
-      return(TRUE)
+      invalid.sets <- !attrsNames %in% c(validAllAttrs, validAttrs)
+      if(any(invalid.sets)){
+        return.message <- paste0("Invalid XML attributes for <", node, "> node: ", paste(attrsNames[invalid.sets], collapse=", "))
+        if(isTRUE(warn)){
+          warning(return.message, call.=FALSE)
+          return(FALSE)
+        } else {
+          stop(simpleError(return.message))
+        }
+      } else {
+        return(TRUE)
+      }
     }
   } else {
     return(NULL)
   }
-}
+} ## end function valid.attribute()
+
+
+## function validParamName()
+# called by XMLgenerators() to ensure valid parameter names in the generated function calls
+validParamName <- function(name, replacement="_"){
+  return(gsub(pattern="[^a-zA-Z0-9_.]", replacement=replacement, x=name))
+} ## end function validParamName()

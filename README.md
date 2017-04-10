@@ -29,12 +29,23 @@ To install it directly from GitHub, you can use `install_github()` from the [dev
 
 ```
 library(devtools)
-install_github("rkward-community/XiMpLe")
+install_github("rkward-community/XiMpLe") # stable release
+install_github("rkward-community/XiMpLe", ref="develop") # development release
 ```
  
+## Contributing
+
+To ask for help, report bugs, suggest feature improvements, or discuss the global
+development of the package, please use the issue tracker on GitHub.
+
+### Branches
+
+Please note that all development happens in the `develop` branch. Pull requests against the `master`
+branch will be rejected, as it is reserved for the current stable release.
+
 ## Licence
 
-Copyright 2015 Meik Michalke <meik.michalke@hhu.de>
+Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
 
 XiMpLe is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

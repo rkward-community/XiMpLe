@@ -63,12 +63,23 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
   single.tags <- XML.single.tags(xml.raw, drop=drop)
 
   # check for XML declaration and doctype first
-  if(XML.declaration(single.tags[1])){
-    XML.decl <- parseXMLAttr(single.tags[1])
-    single.tags <- single.tags[-1]
+  thisXMLdecl <- single.tags[1]
+  if(XML.declaration(thisXMLdecl)){
+    XML.decl <- list()
+    while(isTRUE(XML.declaration(thisXMLdecl))){
+      XML.decl <- append(XML.decl,
+        XMLNode(
+          name=paste0("?", XML.tagName(thisXMLdecl)),
+          attrs=parseXMLAttr(thisXMLdecl)
+        )
+      )
+      single.tags <- single.tags[-1]
+      thisXMLdecl <- single.tags[1]
+    }
   } else {
     XML.decl <- list(version="", encoding="", standalone="")
   }
+  rm(thisXMLdecl)
   if(any(XML.doctype(single.tags[1]))){
     XML.doct <- parseXMLAttr(single.tags[1])
     single.tags <- single.tags[-1]

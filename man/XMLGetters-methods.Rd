@@ -2,62 +2,64 @@
 % Please edit documentation in R/zzz_is_get_utils.R
 \docType{methods}
 \name{XMLName}
+\alias{XMLName}
+\alias{XMLName,XiMpLe.node-method}
+\alias{XMLName,-methods}
+\alias{XMLName<-}
+\alias{XMLName<-,XiMpLe.node-method}
+\alias{XMLName<-,-methods}
 \alias{XMLAttrs}
-\alias{XMLAttrs,-methods}
 \alias{XMLAttrs,XiMpLe.node-method}
+\alias{XMLAttrs,-methods}
 \alias{XMLAttrs<-}
-\alias{XMLAttrs<-,-methods}
 \alias{XMLAttrs<-,XiMpLe.node-method}
+\alias{XMLAttrs<-,-methods}
 \alias{XMLChildren}
+\alias{XMLChildren,XiMpLe.node-method}
 \alias{XMLChildren,-methods}
 \alias{XMLChildren,XiMpLe.doc-method}
-\alias{XMLChildren,XiMpLe.node-method}
+\alias{XMLChildren,-methods}
 \alias{XMLChildren<-}
+\alias{XMLChildren<-,XiMpLe.node-method}
 \alias{XMLChildren<-,-methods}
 \alias{XMLChildren<-,XiMpLe.doc-method}
-\alias{XMLChildren<-,XiMpLe.node-method}
-\alias{XMLDTD}
-\alias{XMLDTD,-methods}
-\alias{XMLDTD,XiMpLe.doc-method}
-\alias{XMLDTD<-}
-\alias{XMLDTD<-,-methods}
-\alias{XMLDTD<-,XiMpLe.doc-method}
-\alias{XMLDecl}
-\alias{XMLDecl,-methods}
-\alias{XMLDecl,XiMpLe.doc-method}
-\alias{XMLDecl<-}
-\alias{XMLDecl<-,-methods}
-\alias{XMLDecl<-,XiMpLe.doc-method}
+\alias{XMLChildren<-,-methods}
+\alias{XMLValue}
+\alias{XMLValue,XiMpLe.node-method}
+\alias{XMLValue,-methods}
+\alias{XMLValue<-}
+\alias{XMLValue<-,XiMpLe.node-method}
+\alias{XMLValue<-,-methods}
 \alias{XMLFile}
-\alias{XMLFile,-methods}
 \alias{XMLFile,XiMpLe.doc-method}
+\alias{XMLFile,-methods}
 \alias{XMLFile<-}
-\alias{XMLFile<-,-methods}
 \alias{XMLFile<-,XiMpLe.doc-method}
-\alias{XMLName}
-\alias{XMLName,-methods}
-\alias{XMLName,XiMpLe.node-method}
-\alias{XMLName<-}
-\alias{XMLName<-,-methods}
-\alias{XMLName<-,XiMpLe.node-method}
+\alias{XMLFile<-,-methods}
+\alias{XMLDecl}
+\alias{XMLDecl,XiMpLe.doc-method}
+\alias{XMLDecl,-methods}
+\alias{XMLDecl<-}
+\alias{XMLDecl<-,XiMpLe.doc-method}
+\alias{XMLDecl<-,-methods}
+\alias{XMLDTD}
+\alias{XMLDTD,XiMpLe.doc-method}
+\alias{XMLDTD,-methods}
+\alias{XMLDTD<-}
+\alias{XMLDTD<-,XiMpLe.doc-method}
+\alias{XMLDTD<-,-methods}
 \alias{XMLScan}
+\alias{XMLScan,XiMpLe.node-method}
 \alias{XMLScan,-methods}
 \alias{XMLScan,XiMpLe.doc-method}
-\alias{XMLScan,XiMpLe.node-method}
 \alias{XMLScan<-}
+\alias{XMLScan<-,XiMpLe.node-method}
 \alias{XMLScan<-,-methods}
 \alias{XMLScan<-,XiMpLe.doc-method}
-\alias{XMLScan<-,XiMpLe.node-method}
 \alias{XMLScanDeep}
+\alias{XMLScanDeep,XiMpLe.node-method}
 \alias{XMLScanDeep,-methods}
 \alias{XMLScanDeep,XiMpLe.doc-method}
-\alias{XMLScanDeep,XiMpLe.node-method}
-\alias{XMLValue}
-\alias{XMLValue,-methods}
-\alias{XMLValue,XiMpLe.node-method}
-\alias{XMLValue<-}
-\alias{XMLValue<-,-methods}
-\alias{XMLValue<-,XiMpLe.node-method}
 \title{Getter/setter methods for S4 objects of XiMpLe XML classes}
 \usage{
 XMLName(obj)
@@ -145,7 +147,8 @@ XMLScanDeep(obj, find = NULL, search = "attributes")
 
 \item{name}{Character, name of nodes to scan for.}
 
-\item{as.list}{Logical, if \code{TRUE} allways returns a list (or NULL), otherwise if exactly one result is found,
+\item{as.list}{Logical, if \code{TRUE} allways returns a list (or NULL),
+      otherwise if exactly one result is found,
 it will be returned as as single \code{XiMpLe.node}.}
 
 \item{find}{Character, name of element to scan for.}
@@ -174,16 +177,21 @@ These are convenience methods to get or set slots from XML objects without using
 Another special method can scan a node/document tree object for appearances of nodes with a particular name:
 
 \itemize{
-   \item{\code{XMLScan(obj, name, as.list=FALSE)}: }{get/set the XML nodes by name (recursively searches slot \code{name} of both classes
-     \code{XiMpLe.node} and  \code{XiMpLe.doc}). If \code{as.list=TRUE} allways returns a list (or NULL), otherwise if exactly one result is found,
+   \item{\code{XMLScan(obj, name,
+      as.list=FALSE)}: }{get/set the XML nodes by name (recursively searches slot \code{name} of both classes
+     \code{XiMpLe.node} and  \code{XiMpLe.doc}). If \code{as.list=TRUE} allways returns a list (or NULL),
+      otherwise if exactly one result is found,
      it will be returned as as single \code{XiMpLe.node}.}
 }
 
-Finally, there is a method to scan for certain values in XiMpLe objects and just list them. For instance, it can be used to
+Finally,
+      there is a method to scan for certain values in XiMpLe objects and just list them. For instance,
+      it can be used to
 list all instances of a certain attribute type in a document tree:
 
 \itemize{
-   \item{\code{XMLScanDeep(obj, find, search="attributes")}: }{returns all found instances of \code{find} in all slots defined by \code{search}.}
+   \item{\code{XMLScanDeep(obj, find,
+      search="attributes")}: }{returns all found instances of \code{find} in all slots defined by \code{search}.}
 }
 }
 \examples{
@@ -203,4 +211,3 @@ XMLScan(xmlTestNode, "testchild") <- NULL
    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
 }
 \keyword{methods}
-

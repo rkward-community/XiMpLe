@@ -4,9 +4,10 @@
 \name{validXML}
 \alias{validXML}
 \alias{validXML,-methods}
-\alias{validXML,XiMpLe.XML-method}
 \alias{validXML,XiMpLe.doc-method}
 \alias{validXML,XiMpLe.node-method}
+\alias{validXML,XiMpLe.XML-method}
+\alias{validXML,XiMpLe.XML-method}
 \title{Validate S4 objects of XiMpLe XML classes}
 \usage{
 validXML(obj, validity = XMLValidity(), parent = NULL, children = TRUE,
@@ -17,34 +18,41 @@ validXML(obj, validity = XMLValidity(), parent = NULL, children = TRUE,
   section = parent, caseSens = TRUE)
 }
 \arguments{
-\item{obj}{An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL}, this object
-will be checked for validity, including its child nodes. If \code{parent} is either a character string
-or another XiMpLe node, it will be checked whether \code{obj} is a valid child node of \code{parent}.}
+\item{obj}{An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL},
+      this object
+will be checked for validity,
+      including its child nodes. If \code{parent} is either a character string
+or another XiMpLe node,
+      it will be checked whether \code{obj} is a valid child node of \code{parent}.}
 
 \item{validity}{An object of class \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}},
 see \code{\link[XiMpLe:XMLValidity]{XMLValidity}}.}
 
-\item{parent}{Either a character string (name of the parent node) or a XiMpLe node, whose name will be used
+\item{parent}{Either a character string (name of the parent node) or a XiMpLe node,
+      whose name will be used
 as name of the parent node.}
 
 \item{children}{Logical, whether child node names should be checked for validity.}
 
 \item{attributes}{Logical, whether attributes should be checked for validity.}
 
-\item{warn}{Logical, whether invalid objects should cause a warning or stop with an error.}
+\item{warn}{Logical,
+      whether invalid objects should cause a warning or stop with an error.}
 
-\item{section}{Either a character string (name of the section) or a XiMpLe node, whose name will be used
+\item{section}{Either a character string (name of the section) or a XiMpLe node,
+      whose name will be used
 as name of the XML section this check refers to. This is only relevant for warnings and error messages,
 in case you want to use something different than the actual parent node name.}
 
 \item{caseSens}{Logical, whether checks should be case sensitive or not.}
 }
 \value{
-Returns \code{TRUE} if tests pass, and depending on the setting of \code{warn} either \code{FALSE} or
+Returns \code{TRUE} if tests pass,
+      and depending on the setting of \code{warn} either \code{FALSE} or
    an error if a test fails.
 }
 \description{
-Check whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+Checks whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 or \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} have valid child nodes.
 }
 \details{
@@ -52,7 +60,7 @@ XiMpLe can't handle DOM specifications yet, but this method can be used to const
 validation schemes.
 }
 \note{
-: If no \code{parent} is specified, \code{obj} will be checked recursively. If
+: If no \code{parent} is specified, \code{obj} will be checked recursively.
 }
 \examples{
 HTMLish <- XMLValidity(
@@ -116,4 +124,3 @@ validXML(
    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
 }
 \keyword{methods}
-

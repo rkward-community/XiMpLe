@@ -257,15 +257,26 @@ test_that("define XML validation scheme", {
   
   # should generate an object of class XiMpLe.validity
   # try something HTMLish
+  # first define <li> validation to use recursively
+  XML.validity.li <- XMLValidity(
+    children=list(
+      li=c("a", "br", "strong")
+    ),
+    attrs=list(
+      a=c("href") # allow only href for testing
+    ),
+    allChildren=c("!--"),
+    allAttrs=c("id", "class"),
+    empty=c("br")
+  )
   sample_XML_validity.generated <- XMLValidity(
     children=list(
       body=c("a", "p", "ol", "ul", "strong"),
       head=c("title"),
       html=c("head", "body"),
-      li=c("a", "br", "strong"),
-      ol=c("li"),
+      ol=XML.validity.li,
       p=c("a", "br", "ol", "ul", "strong"),
-      ul=c("li")
+      ul=XML.validity.li
     ),
     attrs=list(
       a=c("href", "name"),
@@ -273,7 +284,8 @@ test_that("define XML validation scheme", {
     ),
     allChildren=c("!--"),
     allAttrs=c("id", "class"),
-    empty=c("br")
+    empty=c("br"),
+    ignore=c("foobar")
   )
 
   expect_that(
@@ -381,7 +393,7 @@ test_that("validate XML objects: attributes", {
     ),
     XMLNode("body",
       XMLNode("p",
-        XMLNode("a", "my link", attrs=list(href="link.html", class="underline"))
+        XMLNode("a", "my link", attrs=list(href="link.html", class="underline", name="valid"))
       ),
       XMLNode("p",
         XMLNode("ol",
@@ -401,6 +413,15 @@ test_that("validate XML objects: attributes", {
   invalidAttributes <- XMLNode("html",
     XMLNode("head",
       XMLNode("title", "test", attrs=list(href="title.html"))
+    )
+  )
+  invalidRecursion <- XMLNode("html",
+    XMLNode("body",
+      XMLNode("ol", 
+        XMLNode("li",
+          XMLNode("a", attrs=list(name="invalid"))
+        )
+      )
     )
   )
   undefinedAttributes <- XMLNode("body",
@@ -423,6 +444,16 @@ test_that("validate XML objects: attributes", {
       warn=TRUE
     ),
     regexp="Invalid XML attributes for <title> node: href"
+  )
+  # the object "validityResultF" should be available after this call
+  expect_warning(
+    validityResultRecursionF <- validXML(
+      invalidRecursion,
+      validity=sample_XML_validity,
+      children=FALSE,
+      warn=TRUE
+    ),
+    regexp="Invalid XML attributes for <a> node: name"
   )
   expect_true(validityResultT)
   expect_false(validityResultF)

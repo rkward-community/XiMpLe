@@ -1,6 +1,37 @@
 \name{NEWS}
 \title{News for Package 'XiMpLe'}
 \encoding{UTF-8}
+\section{Changes in XiMpLe version 0.10-1 (2017-04-10)}{
+  \subsection{fixed}{
+    \itemize{
+      \item \code{XMLValue()} didn't return values in "!value!" special child nodes
+      \item adjusted internal function \code{XML.nodes()} to work with R 3.3 (embedding S4
+        objects in lists)
+    }
+  }
+  \subsection{added}{
+    \itemize{
+      \item new method \code{validXML()} for some basic validity checks
+      \item new class XiMpLe.validity to define valid child nodes and attributes
+      \item new function \code{is.XiMpLe.validity()}
+      \item new method \code{XMLgenerators()} for objects of class XiMpLe.validity
+      \item new tests for validity checks
+      \item \code{XMLTree()} (and hence objects of class XiMpLe.doc) now also accept a list
+        of XiMpLe nodes with <?... ?> style tags as the \code{"xml"} slot
+    }
+  }
+  \subsection{changed}{
+    \itemize{
+      \item moved documentation of \code{is.XiMpLe.node()} and \code{is.XiMpLe.doc()} to the
+        respective classes
+      \item \code{pasteXML()} gained support for tag names starting with "?" and ends them
+        with "?>" instead of "/>"
+      \item \code{parseXMLTree()} now accepts more than one XML declaration at the beginning
+        of a file
+      \item version number took a big jump only because of the CRAN policies!
+    }
+  }
+}
 \section{Changes in XiMpLe version 0.03-23 (2015-11-24)}{
   \subsection{changed}{
     \itemize{

@@ -5,20 +5,26 @@
 \title{Constructor function for XiMpLe.validity objects}
 \usage{
 XMLValidity(children = NULL, attrs = NULL, allChildren = NULL,
-  allAttrs = NULL, empty = NULL)
+  allAttrs = NULL, empty = NULL, ignore = NULL)
 }
 \arguments{
-\item{children}{Named list of character vectors, where the element name defines the parent node
-name and each character string a valid child node name.}
+\item{children}{Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
+name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
+this object will be used for recursive validation of deeper nodes.}
 
-\item{attrs}{Named list of character vectors, where the element name defines the parent node
-name and each character string a valid attribute name.}
+\item{attrs}{Named list of character vectors. The element name defines the parent node name and each character
+string a valid attribute name.}
 
-\item{allChildren}{Character vector, names of globally valid child nodes for all nodes, if any.}
+\item{allChildren}{Character vector, names of globally valid child nodes for all nodes,
+      if any.}
 
-\item{allAttrs}{Character vector, names of globally valid attributes for all nodes, if any.}
+\item{allAttrs}{Character vector, names of globally valid attributes for all nodes,
+      if any.}
 
-\item{empty}{Character vector, names of nodes that must be empty nodes (i.e., no closing tag), if any.}
+\item{empty}{Character vector, names of nodes that must be empty nodes (i.e.,
+      no closing tag), if any.}
+
+\item{ignore}{Character vector, names of nodes that should be ignored, if any.}
 }
 \value{
 An object of class \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}}
@@ -50,4 +56,3 @@ HTMLish <- XMLValidity(
 \seealso{
 \code{\link[XiMpLe:validXML]{validXML}}
 }
-

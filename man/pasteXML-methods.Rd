@@ -5,9 +5,10 @@
 \alias{pasteXML}
 \alias{pasteXML,-methods}
 \alias{pasteXML,XiMpLe.doc-method}
-\alias{pasteXML,XiMpLe.node-method}
 \alias{pasteXMLNode}
 \alias{pasteXMLTree}
+\alias{pasteXML,XiMpLe.node-method}
+\alias{pasteXML,XiMpLe.doc-method}
 \title{Paste methods for XiMpLe XML objects}
 \usage{
 pasteXML(obj, ...)
@@ -21,11 +22,13 @@ pasteXML(obj, ...)
 \arguments{
 \item{obj}{An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}.}
 
-\item{...}{Additional options for the generic method, see options for a specific method, respectively.}
+\item{...}{Additional options for the generic method, see options for a specific method,
+      respectively.}
 
 \item{level}{Indentation level.}
 
-\item{shine}{Integer, controlling if the output should be formatted for better readability. Possible values:
+\item{shine}{Integer,
+      controlling if the output should be formatted for better readability. Possible values:
 \describe{
   \item{0}{No formatting.}
   \item{1}{Nodes will be indented.}
@@ -34,7 +37,8 @@ pasteXML(obj, ...)
 
 \item{indent.by}{A charachter string defining how indentation should be done. Defaults to tab.}
 
-\item{tidy}{Logical, if \code{TRUE} the special characters "<" and ">" will be replaced with the entities
+\item{tidy}{Logical,
+      if \code{TRUE} the special characters "<" and ">" will be replaced with the entities
 "&lt;" and "gt;" in attributes and text values.}
 }
 \description{
@@ -50,4 +54,3 @@ The functions pasteXMLNode() and pasteXMLTree() have been replaced by the pasteX
    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
 }
 \keyword{methods}
-
