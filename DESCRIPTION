@@ -9,6 +9,7 @@ Description: Provides a simple XML tree parser/generator. It includes functions 
                of and into nodes, and write R objects back to XML code. It's not as powerful as the 'XML' package and doesn't aim to
                be, but for simple XML handling it could be useful. It was originally developed for the R GUI and IDE 'RKWard'
                <https://rkward.kde.org>, to make plugin development easier.
+BugReports: https://github.com/rkward-community/XiMpLe/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyLoad: yes
