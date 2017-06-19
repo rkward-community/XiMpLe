@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -57,7 +57,9 @@ split.chars <- function(txt, pattern, perl=FALSE){
   } else {
     txt.length <- nchar(txt)
     num.found.patterns <- length(found.pattern.start)
-    result <- unlist(sapply(0:num.found.patterns, function(pat.idx){
+    result <- unlist(sapply(
+      0:num.found.patterns,
+      function(pat.idx){
         # 0: chars before first match
         if(pat.idx == 0){
           if(found.pattern.start[1] > 1){
@@ -81,7 +83,9 @@ split.chars <- function(txt, pattern, perl=FALSE){
           } else {}
           return(result.match)
         }
-      }), use.names=FALSE)
+      },
+      USE.NAMES=FALSE
+    ), use.names=FALSE)
     return(result)
   }
 } ## end function split.chars()
@@ -106,21 +110,24 @@ XML.single.tags <- function(tree, drop=NULL){
   # CDATA or comments can contain stuff which might ruin the outcome. we'll deal with those parts first.
   tree <- split.chars(txt=tree, pattern="<!\\[CDATA\\[((?s).*?)\\]\\]>|/\\*[[:space:]]*<!\\[CDATA\\[[[:space:]]*\\*/((?s).*?)/\\*[[:space:]]*\\]\\]>[[:space:]]*\\*/|<!--((?s).*?)-->", perl=TRUE)
   # now do the splitting
-  single.tags <- sapply(tree, function(this.tree){
-        # exclude the already cut our comments an CDATA entries
-        if(XML.comment(this.tree) | XML.cdata(this.tree) | XML.commcdata(this.tree)){
-          return(this.tree)
-        } else {
-          these.tags <- unlist(split.chars(txt=this.tree, "<((?s).*?)>", perl=TRUE), use.names=FALSE)
-          # remove probably troublesome content like newlines
-          these.tags[!XML.value(these.tags)] <- gsub("[[:space:]]+", " ", these.tags[!XML.value(these.tags)])
-          return(these.tags)
-        }
-      })
+  single.tags <- sapply(
+    tree,
+    function(this.tree){
+      # exclude the already cut our comments an CDATA entries
+      if(XML.comment(this.tree) | XML.cdata(this.tree) | XML.commcdata(this.tree)){
+        return(this.tree)
+      } else {
+        these.tags <- unlist(split.chars(txt=this.tree, "<((?s).*?)>", perl=TRUE), use.names=FALSE)
+        # remove probably troublesome content like newlines
+        these.tags[!XML.value(these.tags)] <- gsub("[[:space:]]+", " ", these.tags[!XML.value(these.tags)])
+        return(these.tags)
+      }
+    },
+    USE.NAMES=FALSE
+  )
   single.tags <- unlist(single.tags, use.names=FALSE)
   single.tags <- as.character(single.tags)
 
-  colnames(single.tags) <- NULL
   if("comments" %in% drop){
     single.tags <- single.tags[!XML.comment(single.tags)]
   } else {}
@@ -197,7 +204,7 @@ pasteXMLAttr <- function(attr=NULL, tag=NULL, level=1, rename=NULL, shine=2, ind
   } else {}
 
   if(isTRUE(tidy)){
-    attr <- sapply(attr, xml.tidy)
+    attr <- sapply(attr, xml.tidy, USE.NAMES=FALSE)
   } else {}
 
   new.indent <- ifelse(shine > 1, indent(level+1, by=indent.by), "")
@@ -287,7 +294,9 @@ trim <- function(char){
 # checks if a tag is a pair of start/end tags or an empty tag;
 # returns either TRUE/FALSE, or the tag name if it is an empty tag and get=TRUE
 XML.emptyTag <- function(tag, get=FALSE){
-  empty.tags <- sapply(tag, function(this.tag){
+  empty.tags <- sapply(
+    tag,
+    function(this.tag){
       empty <- grepl("/>$", this.tag)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(empty), XML.tagName(this.tag), "")
@@ -295,8 +304,9 @@ XML.emptyTag <- function(tag, get=FALSE){
         result <- empty
       }
       return(result)
-    })
-  names(empty.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(empty.tags)
 } ## end function XML.emptyTag()
 
@@ -304,7 +314,9 @@ XML.emptyTag <- function(tag, get=FALSE){
 # checks if a tag an end tag;
 # returns either TRUE/FALSE, or the tag name if it is an end tag and get=TRUE
 XML.endTag <- function(tag, get=FALSE){
-  end.tags <- sapply(tag, function(this.tag){
+  end.tags <- sapply(
+    tag,
+    function(this.tag){
       end <- grepl("^</", this.tag)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(end), XML.tagName(this.tag), "")
@@ -312,15 +324,18 @@ XML.endTag <- function(tag, get=FALSE){
         result <- end
       }
       return(result)
-    })
-  names(end.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(end.tags)
 } ## end function XML.endTag()
 
 ## function XML.comment()
 # checks if a tag is a comment, returns TRUE or FALSE, or the comment (TRUE & get=TRUE)
 XML.comment <- function(tag, get=FALSE, trim=TRUE){
-  comment.tags <- sapply(tag, function(this.tag){
+  comment.tags <- sapply(
+    tag,
+    function(this.tag){
       comment <- grepl("<!--((?s).*)-->", this.tag, perl=TRUE)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(comment), gsub("<!--((?s).*)-->", "\\1", this.tag, perl=TRUE), "")
@@ -329,15 +344,18 @@ XML.comment <- function(tag, get=FALSE, trim=TRUE){
         result <- comment
       }
       return(result)
-    })
-  names(comment.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(comment.tags)
 } ## end function XML.comment()
 
 ## function XML.cdata()
 # checks if a tag is a CDATA declaration, returns TRUE or FALSE, or the data (TRUE & get=TRUE)
 XML.cdata <- function(tag, get=FALSE, trim=TRUE){
-  cdata.tags <- sapply(tag, function(this.tag){
+  cdata.tags <- sapply(
+    tag,
+    function(this.tag){
       cdata <- grepl("<!\\[CDATA\\[((?s).*)\\]\\]>", this.tag, perl=TRUE)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(cdata), gsub("<!\\[CDATA\\[((?s).*)\\]\\]>", "\\1", this.tag, perl=TRUE), "")
@@ -346,15 +364,18 @@ XML.cdata <- function(tag, get=FALSE, trim=TRUE){
         result <- cdata
       }
       return(result)
-    })
-  names(cdata.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(cdata.tags)
 } ## end function XML.cdata()
 
 ## function XML.commcdata()
 # checks if a tag is a /* CDATA */ declaration, returns TRUE or FALSE, or the data (TRUE & get=TRUE)
 XML.commcdata <- function(tag, get=FALSE, trim=TRUE){
-  commcdata.tags <- sapply(tag, function(this.tag){
+  commcdata.tags <- sapply(
+    tag,
+    function(this.tag){
       commcdata <- grepl("/\\*[[:space:]]*<!\\[CDATA\\[[[:space:]]*\\*/((?s).*?)/\\*[[:space:]]*\\]\\]>[[:space:]]*\\*/", this.tag, perl=TRUE)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(commcdata), gsub("/\\*[[:space:]]*<!\\[CDATA\\[[[:space:]]*\\*/((?s).*?)/\\*[[:space:]]*\\]\\]>[[:space:]]*\\*/", "\\1", this.tag, perl=TRUE), "")
@@ -363,15 +384,18 @@ XML.commcdata <- function(tag, get=FALSE, trim=TRUE){
         result <- commcdata
       }
       return(result)
-    })
-  names(commcdata.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(commcdata.tags)
 } ## end function XML.commcdata()
 
 ## function XML.value()
 # checks if 'tag' is actually not a tag but value/content/data. returns TRUE or FALSE, or the value (TRUE & get=TRUE)
 XML.value <- function(tag, get=FALSE, trim=TRUE){
-  all.values <- sapply(tag, function(this.tag){
+  all.values <- sapply(
+    tag,
+    function(this.tag){
       value <- grepl("^[[:space:]]*[^<]", this.tag)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(value), this.tag, "")
@@ -380,15 +404,18 @@ XML.value <- function(tag, get=FALSE, trim=TRUE){
         result <- value
       }
       return(result)
-    })
-  names(all.values) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(all.values)
 } ## end function XML.value()
 
 ## function XML.declaration()
 # checks for a declaration, like <?xml bar?>
 XML.declaration <- function(tag, get=FALSE){
-  decl.tags <- sapply(tag, function(this.tag){
+  decl.tags <- sapply(
+    tag,
+    function(this.tag){
       declaration <- grepl("<\\?((?i)xml).*\\?>", this.tag, perl=TRUE)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(declaration), XML.tagName(this.tag), "")
@@ -396,15 +423,18 @@ XML.declaration <- function(tag, get=FALSE){
         result <- declaration
       }
       return(result)
-    })
-  names(decl.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(decl.tags)
 } ## end function XML.declaration()
 
 ## function XML.doctype()
 # checks for a doctype declaration, like <!DOCTYPE foo>
 XML.doctype <- function(tag, get=FALSE){
-  decl.tags <- sapply(tag, function(this.tag){
+  decl.tags <- sapply(
+    tag,
+    function(this.tag){
       declaration <- grepl("<!((?i)DOCTYPE).*>", this.tag, perl=TRUE)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(declaration), XML.tagName(this.tag), "")
@@ -412,14 +442,17 @@ XML.doctype <- function(tag, get=FALSE){
         result <- declaration
       }
       return(result)
-    })
-  names(decl.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(decl.tags)
 } ## end function XML.doctype()
 
 ## function XML.def()
 XML.def <- function(tag, get=FALSE){
-  decl.tags <- sapply(tag, function(this.tag){
+  decl.tags <- sapply(
+    tag,
+    function(this.tag){
       declaration <- grepl("<[!?]+[^-]*>", this.tag)
       if(isTRUE(get)){
         result <- ifelse(isTRUE(declaration), XML.tagName(this.tag), "")
@@ -427,18 +460,22 @@ XML.def <- function(tag, get=FALSE){
         result <- declaration
       }
       return(result)
-    })
-  names(decl.tags) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(decl.tags)
 } ## end function XML.def()
 
 ## function XML.tagName()
 XML.tagName <- function(tag){
-  tag.names <- sapply(tag, function(this.tag){
+  tag.names <- sapply(
+    tag,
+    function(this.tag){
       tagName <- gsub("<([[:space:]!?/]*)([^[:space:]>/]+).*", "\\2", this.tag, perl=TRUE)
       return(tagName)
-    })
-  names(tag.names) <- NULL
+    },
+    USE.NAMES=FALSE
+  )
   return(tag.names)
 } ## end function XML.tagName()
 
@@ -578,21 +615,25 @@ valid.child <- function(parent, children, validity, warn=FALSE, section=parent, 
   } else {}
   if(is.null(node.names)){
     # check the node names and allow only valid ones
-    node.names <- unlist(sapply(child.list(children), function(this.child){
+    node.names <- unlist(sapply(
+      child.list(children),
+      function(this.child){
         if(is.XiMpLe.node(this.child)){
           this.child.name <- XMLName(this.child)
           if(identical(this.child.name, "")){
             # special case: empty node name; this is used to combine
             # comments with the node they belong to, so rather check
             # the children of this special node
-            return(unlist(sapply(XMLChildren(this.child), XMLName)))
+            return(unlist(sapply(XMLChildren(this.child), XMLName, USE.NAMES=FALSE)))
           } else {
             return(this.child.name)
           }
         } else {
           stop(simpleError(paste0("Invalid object for <", section, "> node, must be of class XiMpLe.node, but got class ", class(this.child), "!")))
         }
-      }))
+      },
+      USE.NAMES=FALSE
+    ))
   } else {}
 
   validAllChildren <- slot(validity, "allChildren")

@@ -1,4 +1,4 @@
-# Copyright 2011-2016 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -75,13 +75,18 @@ setMethod("pasteXML",
     } else {}
 
     if(length(node.chld) > 0){
-      node.chld <- paste0(unlist(sapply(node.chld, function(this.node){
-        if(slot(this.node, "name") == ""){
-          this.node.pasted <- paste0(new.indent, pasteXML(this.node, level=level, shine=shine, indent.by=indent.by, tidy=tidy))
-        } else {
-          this.node.pasted <- pasteXML(this.node, level=(level + 1), shine=shine, indent.by=indent.by, tidy=tidy)
-        }
-        return(this.node.pasted)})), collapse="")
+      node.chld <- paste0(unlist(sapply(
+        node.chld,
+        function(this.node){
+          if(slot(this.node, "name") == ""){
+            this.node.pasted <- paste0(new.indent, pasteXML(this.node, level=level, shine=shine, indent.by=indent.by, tidy=tidy))
+          } else {
+            this.node.pasted <- pasteXML(this.node, level=(level + 1), shine=shine, indent.by=indent.by, tidy=tidy)
+          }
+          return(this.node.pasted)
+        },
+        USE.NAMES=FALSE
+      )), collapse="")
       node.empty <- FALSE
     } else {
       node.chld <- NULL
@@ -93,7 +98,7 @@ setMethod("pasteXML",
       node.empty <- FALSE
       if(nchar(node.val) > 0){
         if(isTRUE(tidy)){
-          node.val <- sapply(node.val, xml.tidy)
+          node.val <- sapply(node.val, xml.tidy, USE.NAMES=FALSE)
         } else {}
         node.chld <- paste0(node.chld, paste(node.val, new.node, collapse=" "))
       } else {}
@@ -117,11 +122,11 @@ setMethod("pasteXML",
 
     doc.xml <- ""
     new.node <- ifelse(shine > 0, "\n", "")
-    if(all(sapply(tree.xml, is.character))){
+    if(all(sapply(tree.xml, is.character, USE.NAMES=FALSE))){
       if(any(nchar(unlist(tree.xml)) > 0)) {
         doc.xml <- pasteXMLTag("?xml", attr=tree.xml, child=NULL, empty=TRUE, level=1, allow.empty=FALSE, rename=NULL, shine=min(1, shine), indent.by=indent.by, tidy=tidy)
       } else {}
-    } else if(all(sapply(tree.xml, is.XiMpLe.node))){
+    } else if(all(sapply(tree.xml, is.XiMpLe.node, USE.NAMES=FALSE))){
       doc.xml <- paste0(unlist(sapply(
         tree.xml,
         function(this.decl){
@@ -145,8 +150,13 @@ setMethod("pasteXML",
     }
 
     if(length(tree.nodes) > 0) {
-      doc.nodes <- paste0(unlist(sapply(tree.nodes, function(this.node){
-        return(pasteXML(this.node, level=1, shine=shine, indent.by=indent.by, tidy=tidy))})), collapse="")
+      doc.nodes <- paste0(unlist(sapply(
+        tree.nodes,
+        function(this.node){
+          return(pasteXML(this.node, level=1, shine=shine, indent.by=indent.by, tidy=tidy))
+        },
+        USE.NAMES=FALSE
+      )), collapse="")
     } else {
       doc.nodes <- ""
     }

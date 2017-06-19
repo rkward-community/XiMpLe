@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -79,7 +79,11 @@ setValidity("XiMpLe.node", function(object){
 
   # check content of children
   if(length(obj.children) > 0){
-    child.nodes <- sapply(obj.children, function(this.child){is.XiMpLe.node(this.child)})
+    child.nodes <- sapply(
+      obj.children,
+      is.XiMpLe.node,
+      USE.NAMES=FALSE
+    )
     if(!all(child.nodes)){
       stop(simpleError("Invalid object: All list elements of children must be of class XiMpLe.node!"))
     } else {}

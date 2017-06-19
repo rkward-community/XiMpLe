@@ -1,4 +1,4 @@
-# Copyright 2011-2016 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -56,19 +56,20 @@ setValidity("XiMpLe.doc", function(object){
   obj.dtd.names <- names(obj.dtd)
   # if there are declarations, check that they all have names
   if(length(obj.xml) > 0){
-    if(all(sapply(obj.xml, is.character))){
+    if(all(sapply(obj.xml, is.character, USE.NAMES=FALSE))){
       obj.xml.names <- names(obj.xml)
       if(length(obj.xml) != length(obj.xml.names)){
         stop(simpleError("Invalid object: All xml declarations must have names!"))
       } else {}
-    } else if(all(sapply(obj.xml, is.XiMpLe.node))){
+    } else if(all(sapply(obj.xml, is.XiMpLe.node, USE.NAMES=FALSE))){
       doc.xml <- sapply(
         obj.xml,
         function(this.decl){
           if(!grepl("^\\?", XMLName(this.decl))){
             stop(simpleError(paste0("Invalid object: All xml declarations must be named character values or\n  XiMpLe nodes whose tag names start with \"?\"!")))
           } else {}
-        }
+        },
+        USE.NAMES=FALSE
       )
     } else {
       stop(simpleError(paste0("Invalid object: All xml declarations must be named character values or\n  XiMpLe nodes whose tag names start with \"?\"!")))
@@ -82,7 +83,11 @@ setValidity("XiMpLe.doc", function(object){
 
   # check content of children
   if(length(obj.children) > 0){
-    child.nodes <- sapply(obj.children, function(this.child){is.XiMpLe.node(this.child)})
+    child.nodes <- sapply(
+      obj.children,
+      is.XiMpLe.node,
+      USE.NAMES=FALSE
+    )
     if(!all(child.nodes)){
       stop(simpleError("Invalid object: All list elements of children must be of class XiMpLe.node!"))
     } else {}

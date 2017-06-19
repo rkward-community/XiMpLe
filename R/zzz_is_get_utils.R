@@ -244,8 +244,11 @@ setMethod("XMLValue",
     directValue <- slot(obj, "value")
     children <- XMLChildren(obj)
     if("!value!" %in% names(children)){
-      indirectValue <- sapply(children[names(children) %in% "!value!"], XMLValue)
-      names(indirectValue) <- NULL
+      indirectValue <- sapply(
+        children[names(children) %in% "!value!"],
+        XMLValue,
+        USE.NAMES=FALSE
+      )
     } else {
       indirectValue <- NULL
     }
