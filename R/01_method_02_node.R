@@ -216,17 +216,22 @@ setMethod("node<-",
       if(identical(what, "value")){
         eval(parse(text=paste0(this.node, "@value <- character()")))
         all.node.children <- slot(eval(parse(text=this.node)), "children")
-        child.is.value <- sapply(
+        child.is.value <- unlist(sapply(
           all.node.children,
           function(this.child){
-            if(identical(slot(this.child, "name"), "") & isTRUE(nchar(slot(this.child, "value")) > 0)){
+            if(
+              all(
+                identical(slot(this.child, "name"), ""),
+                isTRUE(nchar(slot(this.child, "value")) > 0)
+              )
+            ){
               return(TRUE)
             } else {
               return(FALSE)
             }
           },
           USE.NAMES=FALSE
-        )
+        ))
         # if we have a mix of pseudo and actual tags, we probably messed up the markup
         if(length(all.node.children) != length(child.is.value)){
           warning("a child node contained text values and other nodes, we probably messed up the markup!")
