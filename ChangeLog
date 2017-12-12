@@ -1,11 +1,9 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.10-2 (2017-12-10)
-unreleased:
-  - this release is under development
+changes in version 0.10-2 (2017-12-12)
 fixed:
-  - node<-: somehow sapply() in R-devel began to return lists where until
-    now vectors were returned, which broke this method
+  - node<-: somehow sapply() in R-devel began to return lists where until now
+    vectors were returned, which broke this method
 changed:
   - consequently use USE.NAMES=FALSE in sapply to reduce memory overhead
 
