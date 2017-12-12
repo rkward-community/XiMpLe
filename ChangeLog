@@ -6,6 +6,7 @@ fixed:
     vectors were returned, which broke this method
 changed:
   - consequently use USE.NAMES=FALSE in sapply to reduce memory overhead
+  - replaced SWeave/PDF vignette with a version in RMarkdown/HTML
 
 changes in version 0.10-1 (2017-04-10)
 fixed:

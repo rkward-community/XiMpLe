@@ -11,6 +11,7 @@
   \subsection{changed}{
     \itemize{
       \item consequently use USE.NAMES=FALSE in sapply to reduce memory overhead
+      \item replaced SWeave/PDF vignette with a version in RMarkdown/HTML
     }
   }
 }
