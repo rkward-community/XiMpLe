@@ -17,4 +17,22 @@ URL: https://reaktanz.de/?c=hacking&s=XiMpLe
 BugReports: https://github.com/rkward-community/XiMpLe/issues
 Authors@R: c(person(given="Meik", family="Michalke", email="meik.michalke@hhu.de", role=c("aut", "cre")))
 Version: 0.10-2
-Date: 2017-12-12
+Date: 2017-12-13
+Collate: 
+    '00_class_01_XiMpLe.node.R'
+    '00_class_02_XiMpLe.doc.R'
+    '00_class_03_XiMpLe.validity.R'
+    '01_method_01_pasteXML.R'
+    'XiMpLe-internal.R'
+    '01_method_02_node.R'
+    '01_method_03_show.R'
+    '01_method_04_validXML.R'
+    '01_method_05_XMLgenerators.R'
+    'XMLNode.R'
+    'XMLTree.R'
+    'XMLValidity.R'
+    'XiMpLe-package.R'
+    'parseXMLTree.R'
+    'pasteXMLTag.R'
+    'zzz_is_get_utils.R'
+RoxygenNote: 6.0.1

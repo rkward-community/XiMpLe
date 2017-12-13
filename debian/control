@@ -2,20 +2,19 @@ Source: r-other-rkward-ximple
 Section: gnu-r
 Priority: optional
 Maintainer: m.eik michalke <meik.michalke@hhu.de>
-Build-Depends-Indep: debhelper (>> 7.0.0), r-base-dev (>= 2.9.0), cdbs
+Build-Depends-Indep: debhelper (>> 9.0.0), r-base-dev (>= 2.9.0), cdbs
 Standards-Version: 3.9.3.1
 Homepage: https://reaktanz.de/?c=hacking&s=XiMpLe
 
 Package: r-other-rkward-ximple
 Architecture: all
 Section: gnu-r
-Depends: r-base-core (>= 3.3.0)
+Depends: r-base-core (>= 3.4.0)
 Description: GNU R package "A Simple XML Tree Parser and Generator"
  .
- Provides a simple XML tree parser/generator. It includes functions to read XML files into R objects, get information out of and into
- nodes, and write R objects back to XML code. It's not as powerful as the 'XML' package and doesn't aim to be, but for simple XML
- handling it could be useful. It was originally developed for the R GUI and IDE 'RKWard' <https://rkward.kde.org>, to make plugin
- development easier.
+ Provides a simple XML tree parser/generator. It includes functions to read XML files into R objects, get information out of and into nodes, and write R objects back to XML code.
+ It's not as powerful as the 'XML' package and doesn't aim to be, but for simple XML handling it could be useful. It was originally developed for the R GUI and IDE 'RKWard'
+ <https://rkward.kde.org>, to make plugin development easier.
 Homepage: https://reaktanz.de/?c=hacking&s=XiMpLe
-Suggests: r-cran-testthat
+Suggests: r-cran-testthat, r-cran-knitr, r-cran-rmarkdown
 Conflicts: r-cran-ximple
