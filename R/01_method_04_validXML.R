@@ -1,4 +1,4 @@
-# Copyright 2015-2016 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2015-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -134,7 +134,8 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
       function(thisPart){
         validXML(obj=thisPart, validity=validity, parent=parent, children=children, attributes=attributes,
         warn=warn, section=section, caseSens=caseSens)
-      }
+      },
+      USE.NAMES=FALSE
     ))))
   } else {}
   # two possibilities:
@@ -226,7 +227,8 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
               caseSens=caseSens
             )
             return(all(thisChildValidity, grandChildValidity))
-          }
+          },
+          USE.NAMES=FALSE
         ))
       } else {
         childValidity <- NULL
@@ -275,7 +277,8 @@ setMethod("validXML", signature(obj="XiMpLe.XML"), function(obj, validity=XMLVal
               caseSens=caseSens
             )
             return(thisChildValidity)
-          }
+          },
+          USE.NAMES=FALSE
         ))
       } else {
         attributeValidityRecursive <- NULL

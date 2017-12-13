@@ -1,5 +1,13 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.10-2 (2017-12-12)
+fixed:
+  - node<-: somehow sapply() in R-devel began to return lists where until now
+    vectors were returned, which broke this method
+changed:
+  - consequently use USE.NAMES=FALSE in sapply to reduce memory overhead
+  - replaced SWeave/PDF vignette with a version in RMarkdown/HTML
+
 changes in version 0.10-1 (2017-04-10)
 fixed:
   - XMLValue() didn't return values in "!value!" special child nodes

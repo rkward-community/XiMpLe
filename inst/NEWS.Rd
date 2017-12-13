@@ -1,6 +1,20 @@
 \name{NEWS}
 \title{News for Package 'XiMpLe'}
 \encoding{UTF-8}
+\section{Changes in XiMpLe version 0.10-2 (2017-12-12)}{
+  \subsection{fixed}{
+    \itemize{
+      \item node<-: somehow \code{sapply()} in R-devel began to return lists where until now
+        vectors were returned, which broke this method
+    }
+  }
+  \subsection{changed}{
+    \itemize{
+      \item consequently use USE.NAMES=FALSE in sapply to reduce memory overhead
+      \item replaced SWeave/PDF vignette with a version in RMarkdown/HTML
+    }
+  }
+}
 \section{Changes in XiMpLe version 0.10-1 (2017-04-10)}{
   \subsection{fixed}{
     \itemize{

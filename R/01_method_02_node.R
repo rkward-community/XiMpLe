@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -101,10 +101,14 @@ setMethod("node",
         # were the wanted attributes found at all?
         if(all(attr.found)){
           # check if they're all equal
-          found.this <- sapply(filter, function(this.attr){
+          found.this <- sapply(
+            filter,
+            function(this.attr){
               results <- unlist(cond.attr[this.attr]) == unlist(this.attrs[this.attr])
               return(results)
-            })
+            },
+            USE.NAMES=FALSE
+          )
           if(all(found.this)){
             filtered.paths <- unique(c(filtered.paths, this.path))
           } else {}
@@ -113,8 +117,13 @@ setMethod("node",
       result.node.path <- filtered.paths
     } else {}
     # create a list with matching node objects
-    result.cond <- sapply(result.node.path, function(this.path){eval(parse(text=this.path))})
-    names(result.cond) <- NULL
+    result.cond <- sapply(
+      result.node.path,
+      function(this.path){
+        eval(parse(text=this.path))
+      },
+      USE.NAMES=FALSE
+    )
 
     if(!is.null(cond.value)){
       stopifnot(length(cond.value) == 1)
@@ -207,13 +216,22 @@ setMethod("node<-",
       if(identical(what, "value")){
         eval(parse(text=paste0(this.node, "@value <- character()")))
         all.node.children <- slot(eval(parse(text=this.node)), "children")
-        child.is.value <- sapply(all.node.children, function(this.child){
-            if(identical(slot(this.child, "name"), "") & isTRUE(nchar(slot(this.child, "value")) > 0)){
+        child.is.value <- unlist(sapply(
+          all.node.children,
+          function(this.child){
+            if(
+              all(
+                identical(slot(this.child, "name"), ""),
+                isTRUE(nchar(slot(this.child, "value")) > 0)
+              )
+            ){
               return(TRUE)
             } else {
               return(FALSE)
             }
-          })
+          },
+          USE.NAMES=FALSE
+        ))
         # if we have a mix of pseudo and actual tags, we probably messed up the markup
         if(length(all.node.children) != length(child.is.value)){
           warning("a child node contained text values and other nodes, we probably messed up the markup!")

@@ -1,4 +1,4 @@
-# Copyright 2016 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2016-2017 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -263,7 +263,8 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
         } else {}
 
         return(genResult) 
-      }
+      },
+      USE.NAMES=FALSE
     )
     if(is.null(dir)){
       return(result)
@@ -297,8 +298,8 @@ setMethod("XMLgenerators", signature(validity="XiMpLe.validity"), function(valid
 # helper function to get all child nodes and attributes out of nested validity objects
 XMLgenRecursion <- function(validity){
   children <- slot(validity, "children")
-  childrenVal <- which(sapply(children, is.XiMpLe.validity))
-  childrenChr <- children[sapply(children, is.character)]
+  childrenVal <- which(sapply(children, is.XiMpLe.validity, USE.NAMES=FALSE))
+  childrenChr <- children[sapply(children, is.character, USE.NAMES=FALSE)]
   childNames <- names(children)
   attrs <- slot(validity, "attrs")
   attrNames <- names(attrs)
