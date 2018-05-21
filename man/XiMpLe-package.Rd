@@ -2,31 +2,36 @@
 % Please edit documentation in R/XiMpLe-package.R
 \docType{package}
 \name{XiMpLe-package}
+\alias{XiMpLe}
 \alias{XiMpLe-package}
-\title{The XiMpLe Package}
+\title{\packageTitle{XiMpLe}}
 \description{
-A Simple XML Tree Parser and Generator.
+\packageDescription{XiMpLe}
 }
 \details{
+The DESCRIPTION file:
 \tabular{ll}{
 Package: \tab XiMpLe\cr
 Type: \tab Package\cr
-Version: \tab 0.10-2\cr
-Date: \tab 2017-12-13\cr
+Version: \tab 0.10-3\cr
+Date: \tab 2018-05-21\cr
 Depends: \tab R (>= 2.9.0)\cr
 Encoding: \tab UTF-8\cr
 License: \tab GPL (>= 3)\cr
 LazyLoad: \tab yes\cr
 URL: \tab https://reaktanz.de/?c=hacking&s=XiMpLe\cr
 }
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://reaktanz.de/?c=hacking&s=XiMpLe}
+  \item Report bugs at \url{https://github.com/rkward-community/XiMpLe/issues}
+}
 
-Provides a simple XML tree parser/generator. It includes functions to read XML files into
-R objects, get information out of and into nodes, and write R objects back to XML code.
-It's not as powerful as the 'XML' package and doesn't aim to be, but for simple XML
-handling it could be useful. It was originally developed for the R GUI and IDE 'RKWard'
-<https://rkward.kde.org>, to make plugin development easier.
 }
 \author{
-Meik Michalke
+\packageAuthor{XiMpLe}
+
+Maintainer: \packageMaintainer{XiMpLe}
 }
-\keyword{package}
