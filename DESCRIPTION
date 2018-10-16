@@ -1,12 +1,6 @@
 Package: XiMpLe
 Type: Package
 Title: A Simple XML Tree Parser and Generator
-Author: Meik Michalke [aut, cre]
-Maintainer: Meik Michalke <meik.michalke@hhu.de>
-Depends: R (>= 2.9.0)
-Imports: methods
-Suggests: testthat,knitr,rmarkdown
-VignetteBuilder: knitr
 Description: Provides a simple XML tree parser/generator. It includes
         functions to read XML files into R objects, get information out
         of and into nodes, and write R objects back to XML code. It's
@@ -14,15 +8,21 @@ Description: Provides a simple XML tree parser/generator. It includes
         for simple XML handling it could be useful. It was originally
         developed for the R GUI and IDE 'RKWard'
         <https://rkward.kde.org>, to make plugin development easier.
+Author: Meik Michalke [aut, cre]
+Maintainer: Meik Michalke <meik.michalke@hhu.de>
+Depends: R (>= 2.9.0)
+Imports: methods
+Suggests: testthat,knitr,rmarkdown
+VignetteBuilder: knitr
+URL: https://reaktanz.de/?c=hacking&s=XiMpLe
+BugReports: https://github.com/rkward-community/XiMpLe/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyLoad: yes
-URL: https://reaktanz.de/?c=hacking&s=XiMpLe
-BugReports: https://github.com/rkward-community/XiMpLe/issues
 Authors@R: c(person(given="Meik", family="Michalke",
         email="meik.michalke@hhu.de", role=c("aut", "cre")))
 Version: 0.10-3
-Date: 2018-05-21
+Date: 2018-10-15
 Collate: 
     '00_class_01_XiMpLe.node.R'
     '00_class_02_XiMpLe.doc.R'
@@ -40,4 +40,4 @@ Collate:
     'parseXMLTree.R'
     'pasteXMLTag.R'
     'zzz_is_get_utils.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

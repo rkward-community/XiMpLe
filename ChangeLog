@@ -1,10 +1,13 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.10-3 (2018-05-21)
+changes in version 0.10-3 (2018-10-15)
 unreleased:
   - this release is under developlemt
 fixed:
   - *-package.R/.Rd: use macros like \packageDescription{}
+added:
+  - pasteXML(): new argument "tidy.omit" to define node names where "tidy"
+    should not replace characters
 
 changes in version 0.10-2 (2017-12-12)
 fixed:
