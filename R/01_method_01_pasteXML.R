@@ -79,6 +79,9 @@ setMethod("pasteXML",
       node.chld <- paste0(unlist(sapply(
         node.chld,
         function(this.node){
+          if(slot(this.node, "name") %in% tidy.omit){
+            tidy <- FALSE
+          } else {}
           if(slot(this.node, "name") == ""){
             this.node.pasted <- paste0(new.indent, pasteXML(this.node, level=level, shine=shine, indent.by=indent.by, tidy=tidy, tidy.omit=tidy.omit))
           } else {

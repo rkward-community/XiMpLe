@@ -7,7 +7,7 @@ fixed:
   - *-package.R/.Rd: use macros like \packageDescription{}
 added:
   - pasteXML(): new argument "tidy.omit" to define node names where "tidy"
-    should not replace characters
+    should not replace characters; by default <![CDATA[ ]]> nodes are omitted
 
 changes in version 0.10-2 (2017-12-12)
 fixed:
