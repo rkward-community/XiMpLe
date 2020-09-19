@@ -12,12 +12,22 @@
 \usage{
 pasteXML(obj, ...)
 
-\S4method{pasteXML}{XiMpLe.node}(obj, level = 1, shine = 1,
-  indent.by = "\\t", tidy = TRUE, tidy.omit = c("![CDATA[",
-  "*![CDATA["))
+\S4method{pasteXML}{XiMpLe.node}(
+  obj,
+  level = 1,
+  shine = 1,
+  indent.by = "\\t",
+  tidy = TRUE,
+  tidy.omit = c("![CDATA[", "*![CDATA[")
+)
 
-\S4method{pasteXML}{XiMpLe.doc}(obj, shine = 1, indent.by = "\\t",
-  tidy = TRUE, tidy.omit = c("![CDATA[", "*![CDATA["))
+\S4method{pasteXML}{XiMpLe.doc}(
+  obj,
+  shine = 1,
+  indent.by = "\\t",
+  tidy = TRUE,
+  tidy.omit = c("![CDATA[", "*![CDATA[")
+)
 }
 \arguments{
 \item{obj}{An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}.}

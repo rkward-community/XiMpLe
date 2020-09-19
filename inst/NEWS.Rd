@@ -1,6 +1,20 @@
 \name{NEWS}
 \title{News for Package 'XiMpLe'}
 \encoding{UTF-8}
+\section{Changes in XiMpLe version 0.10-3 (2020-09-19)}{
+  \subsection{fixed}{
+    \itemize{
+      \item *-package.R/.Rd: use macros like \\packageDescription\{\}
+      \item \code{pasteXMLTag()}: fixed warning when tag contains only whitespace chars
+    }
+  }
+  \subsection{added}{
+    \itemize{
+      \item \code{pasteXML()}: new argument \code{"tidy.omit"} to define node names where \code{"tidy"}
+        should not replace characters; by default <![CDATA[ ]]> nodes are omitted
+    }
+  }
+}
 \section{Changes in XiMpLe version 0.10-2 (2017-12-12)}{
   \subsection{fixed}{
     \itemize{

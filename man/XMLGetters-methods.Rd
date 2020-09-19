@@ -134,11 +134,9 @@ XMLScan(obj, name) <- value
 
 XMLScanDeep(obj, find = NULL, search = "attributes")
 
-\S4method{XMLScanDeep}{XiMpLe.node}(obj, find = NULL,
-  search = "attributes")
+\S4method{XMLScanDeep}{XiMpLe.node}(obj, find = NULL, search = "attributes")
 
-\S4method{XMLScanDeep}{XiMpLe.doc}(obj, find = NULL,
-  search = "attributes")
+\S4method{XMLScanDeep}{XiMpLe.doc}(obj, find = NULL, search = "attributes")
 }
 \arguments{
 \item{obj}{An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}}

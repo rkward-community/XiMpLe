@@ -9,13 +9,27 @@
 \alias{validXML,XiMpLe.XML-method}
 \title{Validate S4 objects of XiMpLe XML classes}
 \usage{
-validXML(obj, validity = XMLValidity(), parent = NULL,
-  children = TRUE, attributes = TRUE, warn = FALSE,
-  section = parent, caseSens = TRUE)
+validXML(
+  obj,
+  validity = XMLValidity(),
+  parent = NULL,
+  children = TRUE,
+  attributes = TRUE,
+  warn = FALSE,
+  section = parent,
+  caseSens = TRUE
+)
 
-\S4method{validXML}{XiMpLe.XML}(obj, validity = XMLValidity(),
-  parent = NULL, children = TRUE, attributes = TRUE, warn = FALSE,
-  section = parent, caseSens = TRUE)
+\S4method{validXML}{XiMpLe.XML}(
+  obj,
+  validity = XMLValidity(),
+  parent = NULL,
+  children = TRUE,
+  attributes = TRUE,
+  warn = FALSE,
+  section = parent,
+  caseSens = TRUE
+)
 }
 \arguments{
 \item{obj}{An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL},
