@@ -7,7 +7,7 @@ write R objects back to XML code. It's not as powerful as the 'XML' package and 
 but for simple XML handling it could be useful.
 
 It was originally developed for [RKWard](https://rkward.kde.org), a powerful GUI and IDE for
-[R](https://r-project.org), to make plugin development easier. But it's a generic package and does
+[R](https://www.r-project.org), to make plugin development easier. But it's a generic package and does
 not depend on RKWard in any way.
 
 ## Installation
