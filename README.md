@@ -15,7 +15,7 @@ not depend on RKWard in any way.
 ### Installation via R
 
 There's a stable version on [CRAN](https://cran.r-project.org), so you can install it the usual R way. A probably
-more recent development version can be found in [RKWard's package repository](https://files.kde.org/rkward/R):
+more recent development version can be found in [RKWard's package repository](https://files.kde.org/rkward/R/):
 
 ```r
 install.packages("XiMpLe", repos="https://files.kde.org/rkward/R/")
