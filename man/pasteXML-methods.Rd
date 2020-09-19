@@ -8,16 +8,26 @@
 \alias{pasteXMLNode}
 \alias{pasteXMLTree}
 \alias{pasteXML,XiMpLe.node-method}
-\alias{pasteXML,XiMpLe.doc-method}
 \title{Paste methods for XiMpLe XML objects}
 \usage{
 pasteXML(obj, ...)
 
-\S4method{pasteXML}{XiMpLe.node}(obj, level = 1, shine = 1,
-  indent.by = "\\t", tidy = TRUE)
+\S4method{pasteXML}{XiMpLe.node}(
+  obj,
+  level = 1,
+  shine = 1,
+  indent.by = "\\t",
+  tidy = TRUE,
+  tidy.omit = c("![CDATA[", "*![CDATA[")
+)
 
-\S4method{pasteXML}{XiMpLe.doc}(obj, shine = 1, indent.by = "\\t",
-  tidy = TRUE)
+\S4method{pasteXML}{XiMpLe.doc}(
+  obj,
+  shine = 1,
+  indent.by = "\\t",
+  tidy = TRUE,
+  tidy.omit = c("![CDATA[", "*![CDATA[")
+)
 }
 \arguments{
 \item{obj}{An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}.}
@@ -40,6 +50,8 @@ pasteXML(obj, ...)
 \item{tidy}{Logical,
       if \code{TRUE} the special characters "<" and ">" will be replaced with the entities
 "&lt;" and "gt;" in attributes and text values.}
+
+\item{tidy.omit}{A character vector with node names that should be excluded from \code{tidy}.}
 }
 \description{
 These methods can be used to paste objects if class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}

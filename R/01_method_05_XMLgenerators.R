@@ -16,7 +16,7 @@
 # along with XiMpLe.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#' Generate XML generator functions from XiMpLe.valisity object
+#' Generate XML generator functions from XiMpLe.validity object
 #' 
 #' Takes an object of class \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}}
 #' and turns it into a character vector of generator functions for each XML node that

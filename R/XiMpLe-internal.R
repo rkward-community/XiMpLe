@@ -1,4 +1,4 @@
-# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2020 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -150,16 +150,17 @@ XML.single.tags <- function(tree, drop=NULL){
 # takes a string, determines the minimum number of grouped \t strings,
 # and adjusts it globally to the given level
 setMinIndent <- function(tag, level=1, indent.by="\t"){
-  currentMinIndent <- min(nchar(unlist(strsplit(tag, "[^\t ]+"), use.names=FALSE)))
+  currentMinIndent <- nchar(unlist(strsplit(tag, "[^\t ]+"), use.names=FALSE))
+  currentMinIndent <- ifelse(length(currentMinIndent) > 0L, min(currentMinIndent), 0)
   indentDiff <- currentMinIndent - level
   tagParts <- unlist(strsplit(tag, "\n"))
   # if currentMinIndent is greater than level, reduce indentation
-  if(indentDiff > 0){
+  if(indentDiff > 0L){
     tagParts <- gsub(paste0("(^|\n)([\t ]){", indentDiff+1, "}"), "\\1", tagParts, perl=TRUE)
-  } else if(indentDiff < 0){
+  } else if(indentDiff < 0L){
     tagParts <- paste0(indent(level=level, by=indent.by), tagParts)
   } else {}
-  
+
   return(paste0(tagParts, collapse="\n"))
 } ## end function setMinIndent()
 

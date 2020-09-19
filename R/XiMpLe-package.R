@@ -1,10 +1,11 @@
-#' A Simple XML Tree Parser and Generator.
+#' \packageDescription{XiMpLe}
 #'
+#' The DESCRIPTION file:
 #' \tabular{ll}{
 #' Package: \tab XiMpLe\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.10-2\cr
-#' Date: \tab 2017-12-13\cr
+#' Version: \tab 0.10-3\cr
+#' Date: \tab 2020-09-19\cr
 #' Depends: \tab R (>= 2.9.0)\cr
 #' Encoding: \tab UTF-8\cr
 #' License: \tab GPL (>= 3)\cr
@@ -12,16 +13,10 @@
 #' URL: \tab https://reaktanz.de/?c=hacking&s=XiMpLe\cr
 #' }
 #'
-#' Provides a simple XML tree parser/generator. It includes functions to read XML files into
-#' R objects, get information out of and into nodes, and write R objects back to XML code.
-#' It's not as powerful as the 'XML' package and doesn't aim to be, but for simple XML
-#' handling it could be useful. It was originally developed for the R GUI and IDE 'RKWard'
-#' <https://rkward.kde.org>, to make plugin development easier.
+#' @title
+#' \packageTitle{XiMpLe}
+#' @author
+#' \packageAuthor{XiMpLe}
 #'
-#' @aliases XiMpLe-package
-#' @name XiMpLe-package
-#' @docType package
-#' @title The XiMpLe Package
-#' @author Meik Michalke
-#' @keywords package
-NULL
+#' Maintainer: \packageMaintainer{XiMpLe}
+"_PACKAGE"

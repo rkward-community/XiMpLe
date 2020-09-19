@@ -5,17 +5,33 @@
 \alias{XMLgenerators}
 \alias{XMLgenerators,-methods}
 \alias{XMLgenerators,XiMpLe.validity-method}
-\alias{XMLgenerators,XiMpLe.validity-method}
-\title{Generate XML generator functions from XiMpLe.valisity object}
+\title{Generate XML generator functions from XiMpLe.validity object}
 \usage{
-XMLgenerators(validity, prefix = "XML", checkValidity = TRUE,
-  indent.by = "\\t", roxygenDocs = FALSE, valParam = "validity",
-  replaceChar = "_", dir = NULL, overwrite = FALSE, oneFile = NULL)
+XMLgenerators(
+  validity,
+  prefix = "XML",
+  checkValidity = TRUE,
+  indent.by = "\\t",
+  roxygenDocs = FALSE,
+  valParam = "validity",
+  replaceChar = "_",
+  dir = NULL,
+  overwrite = FALSE,
+  oneFile = NULL
+)
 
-\S4method{XMLgenerators}{XiMpLe.validity}(validity, prefix = "XML",
-  checkValidity = TRUE, indent.by = "\\t", roxygenDocs = FALSE,
-  valParam = "validity", replaceChar = "_", dir = NULL,
-  overwrite = FALSE, oneFile = NULL)
+\S4method{XMLgenerators}{XiMpLe.validity}(
+  validity,
+  prefix = "XML",
+  checkValidity = TRUE,
+  indent.by = "\\t",
+  roxygenDocs = FALSE,
+  valParam = "validity",
+  replaceChar = "_",
+  dir = NULL,
+  overwrite = FALSE,
+  oneFile = NULL
+)
 }
 \arguments{
 \item{validity}{An dobject of class \code{XiMpLe.validity}.}

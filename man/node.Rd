@@ -15,17 +15,41 @@
 \alias{node<-,XiMpLe.node-method}
 \title{Extract/manipulate a node or parts of it from an XML tree}
 \usage{
-node(obj, node = list(), what = NULL, cond.attr = NULL,
-  cond.value = NULL, element = NULL)
+node(
+  obj,
+  node = list(),
+  what = NULL,
+  cond.attr = NULL,
+  cond.value = NULL,
+  element = NULL
+)
 
-\S4method{node}{XiMpLe.XML}(obj, node = list(), what = NULL,
-  cond.attr = NULL, cond.value = NULL, element = NULL)
+\S4method{node}{XiMpLe.XML}(
+  obj,
+  node = list(),
+  what = NULL,
+  cond.attr = NULL,
+  cond.value = NULL,
+  element = NULL
+)
 
-node(obj, node = list(), what = NULL, cond.attr = NULL,
-  cond.value = NULL, element = NULL) <- value
+node(
+  obj,
+  node = list(),
+  what = NULL,
+  cond.attr = NULL,
+  cond.value = NULL,
+  element = NULL
+) <- value
 
-\S4method{node}{XiMpLe.XML}(obj, node = list(), what = NULL,
-  cond.attr = NULL, cond.value = NULL, element = NULL) <- value
+\S4method{node}{XiMpLe.XML}(
+  obj,
+  node = list(),
+  what = NULL,
+  cond.attr = NULL,
+  cond.value = NULL,
+  element = NULL
+) <- value
 }
 \arguments{
 \item{obj}{An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} or

@@ -4,8 +4,14 @@
 \alias{XMLNode}
 \title{Constructor function for XiMpLe.node objects}
 \usage{
-XMLNode(name, ..., attrs = NULL, namespace = "",
-  namespaceDefinitions = NULL, .children = list(...))
+XMLNode(
+  name,
+  ...,
+  attrs = NULL,
+  namespace = "",
+  namespaceDefinitions = NULL,
+  .children = list(...)
+)
 }
 \arguments{
 \item{name}{Character string, the tag name.}

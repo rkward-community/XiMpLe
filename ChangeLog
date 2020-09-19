@@ -1,5 +1,13 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.10-3 (2020-09-19)
+fixed:
+  - *-package.R/.Rd: use macros like \packageDescription{}
+  - pasteXMLTag(): fixed warning when tag contains only whitespace chars
+added:
+  - pasteXML(): new argument "tidy.omit" to define node names where "tidy"
+    should not replace characters; by default <![CDATA[ ]]> nodes are omitted
+
 changes in version 0.10-2 (2017-12-12)
 fixed:
   - node<-: somehow sapply() in R-devel began to return lists where until now

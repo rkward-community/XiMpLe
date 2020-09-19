@@ -18,12 +18,10 @@
 \alias{XMLChildren,XiMpLe.node-method}
 \alias{XMLChildren,-methods}
 \alias{XMLChildren,XiMpLe.doc-method}
-\alias{XMLChildren,-methods}
 \alias{XMLChildren<-}
 \alias{XMLChildren<-,XiMpLe.node-method}
 \alias{XMLChildren<-,-methods}
 \alias{XMLChildren<-,XiMpLe.doc-method}
-\alias{XMLChildren<-,-methods}
 \alias{XMLValue}
 \alias{XMLValue,XiMpLe.node-method}
 \alias{XMLValue,-methods}

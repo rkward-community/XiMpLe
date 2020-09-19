@@ -1,4 +1,4 @@
-# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2018 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -54,12 +54,13 @@ setGeneric("pasteXML", function(obj, ...){
 #' @param indent.by A charachter string defining how indentation should be done. Defaults to tab.
 #' @param tidy Logical, if \code{TRUE} the special characters "<" and ">" will be replaced with the entities
 #'    "&lt;" and "gt;" in attributes and text values.
+#' @param tidy.omit A character vector with node names that should be excluded from \code{tidy}.
 #' @rdname pasteXML-methods
 #' @aliases
 #'    pasteXML,XiMpLe.node-method
 setMethod("pasteXML",
   signature=signature(obj="XiMpLe.node"),
-  function(obj, level=1, shine=1, indent.by="\t", tidy=TRUE){
+  function(obj, level=1, shine=1, indent.by="\t", tidy=TRUE, tidy.omit=c("![CDATA[", "*![CDATA[")){
 
     new.indent <- ifelse(shine > 0, indent(level+1, by=indent.by), "")
     new.node   <- ifelse(shine > 0, "\n", "")
@@ -78,10 +79,13 @@ setMethod("pasteXML",
       node.chld <- paste0(unlist(sapply(
         node.chld,
         function(this.node){
+          if(slot(this.node, "name") %in% tidy.omit){
+            tidy <- FALSE
+          } else {}
           if(slot(this.node, "name") == ""){
-            this.node.pasted <- paste0(new.indent, pasteXML(this.node, level=level, shine=shine, indent.by=indent.by, tidy=tidy))
+            this.node.pasted <- paste0(new.indent, pasteXML(this.node, level=level, shine=shine, indent.by=indent.by, tidy=tidy, tidy.omit=tidy.omit))
           } else {
-            this.node.pasted <- pasteXML(this.node, level=(level + 1), shine=shine, indent.by=indent.by, tidy=tidy)
+            this.node.pasted <- pasteXML(this.node, level=(level + 1), shine=shine, indent.by=indent.by, tidy=tidy, tidy.omit=tidy.omit)
           }
           return(this.node.pasted)
         },
@@ -97,7 +101,7 @@ setMethod("pasteXML",
     if(length(node.val) > 0){
       node.empty <- FALSE
       if(nchar(node.val) > 0){
-        if(isTRUE(tidy)){
+        if(all(isTRUE(tidy), !node.name %in% tidy.omit)){
           node.val <- sapply(node.val, xml.tidy, USE.NAMES=FALSE)
         } else {}
         node.chld <- paste0(node.chld, paste(node.val, new.node, collapse=" "))
@@ -113,7 +117,7 @@ setMethod("pasteXML",
 #' @rdname pasteXML-methods
 setMethod("pasteXML",
   signature=signature(obj="XiMpLe.doc"),
-  function(obj, shine=1, indent.by="\t", tidy=TRUE){
+  function(obj, shine=1, indent.by="\t", tidy=TRUE, tidy.omit=c("![CDATA[", "*![CDATA[")){
 
     filename <- slot(obj, "file")
     tree.xml <- slot(obj, "xml")
@@ -130,7 +134,7 @@ setMethod("pasteXML",
       doc.xml <- paste0(unlist(sapply(
         tree.xml,
         function(this.decl){
-          pasteXML(this.decl, level=1, shine=shine, indent.by=indent.by, tidy=tidy)
+          pasteXML(this.decl, level=1, shine=shine, indent.by=indent.by, tidy=tidy, tidy.omit=tidy.omit)
         }
       )), collapse="")
     } else {}
@@ -153,7 +157,7 @@ setMethod("pasteXML",
       doc.nodes <- paste0(unlist(sapply(
         tree.nodes,
         function(this.node){
-          return(pasteXML(this.node, level=1, shine=shine, indent.by=indent.by, tidy=tidy))
+          return(pasteXML(this.node, level=1, shine=shine, indent.by=indent.by, tidy=tidy, tidy.omit=tidy.omit))
         },
         USE.NAMES=FALSE
       )), collapse="")
@@ -170,10 +174,12 @@ setMethod("pasteXML",
 # for compatibility reasons, deploy wrapper functions
 #' @export
 pasteXMLNode <- function(node, level=1, shine=1, indent.by="\t", tidy=TRUE){
+  .Deprecated("pasteXML")
   pasteXML(node, level=level, shine=shine, indent.by=indent.by, tidy=tidy)
 }
 
 #' @export
 pasteXMLTree <- function(obj, shine=1, indent.by="\t", tidy=TRUE){
+  .Deprecated("pasteXML")
   pasteXML(obj, shine=shine, indent.by=indent.by, tidy=tidy)
 }

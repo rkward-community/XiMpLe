@@ -4,9 +4,18 @@
 \alias{pasteXMLTag}
 \title{Write an XML tag}
 \usage{
-pasteXMLTag(tag, attr = NULL, child = NULL, empty = TRUE, level = 1,
-  allow.empty = FALSE, rename = NULL, shine = 2, indent.by = "\\t",
-  tidy = TRUE)
+pasteXMLTag(
+  tag,
+  attr = NULL,
+  child = NULL,
+  empty = TRUE,
+  level = 1,
+  allow.empty = FALSE,
+  rename = NULL,
+  shine = 2,
+  indent.by = "\\t",
+  tidy = TRUE
+)
 }
 \arguments{
 \item{tag}{Character string, name of the XML tag.}

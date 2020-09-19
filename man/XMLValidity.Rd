@@ -4,8 +4,14 @@
 \alias{XMLValidity}
 \title{Constructor function for XiMpLe.validity objects}
 \usage{
-XMLValidity(children = NULL, attrs = NULL, allChildren = NULL,
-  allAttrs = NULL, empty = NULL, ignore = NULL)
+XMLValidity(
+  children = NULL,
+  attrs = NULL,
+  allChildren = NULL,
+  allAttrs = NULL,
+  empty = NULL,
+  ignore = NULL
+)
 }
 \arguments{
 \item{children}{Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
