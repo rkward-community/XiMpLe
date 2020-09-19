@@ -1,5 +1,9 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.10-4 (2020-09-19)
+unreleased:
+  - this release is under development
+
 changes in version 0.10-3 (2020-09-19)
 fixed:
   - *-package.R/.Rd: use macros like \packageDescription{}
