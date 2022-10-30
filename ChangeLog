@@ -1,8 +1,12 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.10-4 (2020-09-19)
+changes in version 0.10-4 (2022-10-30)
 unreleased:
   - this release is under development
+changed:
+  - XMLNode(): you can now define attributes in the dots argument as well
+    by using a named character string; the attrs argument can still be
+    used as before, it just doesn't have a NULL default value any more
 
 changes in version 0.10-3 (2020-09-19)
 fixed:

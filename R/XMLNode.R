@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -22,14 +22,19 @@
 #' 
 #' To generate a CDATA node, set \code{name="![CDATA["}, to create a comment, set \code{name="!--"}.
 #' 
+#' Note that all defined attributes will silently be dropped if a text node, CDATA node or comment is generated.
+#' 
 #' @param name Character string, the tag name.
 #' @param ... Optional children for the tag. Must be either objects of class XiMpLe.node or character strings,
-#'    which are treated as simple text values. If this is empty, the tag will be treated as an empty tag. To
-#'    force a closing tag, supply an empty string, i.e. \code{""}.
-#' @param attrs An optional named list of attributes.
+#'    which are treated as attributes if they are named, and as simple text values otherwise.
+#'    If this is empty, the tag will be treated as an empty tag. To force a closing tag, supply an empty
+#'    string, i.e. \code{""}.
+#' @param attrs An optional named list of attributes. Will be appended to attributes already defined in
+#'    the \code{...} argument.
 #' @param namespace Currently ignored.
 #' @param namespaceDefinitions Currently ignored.
 #' @param .children Alternative way of specifying children, if you have them already as a list.
+#'    This argument completely replaces values defined in the \code{...} argument.
 #' @return An object of class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.
 #' @seealso
 #'    \code{\link[XiMpLe:XMLTree]{XMLTree}},
@@ -37,42 +42,97 @@
 #' @export
 #' @rdname XMLNode
 #' @examples
-#' sample.XML.node <- XMLNode("a",
-#'   attrs=list(href="http://example.com", target="_blank"),
-#'   .children="klick here!")
+#' (sample.XML.node <- XMLNode("a",
+#'   attrs=list(
+#'     href="http://example.com",
+#'     target="_blank"
+#'   ),
+#'   .children="klick here!"
+#' ))
+#' # This is equivalent
+#' (sample.XML.node2 <- XMLNode("a",
+#'   "klick here!",
+#'   href="http://example.com",
+#'   target="_blank"
+#' ))
+#' # As is this
+#' (sample.XML.node3 <- XMLNode("a",
+#'   .children=list(
+#'     "klick here!",
+#'     href="http://example.com",
+#'     target="_blank"
+#'   )
+#' ))
 
-XMLNode <- function(name, ..., attrs=NULL, namespace="", namespaceDefinitions=NULL, .children=list(...)){
+XMLNode <- function(
+    name,
+    ...,
+    attrs,
+    namespace="",
+    namespaceDefinitions=NULL,
+    .children=list(...)
+){
+    # split dots argument into named/unnamed character strings and the rest
+    if(length(.children) > 0){
+        dots_is_char <- sapply(
+            .children,
+            function(this_chld){
+                if(length(this_chld) > 1){
+                    stop(simpleError("child nodes must not have length > 1!"))
+                } else{}
+                any(is.character(this_chld), is.numeric(this_chld))
+            },
+            USE.NAMES=FALSE
+        )
+        # force numerics into character
+        .children[dots_is_char] <- as.character(.children[dots_is_char])
+        dots_attrs <- lapply(.children[dots_is_char & !names(.children) == ""], as.character)
+        # remove args from children list
+        .children[dots_is_char & !names(.children) == ""] <- NULL
+    } else {
+        dots_attrs <- list()
+    }
 
-  all.children <- list()
+    if(missing(attrs)){
+        attrs <- dots_attrs
+    } else {
+        attrs <- append(dots_attrs, as.list(attrs))
+    }
 
-  # text node?
-  if(identical(name, "") &
-      (all(unlist(lapply(.children, is.character)))) |
-      all(unlist(lapply(.children, is.numeric)))){
-    value <- paste(..., sep=" ")
-  } else if(identical(.children, list(""))){
-    value <- ""
-  } else {
-    # remove NULLs
-    .children <- .children[unlist(lapply(.children, length) != 0)]
-    # check for text values
-    all.children <- sapply(child.list(.children), function(this.child){
-      if(is.character(this.child) | is.numeric(this.child)){
-        this.child <- new("XiMpLe.node",
-            name="",
-            value=as.character(this.child)
-          )
-      } else {}
-      return(this.child)
-    })
-    value <- character()
-  }
+    all_children <- list()
 
-  newNode <- new("XiMpLe.node",
-    name=name,
-    attributes=as.list(attrs),
-    children=all.children,
-    value=value)
+    # text node?
+    if(
+        identical(name, "") &
+        (all(sapply(.children, is.character, USE.NAMES=FALSE)))
+    ){
+        value <- paste(.children, sep=" ")
+    } else if(identical(.children, list(""))){
+        value <- ""
+    } else {
+        # remove NULLs
+        .children <- .children[sapply(.children, length, USE.NAMES=FALSE) != 0]
+        # check for text values
+        all_children <- lapply(child.list(.children), function(this_chld){
+                if(is.character(this_chld)){
+                    this_chld <- new("XiMpLe.node",
+                        name="",
+                        value=this_chld
+                    )
+                } else {}
+                return(this_chld)
+            }
+        )
+        names(all_children) <- NULL
+        value <- character()
+    }
 
-  return(newNode)
+    newNode <- new("XiMpLe.node",
+        name=name,
+        attributes=attrs,
+        children=all_children,
+        value=value
+    )
+
+    return(newNode)
 }
