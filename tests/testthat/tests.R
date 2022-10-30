@@ -19,8 +19,17 @@ test_that("generate closed XML node", {
 test_that("generate closed XML node with attributes", {
   # re-create object sampleXMLnode.attrs
   load("sample_XML_node_attrs.RData")
+  # three ways to the same result
   expect_that(
     XMLNode("empty", "test", attrs=list(foo="bar")),
+    equals(sampleXMLnode.attrs)
+  )
+  expect_that(
+    XMLNode("empty", "test", foo="bar"),
+    equals(sampleXMLnode.attrs)
+  )
+  expect_that(
+    XMLNode("empty", .children=list("test", foo="bar")),
     equals(sampleXMLnode.attrs)
   )
 })
