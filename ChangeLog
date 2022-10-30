@@ -7,6 +7,9 @@ changed:
   - XMLNode(): you can now define attributes in the dots argument as well
     by using a named character string; the attrs argument can still be
     used as before, it just doesn't have a NULL default value any more
+added:
+  - gen_tag_functions(): generate shortcut functions to create XML tags
+    with less typing and better readability of your code
 
 changes in version 0.10-3 (2020-09-19)
 fixed:

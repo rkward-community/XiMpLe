@@ -34,6 +34,8 @@ test_that("generate closed XML node with attributes", {
   )
 })
 
+# TODO: test for gen_tag_functions()
+
 test_that("generate nested XML tag tree", {
   # re-create object sampleXMLTree
   load("sample_XML_tree.RData")
