@@ -37,6 +37,7 @@ Collate:
     'XMLTree.R'
     'XMLValidity.R'
     'XiMpLe-package.R'
+    'gen_tag_functions.R'
     'parseXMLTree.R'
     'pasteXMLTag.R'
     'zzz_is_get_utils.R'
