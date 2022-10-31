@@ -88,7 +88,9 @@ XMLNode <- function(
         .children[dots_is_char] <- as.character(.children[dots_is_char])
         dots_attrs <- lapply(.children[dots_is_char & !names(.children) == ""], as.character)
         # remove args from children list
-        .children[dots_is_char & !names(.children) == ""] <- NULL
+        .children <- .children[!(dots_is_char & !names(.children) == "")]
+        # strip all names, might still be empty strings and cause problems in later comparisons
+        names(.children) <- NULL
     } else {
         dots_attrs <- list()
     }
