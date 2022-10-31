@@ -9,7 +9,7 @@
 #' Package: \tab XiMpLe\cr
 #' Type: \tab Package\cr
 #' Version: \tab 0.10-4\cr
-#' Date: \tab 2022-10-30\cr
+#' Date: \tab 2022-10-31\cr
 #' Depends: \tab R (>= 2.9.0)\cr
 #' Encoding: \tab UTF-8\cr
 #' License: \tab GPL (>= 3)\cr

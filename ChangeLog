@@ -1,6 +1,6 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.10-4 (2022-10-30)
+changes in version 0.10-4 (2022-10-31)
 unreleased:
   - this release is under development
 changed:
@@ -10,6 +10,8 @@ changed:
 added:
   - gen_tag_functions(): generate shortcut functions to create XML tags
     with less typing and better readability of your code
+  - provide_file(): function to keep referenced files up to date in a project
+    directory
 
 changes in version 0.10-3 (2020-09-19)
 fixed:

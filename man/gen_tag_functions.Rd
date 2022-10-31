@@ -4,7 +4,12 @@
 \alias{gen_tag_functions}
 \title{Function generator to simplify generation of XiMpLe.node objects}
 \usage{
-gen_tag_functions(tags, func_names = paste0(tags, "_"), envir = .GlobalEnv)
+gen_tag_functions(
+  tags,
+  func_names = paste0(tags, "_"),
+  envir = .GlobalEnv,
+  replace = FALSE
+)
 }
 \arguments{
 \item{tags}{A character vector defining the tags the generated functions should produce.}
@@ -13,6 +18,12 @@ gen_tag_functions(tags, func_names = paste0(tags, "_"), envir = .GlobalEnv)
 the functions to generate.}
 
 \item{envir}{The environment where all generated functions should appear.}
+
+\item{replace}{Logical, whether objects by the same name already present in \code{envir}
+should be preserved or replaced/overwritten.}
+}
+\value{
+As many functions as specified by \code{tags}/\code{func_names}.
 }
 \description{
 Takes a vector of character strings and turns them into functions in the defined environment
