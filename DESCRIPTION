@@ -21,7 +21,7 @@ LazyLoad: yes
 Authors@R: c(person(given="Meik", family="Michalke", email="meik.michalke@hhu.de",
           role=c("aut", "cre")))
 Version: 0.10-4
-Date: 2022-10-30
+Date: 2022-10-31
 RoxygenNote: 7.2.0
 Collate: 
     '00_class_01_XiMpLe.node.R'
@@ -40,4 +40,5 @@ Collate:
     'gen_tag_functions.R'
     'parseXMLTree.R'
     'pasteXMLTag.R'
+    'provide_file.R'
     'zzz_is_get_utils.R'
