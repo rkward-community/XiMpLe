@@ -29,10 +29,11 @@
 #' @param func_names A character vector the same length as \code{tags}, defining the names of
 #'    the functions to generate.
 #' @param envir The environment where all generated functions should appear.
-#'
+#' @param replace Logical, whether objects by the same name already present in \code{envir}
+#'    should be preserved or replaced/overwritten.
+#' @return As many functions as specified by \code{tags}/\code{func_names}.
 #' @seealso
 #'    \code{\link[XiMpLe:XMLNode]{XMLNode}},
-#' 
 #' @export
 #' @examples
 #' # Say we would like to generate an HTML website and want to use
@@ -52,7 +53,8 @@
 gen_tag_functions <- function(
     tags,
     func_names=paste0(tags, "_"),
-    envir=.GlobalEnv
+    envir=.GlobalEnv,
+    replace=FALSE
 ){
     tags <- unique(tags)
     func_names <- unique(func_names)
@@ -60,13 +62,23 @@ gen_tag_functions <- function(
         stop(simpleError("'tags' must be the same length as 'func_names' (unique values)!"))
     } else {}
 
+    objects_in_env <- ls(envir=envir)
+
     for(this_tag_n in seq_along(tags)){
-        # TODO: check if object exists, add overwrite option?
-        eval(
-            str2lang(
-                paste0(func_names[this_tag_n], " <- function(...){XMLNode(name=\"", tags[this_tag_n], "\", ...)}")
-            ),
-            envir=envir
-        )
+        if(any(!func_names[this_tag_n] %in% objects_in_env, isTRUE(replace))){
+            if(!func_names[this_tag_n] %in% objects_in_env){
+                message(paste0("Creating new function: \"", func_names[this_tag_n], "\""))
+            } else {
+                message(paste0("Replacing existing object with function: \"", func_names[this_tag_n], "\""))
+            }
+            eval(
+                str2lang(
+                    paste0(func_names[this_tag_n], " <- function(...){XMLNode(name=\"", tags[this_tag_n], "\", ...)}")
+                ),
+                envir=envir
+            )
+        } else {
+            message(paste0("Object exists, skipping: \"", func_names[this_tag_n], "\""))
+        }
     }
 }
