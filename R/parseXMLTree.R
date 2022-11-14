@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -20,8 +20,9 @@
 #'
 #' @param file Character string, valid path to the XML file which should be parsed.
 #' @param drop Character vector with the possible values \code{"comments"}, \code{"cdata"}
-#'    \code{"declarations"} and \code{"doctype"}, defining element classes to be dropped
-#'    from the resulting object.
+#'    \code{"declarations"}, and \code{"doctype"}, defining element classes to be dropped
+#'    from the resulting object, or \code{"empty_attributes"}, in case you would like to omit
+#'    empty attributes instead of adding a value identical to their name (as used in HTML).
 #' @param object Logical, if \code{TRUE}, \code{file} will not be treated as a path name but as a
 #'    character vector to be parsed as XML directly.
 #' @return An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} with four slots:
@@ -70,7 +71,7 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
       XML.decl <- append(XML.decl,
         XMLNode(
           name=paste0("?", XML.tagName(thisXMLdecl)),
-          attrs=parseXMLAttr(thisXMLdecl)
+          attrs=parseXMLAttr(thisXMLdecl, drop_empty_tags=isTRUE("empty_attributes" %in% drop))
         )
       )
       single.tags <- single.tags[-1]
@@ -81,13 +82,13 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
   }
   rm(thisXMLdecl)
   if(any(XML.doctype(single.tags[1]))){
-    XML.doct <- parseXMLAttr(single.tags[1])
+    XML.doct <- parseXMLAttr(single.tags[1], drop_empty_tags=isTRUE("empty_attributes" %in% drop))
     single.tags <- single.tags[-1]
   } else {
     XML.doct <- list(doctype="", id="", decl="", refer="")
   }
   # try to iterate through the single tags
-  children <- XML.nodes(single.tags)[["children"]]
+  children <- XML.nodes(single.tags, drop_empty_tags=isTRUE("empty_attributes" %in% drop))[["children"]]
   
   results <- new("XiMpLe.doc",
     file=filePath,

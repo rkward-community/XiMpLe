@@ -1,4 +1,4 @@
-# Copyright 2011-2020 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -238,9 +238,124 @@ pasteXMLAttr <- function(attr=NULL, tag=NULL, level=1, rename=NULL, shine=2, ind
   return(full.attr)
 } ## end function pasteXMLAttr()
 
+
+## function args2list()
+# takes a string that was separated from a tag, containing only its attributes,
+# and tries to turn it into a named list
+# drop_empty_tags: if set to TRUE, empty tags will be removed, otherwise they will
+#   get a value assigned to them simply taking their name
+attr2list <- function(attr, drop_empty_tags=FALSE){
+  # split into individual characters
+  attr_chars <- unlist(strsplit(trim(attr), ""))
+  if(length(attr_chars) > 0){
+    # which one is alphanumeric (we'll also accept "-" and "_"?
+    attr_alnum <- grepl("[-_:[:alnum:]]", attr_chars)
+    # find continuous patterns in the boolean vector, i.e. detect words vs. nonwords
+    attr_alnum_rle <- rle(attr_alnum)
+    # add zero for the sapply loop
+    attr_borders <- c(0, cumsum(attr_alnum_rle[["lengths"]]))
+    # here we glue the single characters together again,
+    # this way we'll get words in one string an nonwords in separated strings
+    # the result should be a vector of strings that is either
+    #   - just alphanumeric, which could be either an attribute name or part of an attribute value
+    #   - non-alphanumeric, which could be
+    #     - space
+    #     - "=\"" (including spaces, start of an attribute value)
+    #     - "\"" (including spaces, end of an attribute value)
+    #     - anything else, part of an attribute value
+    attr_tokens <- sapply(seq_along(attr_borders)[-1],
+      function(n){
+        paste0(attr_chars[(attr_borders[n-1] + 1):attr_borders[n]], collapse="")
+      }
+    )
+    tokens_n <- seq_along(attr_tokens)
+    # now we'll mark start and end of attributes
+    attr_on <- grepl("^[[:space:]]*=[[:space:]]*\"[[:space:]]*$", attr_tokens)
+    attr_off <- grepl("^[[:space:]]*\"[[:space:]]*$", attr_tokens)
+    # numbers must match, otherwise there was an error in parsing and we should PANIC! :D
+    if(!identical(sum(attr_on), sum(attr_off))){
+      stop(
+        simpleError(
+          paste0(
+            "Looks like I failed to parse attributes correctly. This one i couldn't digest:\n  \"",
+            paste0(attr_chars, collapse=""),
+            "\""
+          )
+        )
+      )
+    } else {}
+    # now we can assume the range of attribute values
+    # make it a list to keep them separated
+    # each list entry is a vector of one full attribute value
+    attr_values <- lapply(
+      1:sum(attr_on),
+      function(n){
+        which(attr_on)[n]:which(attr_off)[n]
+      }
+    )
+    # right before each attribute value should be the attribute's name
+    attr_names <- sapply(
+      attr_values,
+      function(val){
+        if(val[1] < 2){
+          stop(simpleError("I've detected an attribute value without an attribute name!"))
+        } else {
+          arg_name_n <- val[1] - 1
+        }
+        if(!isTRUE(grepl("[-_:[:alnum:]]", attr_tokens[arg_name_n]))){
+          warning(paste0("This attribute name might be invalid, please check: \"", attr_tokens[arg_name_n], "\""), call.=FALSE)
+        } else {}
+        return(arg_name_n)
+      }
+    )
+    # for safety reasons, consider putting arg names in quotes when non alphanumeric strings are used
+    non_alnum_names <- grepl("[^[:alnum:]]", attr_tokens[attr_names])
+    if(any(non_alnum_names)){
+      attr_tokens[attr_names[non_alnum_names]] <- paste0("\"", attr_tokens[attr_names[non_alnum_names]], "\"")
+    } else {}
+
+    # if we've gotten this far, all that's neither an attribute name nor its value is probably an empty attribute
+    attr_done <- sort(c(attr_names, unlist(attr_values)))
+    attr_unknown <- tokens_n[!tokens_n %in% attr_done]
+    if(length(attr_unknown) > 0){
+      attr_unknown <- attr_unknown[!grepl("^[[:space:]]+$", attr_tokens[attr_unknown])]
+      if(length(attr_unknown) > 0){
+        # set s/t value for empty attribute
+        attr_tokens <- unlist(sapply(
+          tokens_n,
+          function(n){
+            if(isTRUE(n %in% attr_unknown)){
+              if(isTRUE(drop_empty_tags)){
+                return("")
+              } else {
+                return(c(attr_tokens[n], "=\"", attr_tokens[n], "\""))
+              }
+            } else {
+              return(attr_tokens[n])
+            }
+          }
+        ))
+        # recalculate attr_off
+        attr_off <- grepl("^[[:space:]]*\"[[:space:]]*$", attr_tokens)
+      } else {}
+    } else {}
+    # all but the last value closing will need a comma separator
+    if(length(which(attr_off)) > 1){
+      add_comma <- which(attr_off)
+      add_comma <- add_comma[1:(length(add_comma) - 1)]
+      attr_tokens[add_comma] <- paste0(attr_tokens[add_comma], ",")
+    }
+
+    return(eval(parse(text=paste("list(", paste0(attr_tokens, collapse=""), ")"))))
+  } else {
+    return(list())
+  }
+} # end function attr2list()
+
+
 ## function parseXMLAttr()
 # takes a whole XML tag and returns a named list with its attributes
-parseXMLAttr <- function(tag){
+parseXMLAttr <- function(tag, drop_empty_tags=FALSE){
   if(XML.doctype(tag)){
     stripped.tag <- gsub("<!((?i)DOCTYPE)[[:space:]]+([^[:space:]]+)[[:space:]]*([^\"[:space:]]*)[[:space:]]*.*>",
       "doctype=\"\\2\", decl=\"\\3\"", tag)
@@ -249,25 +364,26 @@ parseXMLAttr <- function(tag){
     doct.decl <- ifelse(sum(!is.dtd) > 0, paste0(stripped.tag2[!is.dtd][1]), paste0(""))
     doct.ref <- ifelse(sum(is.dtd) > 0, paste0(stripped.tag2[is.dtd][1]), paste0(""))
     parsed.list <- eval(parse(text=paste0("list(", stripped.tag, ", id=\"", doct.decl,"\"", ", refer=\"", doct.ref,"\")")))
-  } else if(XML.endTag(tag) | XML.comment(tag) |XML.cdata(tag)){
+  } else if(XML.endTag(tag) | XML.comment(tag) | XML.cdata(tag)){
     # end tags, comments and CDATA don't have attributes
     parsed.list <- ""
   } else {
     # first strip of start and end characters
     stripped.tag <- gsub("<([?[:space:]]*)[^[:space:]]+[[:space:]]*(.*)", "\\2", tag, perl=TRUE)
-    stripped.tag <- gsub("[/?]*>$", "", stripped.tag, perl=TRUE)
-    # fill in commas, so we can evaluate this as elements of a named list
-    separated.tag <- gsub("=[[:space:]]*\"([^\"]*)\"[[:space:]]+([^[:space:]=]+)", "=\"\\1\", \\2", stripped.tag, perl=TRUE)
-    # to be on the safe side, escape all list names, in case there's unexpected special characters in them
-    separated.tag <- gsub("( ,)?([^[:space:],\"]*)=\"", "\\1\"\\2\"=\"", separated.tag, perl=TRUE)
-    ###################################################################################
-    ## TODO:
-    ## empty attributes are not valid, force them into attribute="attribute"
-    ## does only work partially it the empty attribute is the last in line
-    ## and still causes *problems* in matching string in the value of other attributes!
-    # separated.tag <- gsub("(, |\\A)([^[:space:],\"=][[:alnum:]]*)", "\\1\"\\2\"=\"\\2\"", separated.tag, perl=TRUE)
-    ###################################################################################
-    parsed.list <- eval(parse(text=paste("list(", separated.tag, ")")))
+    stripped.tag <- trim(gsub("[/?]*>$", "", stripped.tag, perl=TRUE))
+    parsed.list <- attr2list(stripped.tag, drop_empty_tags=drop_empty_tags)
+#     # fill in commas, so we can evaluate this as elements of a named list
+#     separated.tag <- gsub("=[[:space:]]*\"([^\"]*)\"[[:space:]]+([^[:space:]=]+)", "=\"\\1\", \\2", stripped.tag, perl=TRUE)
+#     # to be on the safe side, escape all list names, in case there's unexpected special characters in them
+#     separated.tag <- gsub("( ,)?([^[:space:],\"]*)=\"", "\\1\"\\2\"=\"", separated.tag, perl=TRUE)
+#     ###################################################################################
+#     ## TODO:
+#     ## empty attributes are not valid, force them into attribute="attribute"
+#     ## does only work partially it the empty attribute is the last in line
+#     ## and still causes *problems* in matching string in the value of other attributes!
+#     # separated.tag <- gsub("(, |\\A)([^[:space:],\"=][[:alnum:]]*)", "\\1\"\\2\"=\"\\2\"", separated.tag, perl=TRUE)
+#     ###################################################################################
+#     parsed.list <- eval(parse(text=paste("list(", separated.tag, ")")))
   }
   if(XML.declaration(tag)){
     # only enforce validation for <?xml ... ?>
@@ -480,22 +596,23 @@ XML.tagName <- function(tag){
   return(tag.names)
 } ## end function XML.tagName()
 
-## function parseXMLTag()
-parseXMLTag <- function(tag){
-  tag.name <- XML.tagName(tag)
-  tag.attr <- parseXMLAttr(tag)
-  if(!is.null(tag.attr)){
-    parsed.tag <- list()
-    parsed.tag[[tag.name]] <- list(attr=tag.attr)
-  } else {
-    parsed.tag <- list()
-    parsed.tag[[tag.name]] <- list()
-  }
-  return(parsed.tag)
-} ## end function parseXMLTag()
+# unused?
+# ## function parseXMLTag()
+# parseXMLTag <- function(tag, drop_empty_tags=FALSE){
+#   tag.name <- XML.tagName(tag)
+#   tag.attr <- parseXMLAttr(tag, drop_empty_tags=drop_empty_tags)
+#   if(!is.null(tag.attr)){
+#     parsed.tag <- list()
+#     parsed.tag[[tag.name]] <- list(attr=tag.attr)
+#   } else {
+#     parsed.tag <- list()
+#     parsed.tag[[tag.name]] <- list()
+#   }
+#   return(parsed.tag)
+# } ## end function parseXMLTag()
 
 ## function XML.nodes()
-XML.nodes <- function(single.tags, end.here=NA, start=1){
+XML.nodes <- function(single.tags, end.here=NA, drop_empty_tags=FALSE, start=1){
   # to save memory, we'll put the single.tags object into an environment
   # and pass that on to all iterations
   if(is.environment(single.tags)){
@@ -540,7 +657,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
       tag.no <- tag.no + 1
       next
     } else {
-      child.attr <- parseXMLAttr(this.tag)
+      child.attr <- parseXMLAttr(this.tag, drop_empty_tags=drop_empty_tags)
     }
     if(XML.declaration(this.tag)){
       children[[nxt.child]] <- new("XiMpLe.node",
@@ -572,7 +689,7 @@ XML.nodes <- function(single.tags, end.here=NA, start=1){
     if(!XML.emptyTag(this.tag)){
     ## uncomment to debug:
     # cat(child.name, ":", tag.no, "-", child.end.tag,"\n")
-      rec.nodes <- XML.nodes(single.tags.env, end.here=child.name, start=tag.no + 1)
+      rec.nodes <- XML.nodes(single.tags.env, end.here=child.name, drop_empty_tags=drop_empty_tags, start=tag.no + 1)
       children[[nxt.child]] <- new("XiMpLe.node",
         name=child.name,
         attributes=child.attr,

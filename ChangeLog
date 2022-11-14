@@ -1,12 +1,15 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.10-4 (2022-10-31)
+changes in version 0.10-4 (2022-11-14)
 unreleased:
   - this release is under development
 changed:
   - XMLNode(): you can now define attributes in the dots argument as well
     by using a named character string; the attrs argument can still be
     used as before, it just doesn't have a NULL default value any more
+  - parseXMLTree(): is now able to fix empty attributes by adding the
+    attribute name as its value; to silently drop empty attributes instead,
+    you can use the new drop="empty_attributes" option
 added:
   - gen_tag_functions(): generate shortcut functions to create XML tags
     with less typing and better readability of your code

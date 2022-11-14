@@ -10,8 +10,9 @@ parseXMLTree(file, drop = NULL, object = FALSE)
 \item{file}{Character string, valid path to the XML file which should be parsed.}
 
 \item{drop}{Character vector with the possible values \code{"comments"}, \code{"cdata"}
-\code{"declarations"} and \code{"doctype"}, defining element classes to be dropped
-from the resulting object.}
+\code{"declarations"}, and \code{"doctype"}, defining element classes to be dropped
+from the resulting object, or \code{"empty_attributes"}, in case you would like to omit
+empty attributes instead of adding a value identical to their name (as used in HTML).}
 
 \item{object}{Logical, if \code{TRUE},
       \code{file} will not be treated as a path name but as a
