@@ -20,11 +20,11 @@
 #' 
 #' Can be used to create XML nodes.
 #' 
-#' To generate a CDATA node, set \code{name="![CDATA["}, to create a comment, set \code{name="!--"}.
+#' To generate a CDATA node, set \code{tag_name="![CDATA["}, to create a comment, set \code{tag_name="!--"}.
 #' 
 #' Note that all defined attributes will silently be dropped if a text node, CDATA node or comment is generated.
 #' 
-#' @param name Character string, the tag name.
+#' @param tag_name Character string, the tag name.
 #' @param ... Optional children for the tag. Must be either objects of class XiMpLe.node or character strings,
 #'    which are treated as attributes if they are named, and as simple text values otherwise.
 #'    If this is empty, the tag will be treated as an empty tag. To force a closing tag, supply an empty
@@ -65,13 +65,23 @@
 #' ))
 
 XMLNode <- function(
-    name,
+    tag_name,
     ...,
     attrs,
     namespace="",
     namespaceDefinitions=NULL,
     .children=list(...)
 ){
+    # check if this might be old code not aware of the "tag_name" argument,
+    # which was renamed from "name" in 0.11-1
+    if(missing(tag_name)){
+        if("name" %in% names(.children)){
+            stop(simpleError("The argument 'name' if XiMpLe::XMLNode() was renamed 'tag_name' in XiMpLe 0.11-1, please adjust your code."))
+        } else {
+            stop(simpleError("XiMpLe::XMLNode() needs a 'tag_name'!"))
+        }
+    } else {}
+
     # split dots argument into named/unnamed character strings and the rest
     if(length(.children) > 0){
         dots_is_char <- sapply(
@@ -105,7 +115,7 @@ XMLNode <- function(
 
     # text node?
     if(
-        identical(name, "") &
+        identical(tag_name, "") &
         (all(sapply(.children, is.character, USE.NAMES=FALSE)))
     ){
         value <- paste(.children, sep=" ")
@@ -130,7 +140,7 @@ XMLNode <- function(
     }
 
     newNode <- new("XiMpLe.node",
-        name=name,
+        name=tag_name,
         attributes=attrs,
         children=all_children,
         value=value

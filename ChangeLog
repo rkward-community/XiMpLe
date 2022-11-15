@@ -1,8 +1,15 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.10-4 (2022-11-14)
+changes in version 0.11-1 (2022-11-15)
 unreleased:
   - this release is under development
+breaking:
+  - XMLNode(): first argument was renamed from "name" to "tag_name" to
+    improve the newly added feature to add attributes via the dots
+    argument (see below); since "name" is also a very common attribute
+    and most users will likely have omitted the first argument name,
+    this hopefully doesn't break too many scripts. if it does, you'll
+    get an appropriate error message
 changed:
   - XMLNode(): you can now define attributes in the dots argument as well
     by using a named character string; the attrs argument can still be
