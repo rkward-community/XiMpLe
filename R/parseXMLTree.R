@@ -70,7 +70,7 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
     while(isTRUE(XML.declaration(thisXMLdecl))){
       XML.decl <- append(XML.decl,
         XMLNode(
-          name=paste0("?", XML.tagName(thisXMLdecl)),
+          tag_name=paste0("?", XML.tagName(thisXMLdecl)),
           attrs=parseXMLAttr(thisXMLdecl, drop_empty_tags=isTRUE("empty_attributes" %in% drop))
         )
       )

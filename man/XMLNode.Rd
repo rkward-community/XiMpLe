@@ -5,7 +5,7 @@
 \title{Constructor function for XiMpLe.node objects}
 \usage{
 XMLNode(
-  name,
+  tag_name,
   ...,
   attrs,
   namespace = "",
@@ -14,7 +14,7 @@ XMLNode(
 )
 }
 \arguments{
-\item{name}{Character string, the tag name.}
+\item{tag_name}{Character string, the tag name.}
 
 \item{...}{Optional children for the tag. Must be either objects of class XiMpLe.node or character strings,
 which are treated as attributes if they are named, and as simple text values otherwise.
@@ -40,8 +40,8 @@ An object of class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.
 Can be used to create XML nodes.
 }
 \details{
-To generate a CDATA node, set \code{name="![CDATA["}, to create a comment,
-      set \code{name="!--"}.
+To generate a CDATA node, set \code{tag_name="![CDATA["}, to create a comment,
+      set \code{tag_name="!--"}.
 
 Note that all defined attributes will silently be dropped if a text node,
       CDATA node or comment is generated.

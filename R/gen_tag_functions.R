@@ -73,7 +73,7 @@ gen_tag_functions <- function(
             }
             eval(
                 str2lang(
-                    paste0(func_names[this_tag_n], " <- function(...){XMLNode(name=\"", tags[this_tag_n], "\", ...)}")
+                    paste0(func_names[this_tag_n], " <- function(...){XMLNode(tag_name=\"", tags[this_tag_n], "\", ...)}")
                 ),
                 envir=envir
             )
