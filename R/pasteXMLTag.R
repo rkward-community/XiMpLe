@@ -163,8 +163,9 @@ pasteXMLTag <- function(
     } else {
       if(isTRUE(as_script)){
         full.tag <- paste0(
-          new.indent, tag, "_(", attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ")", new.node,
-          if(!is.null(child)){paste0(val.indent, trim(child), new.node)}
+          new.indent, tag, "_(", attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent,
+          if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
+          ")", new.node
         )
       } else {
         full.tag <- paste0(
