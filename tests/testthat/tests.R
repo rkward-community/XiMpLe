@@ -34,7 +34,25 @@ test_that("generate closed XML node with attributes", {
   )
 })
 
-# TODO: test for gen_tag_functions()
+test_that("generate generator functions", {
+  # for this test, we'll put generated functions to their own environment
+  my_functions <- new.env()
+  gen_tag_functions(c("x","y","abc"), envir=my_functions)
+  my_func_list <- as.list(my_functions)
+
+  expect_that(
+    sort(c("x_","y_","abc_")),
+    equals(sort(names(my_func_list)))
+  )
+  expect_true(all(sapply(my_func_list, is.function)))
+
+  XML_node_x <- my_func_list[["x_"]]("foo")
+
+  expect_that(
+    XML_node_x,
+    equals(XMLNode("x", "foo"))
+  )
+})
 
 test_that("generate nested XML tag tree", {
   # re-create object sampleXMLTree
