@@ -31,6 +31,7 @@
 #' @param envir The environment where all generated functions should appear.
 #' @param replace Logical, whether objects by the same name already present in \code{envir}
 #'    should be preserved or replaced/overwritten.
+#' @param rename Named character vector defining which tags' functions should get a different name.
 #' @return As many functions as specified by \code{tags}/\code{func_names}.
 #' @seealso
 #'    \code{\link[XiMpLe:XMLNode]{XMLNode}},
@@ -54,7 +55,12 @@ gen_tag_functions <- function(
     tags,
     func_names=paste0(tags, "_"),
     envir=.GlobalEnv,
-    replace=FALSE
+    replace=FALSE,
+    rename=c(
+        "?xml"="xml",
+        "!--"="comment",
+        "![CDATA["="CDATA"
+    )
 ){
     tags <- unique(tags)
     func_names <- unique(func_names)
