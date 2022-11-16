@@ -8,7 +8,8 @@ gen_tag_functions(
   tags,
   func_names = paste0(tags, "_"),
   envir = .GlobalEnv,
-  replace = FALSE
+  replace = FALSE,
+  func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_")
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ the functions to generate.}
 
 \item{replace}{Logical, whether objects by the same name already present in \code{envir}
 should be preserved or replaced/overwritten.}
+
+\item{func_rename}{Named character vector defining which tags' functions should get a different name.
+This makes it easier to get functions with valid names that generate special tag nodes.}
 }
 \value{
 As many functions as specified by \code{tags}/\code{func_names}.
