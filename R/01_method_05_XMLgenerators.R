@@ -1,4 +1,4 @@
-# Copyright 2016-2017 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2016-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -60,7 +60,7 @@
 #' @export
 #' @rdname XMLgenerators
 #' @include 00_class_03_XiMpLe.validity.R
-setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE, indent.by="\t", roxygenDocs=FALSE,
+setGeneric("XMLgenerators", function(validity, prefix="XML", checkValidity=TRUE, indent.by=getOption("XiMpLe_indent", "\t"), roxygenDocs=FALSE,
   valParam="validity", replaceChar="_", dir=NULL, overwrite=FALSE, oneFile=NULL){standardGeneric("XMLgenerators")})
 
 #' @rdname XMLgenerators
