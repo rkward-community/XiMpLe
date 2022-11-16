@@ -224,11 +224,12 @@ pasteXMLTag <- function(
           ")", new.node
         )
       } else {
-        full.tag <- paste0(
-          new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ">", new.node,
-          if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
-          new.indent, "</", tag, ">", new.node
-        )
+        full.tag <- paste_shine(start=paste0("<", tag), end=">", attrs=all.attributes, child=trim(child), close=paste0("</", tag, ">"), level=level, shine=shine)
+#         full.tag <- paste0(
+#           new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ">", new.node,
+#           if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
+#           new.indent, "</", tag, ">", new.node
+#         )
       }
     }
   }

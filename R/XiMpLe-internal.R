@@ -215,19 +215,31 @@ paste_shine <- function(
   indent_node <- indent(level=level, by=by)
   indent_attrs <- indent(level=level + 1, by=by)
   indent_child <- indent(level=level + 1, by=by)
+  indent_end <- indent(level=level, by=by)
+  indent_close <- indent(level=level, by=by)
   next_node <- "\n"
   next_attr <- "\n"
+  next_close <- "\n"
+  first_attr <- "\n"
+  first_child <- "\n"
   attr_space <- ""
 
   if(shine < 1){
     # shine is 0
     indent_attrs <- ""
     indent_child <- ""
+    indent_end <- ""
     next_attr <- ""
+    next_close <- ""
+    first_attr <- " "
+    first_child <- ""
     attr_space <- " "
   } else if (shine < 2){
     # shine is 1
+    indent_attrs <- " "
+    indent_end <- ""
     next_attr <- ""
+    first_attr <- ""
     attr_space <- " "
   } else {
     # shine is 2, keep defaults
@@ -235,6 +247,7 @@ paste_shine <- function(
 
   if(missing(attrs)){
     next_attr <- ""
+    first_attr <- ""
     attr_space <- ""
   } else {}
 
@@ -262,16 +275,16 @@ paste_shine <- function(
 
   return(
     paste0(
-      indent_node, start,
+      indent_node, start, first_attr,
       indent_attrs, attrs, attr_space, next_attr,
-      indent_node, end,
+      indent_end, end, first_child,
       if(!missing(child)){
         paste0(
           indent_child, child,
-          next_node
+          next_close
         )
       },
-      close,
+      indent_close, close,
       next_node
     )
   )
@@ -302,6 +315,7 @@ lookupAttrName <- function(tag, attr, rename){
   }
   return(attr.name)
 } ## end function lookupAttrName()
+
 
 ## function pasteXMLAttr()
 # pastes all attributes in a nicely readable way
