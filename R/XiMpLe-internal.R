@@ -172,6 +172,66 @@ indent <- function(level, by="\t"){
 } ## end function indent()
 
 
+# TODO:
+## function paste_shine()
+# pastes nodes with a given indentation and separator between arguments
+# start: the initial tag start, e.g. "<a"
+# end: how the tag ends, e.g. ">" or "/>"
+# attrs: optional character vector, arguments to paste
+# child: optional character string, a fully indeted child node
+# level: level of indentation for the tag; indentation of arguments or child nodes depends on 'shine'
+# by: indentation character
+# attrs_sep: string to append to all arguments, e.g. none for XML, comma for functions
+# shine: shine level
+paste_shine <- function(start, end, attrs, child, level, by="\t", attrs_sep="", shine=1){
+  indent_node <- indent(level=level, by=by)
+  indent_attrs <- indent(level=level + 1, by=by)
+  indent_child <- indent(level=level + 1, by=by)
+  next_node <- "\n"
+  attr_space <- ifelse(any(nchar(attrs)) > 0, " ", "")
+#   if(shine > 1){
+#     indent_node <-
+#     indent_attrs <-
+#     indent_child <-
+#     next_node <-
+#   } else if (shine > 0){
+#     indent_node <-
+#     indent_attrs <-
+#     indent_child <-
+#     next_node <-
+#   } else {
+#     indent_node <-
+#     indent_attrs <-
+#     indent_child <-
+#     next_node <-
+#   }
+
+#   new.node   <- ifelse(shine > 0, "\n", "")
+#   new.indent <- ifelse(shine > 0, indent(level, by=indent.by), "")
+#   new.attr   <- ifelse(shine > 1, "\n", "")
+#   new.attr.indent <- ifelse(shine > 1, indent(level, by=indent.by), "")
+#   attr.space <- ifelse(nchar(all.attributes) > 0, " ", "")
+#   new.cmmt   <- ifelse(shine > 0, "\n", " ")
+#   new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
+#   comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
+
+  return(
+    paste0(
+      indent_node, start,
+      indent_attrs, attrs, attr_space,
+      if(!missing(child)){
+        paste0(
+          indent_child, child,
+          next_node
+        )
+      },
+      indent_node, end,
+      next_node
+    )
+  )
+} ## end function paste_shine()
+
+
 ## function xml.tidy()
 # replace special character < and > from attributes or text values
 # with harmless entities
@@ -401,18 +461,6 @@ parseXMLAttr <- function(tag, drop_empty_tags=FALSE){
     stripped.tag <- gsub("<([?[:space:]]*)[^[:space:]]+[[:space:]]*(.*)", "\\2", tag, perl=TRUE)
     stripped.tag <- trim(gsub("[/?]*>$", "", stripped.tag, perl=TRUE))
     parsed.list <- attr2list(stripped.tag, drop_empty_tags=drop_empty_tags)
-#     # fill in commas, so we can evaluate this as elements of a named list
-#     separated.tag <- gsub("=[[:space:]]*\"([^\"]*)\"[[:space:]]+([^[:space:]=]+)", "=\"\\1\", \\2", stripped.tag, perl=TRUE)
-#     # to be on the safe side, escape all list names, in case there's unexpected special characters in them
-#     separated.tag <- gsub("( ,)?([^[:space:],\"]*)=\"", "\\1\"\\2\"=\"", separated.tag, perl=TRUE)
-#     ###################################################################################
-#     ## TODO:
-#     ## empty attributes are not valid, force them into attribute="attribute"
-#     ## does only work partially it the empty attribute is the last in line
-#     ## and still causes *problems* in matching string in the value of other attributes!
-#     # separated.tag <- gsub("(, |\\A)([^[:space:],\"=][[:alnum:]]*)", "\\1\"\\2\"=\"\\2\"", separated.tag, perl=TRUE)
-#     ###################################################################################
-#     parsed.list <- eval(parse(text=paste("list(", separated.tag, ")")))
   }
   if(XML.declaration(tag)){
     # only enforce validation for <?xml ... ?>
@@ -436,6 +484,7 @@ trim <- function(char){
   return(char)
 } ## end function trim()
 
+
 ## function XML.emptyTag()
 # checks if a tag is a pair of start/end tags or an empty tag;
 # returns either TRUE/FALSE, or the tag name if it is an empty tag and get=TRUE
@@ -455,6 +504,7 @@ XML.emptyTag <- function(tag, get=FALSE){
   )
   return(empty.tags)
 } ## end function XML.emptyTag()
+
 
 ## function XML.endTag()
 # checks if a tag an end tag;
@@ -476,6 +526,7 @@ XML.endTag <- function(tag, get=FALSE){
   return(end.tags)
 } ## end function XML.endTag()
 
+
 ## function XML.comment()
 # checks if a tag is a comment, returns TRUE or FALSE, or the comment (TRUE & get=TRUE)
 XML.comment <- function(tag, get=FALSE, trim=TRUE){
@@ -495,6 +546,7 @@ XML.comment <- function(tag, get=FALSE, trim=TRUE){
   )
   return(comment.tags)
 } ## end function XML.comment()
+
 
 ## function XML.cdata()
 # checks if a tag is a CDATA declaration, returns TRUE or FALSE, or the data (TRUE & get=TRUE)
@@ -516,6 +568,7 @@ XML.cdata <- function(tag, get=FALSE, trim=TRUE){
   return(cdata.tags)
 } ## end function XML.cdata()
 
+
 ## function XML.commcdata()
 # checks if a tag is a /* CDATA */ declaration, returns TRUE or FALSE, or the data (TRUE & get=TRUE)
 XML.commcdata <- function(tag, get=FALSE, trim=TRUE){
@@ -535,6 +588,7 @@ XML.commcdata <- function(tag, get=FALSE, trim=TRUE){
   )
   return(commcdata.tags)
 } ## end function XML.commcdata()
+
 
 ## function XML.value()
 # checks if 'tag' is actually not a tag but value/content/data. returns TRUE or FALSE, or the value (TRUE & get=TRUE)
@@ -556,6 +610,7 @@ XML.value <- function(tag, get=FALSE, trim=TRUE){
   return(all.values)
 } ## end function XML.value()
 
+
 ## function XML.declaration()
 # checks for a declaration, like <?xml bar?>
 XML.declaration <- function(tag, get=FALSE){
@@ -574,6 +629,7 @@ XML.declaration <- function(tag, get=FALSE){
   )
   return(decl.tags)
 } ## end function XML.declaration()
+
 
 ## function XML.doctype()
 # checks for a doctype declaration, like <!DOCTYPE foo>
@@ -594,6 +650,7 @@ XML.doctype <- function(tag, get=FALSE){
   return(decl.tags)
 } ## end function XML.doctype()
 
+
 ## function XML.def()
 XML.def <- function(tag, get=FALSE){
   decl.tags <- sapply(
@@ -612,6 +669,7 @@ XML.def <- function(tag, get=FALSE){
   return(decl.tags)
 } ## end function XML.def()
 
+
 ## function XML.tagName()
 XML.tagName <- function(tag){
   tag.names <- sapply(
@@ -624,6 +682,7 @@ XML.tagName <- function(tag){
   )
   return(tag.names)
 } ## end function XML.tagName()
+
 
 # unused?
 # ## function parseXMLTag()
@@ -639,6 +698,7 @@ XML.tagName <- function(tag){
 #   }
 #   return(parsed.tag)
 # } ## end function parseXMLTag()
+
 
 ## function XML.nodes()
 XML.nodes <- function(single.tags, end.here=NA, drop_empty_tags=FALSE, start=1){

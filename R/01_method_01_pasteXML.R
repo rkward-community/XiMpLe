@@ -1,4 +1,4 @@
-# Copyright 2011-2018 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -71,7 +71,7 @@ setMethod("pasteXML",
     obj,
     level=1,
     shine=1,
-    indent.by="\t",
+    indent.by=getOption("XiMpLe_indent", "\t"),
     tidy=TRUE,
     tidy.omit=c("![CDATA[", "*![CDATA["),
     as_script=FALSE,
@@ -162,7 +162,7 @@ setMethod("pasteXML",
       as_script=as_script,
       func_rename=func_rename
     )
-    
+
     return(pasted.node)
   }
 )
@@ -173,7 +173,7 @@ setMethod("pasteXML",
   function(
     obj,
     shine=1,
-    indent.by="\t",
+    indent.by=getOption("XiMpLe_indent", "\t"),
     tidy=TRUE,
     tidy.omit=c("![CDATA[", "*![CDATA["),
     as_script=FALSE,
@@ -270,13 +270,13 @@ setMethod("pasteXML",
 
 # for compatibility reasons, deploy wrapper functions
 #' @export
-pasteXMLNode <- function(node, level=1, shine=1, indent.by="\t", tidy=TRUE){
+pasteXMLNode <- function(node, level=1, shine=1, indent.by=getOption("XiMpLe_indent", "\t"), tidy=TRUE){
   .Deprecated("pasteXML")
   pasteXML(node, level=level, shine=shine, indent.by=indent.by, tidy=tidy)
 }
 
 #' @export
-pasteXMLTree <- function(obj, shine=1, indent.by="\t", tidy=TRUE){
+pasteXMLTree <- function(obj, shine=1, indent.by=getOption("XiMpLe_indent", "\t"), tidy=TRUE){
   .Deprecated("pasteXML")
   pasteXML(obj, shine=shine, indent.by=indent.by, tidy=tidy)
 }

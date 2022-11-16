@@ -1,6 +1,6 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.11-1 (2022-11-15)
+changes in version 0.11-1 (2022-11-22)
 unreleased:
   - this release is under development
 breaking:
@@ -22,6 +22,8 @@ added:
     with less typing and better readability of your code
   - provide_file(): function to keep referenced files up to date in a project
     directory
+  - you can now define the default indentation character by setting the
+    global option "XiMpLe_indent"
 
 changes in version 0.10-3 (2020-09-19)
 fixed:
