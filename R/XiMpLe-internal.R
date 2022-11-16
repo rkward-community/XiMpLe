@@ -199,7 +199,16 @@ lookupAttrName <- function(tag, attr, rename){
 
 ## function pasteXMLAttr()
 # pastes all attributes in a nicely readable way
-pasteXMLAttr <- function(attr=NULL, tag=NULL, level=1, rename=NULL, shine=2, indent.by="\t", tidy=FALSE){
+pasteXMLAttr <- function(
+  attr=NULL,
+  tag=NULL,
+  level=1,
+  rename=NULL,
+  shine=2,
+  indent.by="\t",
+  tidy=FALSE,
+  as_script=FALSE
+){
   if(is.null(attr)){
     return("")
   } else {}
@@ -210,21 +219,41 @@ pasteXMLAttr <- function(attr=NULL, tag=NULL, level=1, rename=NULL, shine=2, ind
 
   new.indent <- ifelse(shine > 1, indent(level+1, by=indent.by), "")
   new.attr   <- ifelse(shine > 1, "\n", " ")
+  paste_collapse <- ifelse(isTRUE(as_script), paste0(",", new.attr, new.indent), paste0(new.attr, new.indent))
 
   # only use formatting if more than one attribute
   if(length(attr) > 1){
     full.attr <- c()
-    for (this.attr in names(attr)){
-      # skip empty elements
-      if(is.null(attr[[this.attr]])){next}
-      if(!is.null(rename)){
-        # look up attribute name to paste
-        attr.name <- lookupAttrName(tag, this.attr, rename=rename)
-      } else {
-        attr.name <- this.attr
+    full.attr <- paste0(sapply(
+      names(attr),
+      function(this.attr){
+        # skip empty elements
+        if(is.null(attr[[this.attr]])){
+          return()
+        } else {
+          if(!is.null(rename)){
+            # look up attribute name to paste
+            attr.name <- lookupAttrName(tag, this.attr, rename=rename)
+          } else {
+            attr.name <- this.attr
+          }
+          return(
+            trim(paste0(full.attr, new.attr, new.indent, attr.name, "=\"", attr[[this.attr]], "\""))
+          )
+        }
       }
-      full.attr <- trim(paste0(full.attr, new.attr, new.indent, attr.name, "=\"", attr[[this.attr]], "\""))
-    }
+    ), collapse=paste_collapse)
+#     for (this.attr in seq_along(all_attrs)){
+#       # skip empty elements
+#       if(is.null(attr[[this.attr]])){next}
+#       if(!is.null(rename)){
+#         # look up attribute name to paste
+#         attr.name <- lookupAttrName(tag, this.attr, rename=rename)
+#       } else {
+#         attr.name <- this.attr
+#       }
+#       full.attr <- trim(paste0(full.attr, new.attr, new.indent, attr.name, "=\"", attr[[this.attr]], "\""))
+#     }
   } else {
     if(!is.null(rename)){
       # look up attribute name to paste

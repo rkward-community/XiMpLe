@@ -73,7 +73,16 @@ pasteXMLTag <- function(
   as_script=FALSE
 ){
   # what attributes do we have?
-  all.attributes <- pasteXMLAttr(attr, tag=tag, level=level, rename=rename, shine=shine, indent.by=indent.by, tidy=tidy)
+  all.attributes <- pasteXMLAttr(
+    attr,
+    tag=tag,
+    level=level,
+    rename=rename,
+    shine=shine,
+    indent.by=indent.by,
+    tidy=tidy,
+    as_script=as_script
+  )
   # probaly don't produce empty tags
   if(!isTRUE(allow.empty) & is.null(all.attributes)){
     return("")
@@ -156,14 +165,14 @@ pasteXMLTag <- function(
     # empty decides whether this is a empty tag or a pair of start and end tags
     if(isTRUE(empty)){
       if(isTRUE(as_script)){
-        full.tag <- paste0(new.indent, tag, "_(", attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ")", new.node)
+        full.tag <- paste0(new.indent, tag, "_(", new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ")", new.node)
       } else {
         full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, " />", new.node)
       }
     } else {
       if(isTRUE(as_script)){
         full.tag <- paste0(
-          new.indent, tag, "_(", attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent,
+          new.indent, tag, "_(", new.attr, new.cmmt.indent, ifelse(is.null(child), all.attributes, paste0(all.attributes, ",")), new.attr, new.attr.indent,
           if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
           ")", new.node
         )
