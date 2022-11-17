@@ -81,8 +81,13 @@ setMethod("pasteXML",
       "![CDATA[_"="CDATA_"
     )
   ){
+    if(isTRUE(as_script)){
+      next_sep <- ","
+    } else {
+      next_sep <- ""
+    }
     new.indent <- ifelse(shine > 0, indent(level+1, by=indent.by), "")
-    new.node   <- ifelse(shine > 0, "\n", "")
+    new.node   <- ifelse(shine > 0, paste0(next_sep, "\n"), paste0(next_sep, " "))
 
     # get the slot contents
     node.name <- slot(obj, "name")
@@ -102,21 +107,18 @@ setMethod("pasteXML",
             tidy <- FALSE
           } else {}
           if(slot(this.node, "name") == ""){
-            this.node.pasted <- paste0(
-              new.indent,
-              pasteXML(
-                this.node,
-                level=level,
-                shine=shine,
-                indent.by=indent.by,
-                tidy=tidy,
-                tidy.omit=tidy.omit,
-                as_script=as_script,
-                func_rename=func_rename
-              )
-            )
+            this.node.pasted <- trim(pasteXML(
+              this.node,
+              level=level,
+              shine=shine,
+              indent.by=indent.by,
+              tidy=tidy,
+              tidy.omit=tidy.omit,
+              as_script=as_script,
+              func_rename=func_rename
+            ))
           } else {
-            this.node.pasted <- pasteXML(
+            this.node.pasted <- trim(pasteXML(
               this.node,
               level=(level + 1),
               shine=shine,
@@ -125,12 +127,12 @@ setMethod("pasteXML",
               tidy.omit=tidy.omit,
               as_script=as_script,
               func_rename=func_rename
-            )
+            ))
           }
           return(this.node.pasted)
         },
         USE.NAMES=FALSE
-      )), collapse="")
+      )), collapse=paste0(new.node, new.indent))
       node.empty <- FALSE
     } else {
       node.chld <- NULL
@@ -144,7 +146,15 @@ setMethod("pasteXML",
         if(all(isTRUE(tidy), !node.name %in% tidy.omit)){
           node.val <- sapply(node.val, xml.tidy, USE.NAMES=FALSE)
         } else {}
-        node.chld <- paste0(node.chld, paste(node.val, new.node, collapse=" "))
+        node.chld <- paste0(
+          node.chld,
+          trim(
+            paste0(
+              node.val,
+              collapse=new.node
+            )
+          )
+        )
       } else {}
     } else {}
 
