@@ -116,7 +116,7 @@ pasteXMLTag <- function(
     if(isTRUE(as_script)){
       full.tag <- paste0("\"", child, "\"")
     } else {
-      full.tag <- paste0(child, " ")
+      full.tag <- child
     }
   } else if(grepl("^\\?", tag)){
     if(is.null(child)){

@@ -277,39 +277,50 @@ paste_shine <- function(
     # shine is 2, keep defaults
   }
 
+  no_attrs <- no_child <- no_close <- FALSE
   if(missing(attrs)){
     attrs <- ""
-    indent_attrs <- ""
-    indent_end <- ""
-    next_attr <- ""
-    first_attr <- ""
-    if(isTRUE(space_attrs)){
-      extra_space_attrs <-" "
-    } else {}
-  } else if(identical(trim(attrs), "")){
-    indent_attrs <- ""
-    indent_end <- ""
-    next_attr <- ""
-    first_attr <- ""
-    if(isTRUE(space_attrs)){
-      extra_space_attrs <-" "
-    } else {}
+    no_attrs <- TRUE
+  } else if(any(identical(trim(attrs), ""), identical(trim(attrs), character()))){
+    no_attrs <- TRUE
+  }
+  if(missing(child)){
+    child <- ""
+    no_child <- TRUE
+  } else if(any(identical(trim(child), ""), identical(trim(child), character()))){
+    no_child <- TRUE
+  }
+  if(missing(close)){
+    close <- ""
+    no_close <- TRUE
+  } else if(any(identical(trim(close), ""), identical(trim(close), character()))){
+    no_close <- TRUE
   }
 
-  if(missing(close)){
-    if(!missing(child)){
-      stop(simpleError("Invalid call to XiMpLe:::paste_shine(): Missing closing tag!"))
-    } else {}
-    close <- ""
-    if(all(shine > 1, !identical(trim(attrs), ""))){
-      indent_end <- paste0("\n", indent_end)
+  if(isTRUE(no_attrs)){
+    indent_attrs <- ""
+    indent_end <- ""
+    next_attr <- ""
+    first_attr <- ""
+    if(isTRUE(space_attrs)){
+      extra_space_attrs <-" "
     } else {}
   } else {}
 
-  if(missing(child)){
+  if(isTRUE(no_close)){
+    if(!isTRUE(no_child)){
+      stop(simpleError("Invalid call to XiMpLe:::paste_shine(): Missing closing tag!"))
+    } else {}
+    next_close <- ""
+    indent_close <- ""
+  } else {}
+
+  if(isTRUE(no_child)){
     indent_child <- ""
     child <- ""
-    next_attr <- ""
+    if(any(shine < 2, as_script)){
+      next_attr <- ""
+    } else {}
     first_child <- ""
     extra_space_child <-""
   } else {}
@@ -328,7 +339,7 @@ paste_shine <- function(
     indent_close <- ""
   } else {}
 
-  # debugging:
+  ## debugging:
   # message(
   #   paste0(
   #     "level: ", level, "\n",
