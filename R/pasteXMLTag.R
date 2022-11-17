@@ -129,9 +129,17 @@ pasteXMLTag <- function(
       if(isTRUE(as_script)){
         full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ")", new.node)
       } else {
-        full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent,
-          all.attributes, new.attr, new.attr.indent, " ?>", new.node
+        full.tag <- paste_shine(
+          start=paste0("<", tag),
+          end=" ?>",
+          attrs=all.attributes,
+          level=level,
+          indent.by=indent.by,
+          shine=shine
         )
+#         full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent,
+#           all.attributes, new.attr, new.attr.indent, " ?>", new.node
+#         )
       }
     } else {
       stop(simpleError("child nodes for XML declaraions are not supported!"))
@@ -145,12 +153,21 @@ pasteXMLTag <- function(
       }
     } else {}
     if(isTRUE(as_script)){
-        full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, child, new.attr, new.attr.indent, ")", new.node)
+      full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, child, new.attr, new.attr.indent, ")", new.node)
     } else {
-      full.tag <- paste0(new.indent, "<!-- ", new.attr, new.cmmt.indent,
-        child, " ", new.attr, new.attr.indent,
-        "-->", new.node
+      full.tag <- paste_shine(
+        start="<!--",
+        end="",
+        child=trim(child),
+        close="-->",
+        level=level,
+        indent.by=indent.by,
+        shine=shine
       )
+#       full.tag <- paste0(new.indent, "<!-- ", new.attr, new.cmmt.indent,
+#         child, " ", new.attr, new.attr.indent,
+#         "-->", new.node
+#       )
     }
   } else if(identical(tag, "![CDATA[")){
     # clean up value if needed
@@ -163,10 +180,19 @@ pasteXMLTag <- function(
     if(isTRUE(as_script)){
         full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, child, new.attr, new.attr.indent, ")", new.node)
     } else {
-      full.tag <- paste0(new.indent, "<![CDATA[ ", new.cmmt, comment.indent,
-        child, " ", new.cmmt, new.indent,
-        "]]>", new.node
+      full.tag <- paste_shine(
+        start="<![CDATA[",
+        end="",
+        child=trim(child),
+        close="]]>",
+        level=level,
+        indent.by=indent.by,
+        shine=shine
       )
+#       full.tag <- paste0(new.indent, "<![CDATA[ ", new.cmmt, comment.indent,
+#         child, " ", new.cmmt, new.indent,
+#         "]]>", new.node
+#       )
     }
   } else if(identical(tag, "*![CDATA[")){
     # clean up value if needed
@@ -179,9 +205,18 @@ pasteXMLTag <- function(
     if(isTRUE(as_script)){
         full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, child, new.attr, new.attr.indent, ")", new.node)
     } else {
-      full.tag <- paste0(new.indent, "/* <![CDATA[ */ ", new.cmmt, comment.indent,
-        child, " ", new.cmmt, new.indent,
-        "/* ]]> */", new.node)
+      full.tag <- paste_shine(
+        start="/* <![CDATA[ */",
+        end="",
+        child=trim(child),
+        close="/* ]]> */",
+        level=level,
+        indent.by=indent.by,
+        shine=shine
+      )
+#       full.tag <- paste0(new.indent, "/* <![CDATA[ */ ", new.cmmt, comment.indent,
+#         child, " ", new.cmmt, new.indent,
+#         "/* ]]> */", new.node)
     }
   } else if(grepl("^!", tag)){
     if(!is.null(child)){
@@ -191,11 +226,21 @@ pasteXMLTag <- function(
       }
     } else {}
     if(isTRUE(as_script)){
-        full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, child, all.attributes, new.attr, new.attr.indent, ")", new.node)
+      full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, child, all.attributes, new.attr, new.attr.indent, ")", new.node)
     } else {
-      full.tag <- paste0(new.indent, "<", tag, new.attr, new.cmmt.indent,
-        child, " ", all.attributes, new.attr, new.attr.indent,
-        ">", new.node)
+      full.tag <- paste_shine(
+        start=paste0("<", tag),
+        end="",
+        attrs=all.attributes,
+        child=trim(child),
+        close=">",
+        level=level,
+        indent.by=indent.by,
+        shine=shine
+      )
+#       full.tag <- paste0(new.indent, "<", tag, new.attr, new.cmmt.indent,
+#         child, " ", all.attributes, new.attr, new.attr.indent,
+#         ">", new.node)
     }
   } else {
     # last but not least, the default value
@@ -207,9 +252,26 @@ pasteXMLTag <- function(
     # empty decides whether this is a empty tag or a pair of start and end tags
     if(isTRUE(empty)){
       if(isTRUE(as_script)){
-        full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ")", new.node)
+        full.tag <- paste_shine(
+          start=paste0(func_name, "("),
+          end="",
+          attrs=all.attributes,
+          level=level,
+          indent.by=indent.by,
+          shine=shine,
+          as_script=TRUE
+        )
+#         full.tag <- paste0(new.indent, func_name, "(", new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ")", new.node)
       } else {
-        full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, " />", new.node)
+        full.tag <- paste_shine(
+          start=paste0("<", tag),
+          end=" />",
+          attrs=all.attributes,
+          level=level,
+          indent.by=indent.by,
+          shine=shine
+        )
+#         full.tag <- paste0(new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, " />", new.node)
       }
     } else {
       if(isTRUE(as_script)){
@@ -218,13 +280,33 @@ pasteXMLTag <- function(
         } else {
           attr_section <- ifelse(is.null(child) & !is.null(attr), all.attributes, paste0(all.attributes, ","))
         }
-        full.tag <- paste0(
-          new.indent, func_name, "(", new.attr, new.cmmt.indent, attr_section, new.attr, new.attr.indent,
-          if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
-          ")", new.node
+        full.tag <- paste_shine(
+          start=paste0(func_name, "("),
+          end="",
+          attrs=all.attributes,
+          child=trim(child),
+          close=")",
+          level=level,
+          indent.by=indent.by,
+          shine=shine,
+          as_script=TRUE
         )
+#         full.tag <- paste0(
+#           new.indent, func_name, "(", new.attr, new.cmmt.indent, attr_section, new.attr, new.attr.indent,
+#           if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
+#           ")", new.node
+#         )
       } else {
-        full.tag <- paste_shine(start=paste0("<", tag), end=">", attrs=all.attributes, child=trim(child), close=paste0("</", tag, ">"), level=level, shine=shine)
+        full.tag <- paste_shine(
+          start=paste0("<", tag),
+          end=">",
+          attrs=all.attributes,
+          child=trim(child),
+          close=paste0("</", tag, ">"),
+          level=level,
+          indent.by=indent.by,
+          shine=shine
+        )
 #         full.tag <- paste0(
 #           new.indent, "<", tag, attr.space, new.attr, new.cmmt.indent, all.attributes, new.attr, new.attr.indent, ">", new.node,
 #           if(!is.null(child)){paste0(val.indent, trim(child), new.node)},
