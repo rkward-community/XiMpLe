@@ -198,9 +198,9 @@ indent <- function(level, by="\t"){
 # child: optional character string, a fully indeted child node, used for recursion
 # close: closong tag for non-empty tags, e.g. "</a>"
 # level: level of indentation for the tag; indentation of arguments or child nodes depends on 'shine'
-# by: indentation character
-# attrs_sep: string to append to all arguments, e.g. none for XML, comma for functions
+# indent.by: indentation character
 # shine: shine level
+# as_script: logical, whether to separate by space (FALSE) or comma (TRUE)
 paste_shine <- function(
   start,
   end,
@@ -208,82 +208,80 @@ paste_shine <- function(
   child,
   close,
   level,
-  by="\t",
-  attrs_sep="",
-  shine=1
+  indent.by="\t",
+  shine=1,
+  as_script=FALSE
 ){
-  indent_node <- indent(level=level, by=by)
-  indent_attrs <- indent(level=level + 1, by=by)
-  indent_child <- indent(level=level + 1, by=by)
-  indent_end <- indent(level=level, by=by)
-  indent_close <- indent(level=level, by=by)
-  next_node <- "\n"
-  next_attr <- "\n"
+  if(isTRUE(as_script)){
+    next_sep <- ","
+  } else {
+    next_sep <- ""
+  }
+  indent_node <- indent(level=level, by=indent.by)
+  indent_attrs <- indent(level=level + 1, by=indent.by)
+  indent_child <- indent(level=level + 1, by=indent.by)
+  indent_end <- indent(level=level, by=indent.by)
+  indent_close <- indent(level=level, by=indent.by)
+  next_node <- paste0(next_sep, "\n")
+  next_attr <- paste0(next_sep, "\n")
   next_close <- "\n"
   first_attr <- "\n"
   first_child <- "\n"
-  attr_space <- ""
 
   if(shine < 1){
     # shine is 0
     indent_attrs <- ""
     indent_child <- ""
     indent_end <- ""
-    next_attr <- ""
+    indent_close <- ""
+    next_node <- next_sep
+    next_attr <- next_sep
     next_close <- ""
     first_attr <- " "
     first_child <- ""
-    attr_space <- " "
   } else if (shine < 2){
     # shine is 1
     indent_attrs <- " "
     indent_end <- ""
-    next_attr <- ""
+    next_attr <- next_sep
     first_attr <- ""
-    attr_space <- " "
   } else {
     # shine is 2, keep defaults
   }
 
   if(missing(attrs)){
+    attrs <- ""
+    indent_attrs <- ""
+    indent_end <- ""
     next_attr <- ""
     first_attr <- ""
-    attr_space <- ""
-  } else {}
-
-  if(missing(child)){
-    indent_child <- ""
-  } else {}
+  } else if(identical(trim(attrs), "")){
+    indent_attrs <- ""
+    indent_end <- ""
+    next_attr <- ""
+    first_attr <- ""
+  }
 
   if(missing(close)){
     if(!missing(child)){
       stop(simpleError("Invalid call to XiMpLe:::paste_shine(): Missing closing tag!"))
     } else {}
     close <- ""
-  } else {
-    close <- paste0(indent_node, close)
-  }
+  } else {}
 
-#   new.node   <- ifelse(shine > 0, "\n", "")
-#   new.indent <- ifelse(shine > 0, indent(level, by=indent.by), "")
-#   new.attr   <- ifelse(shine > 1, "\n", "")
-#   new.attr.indent <- ifelse(shine > 1, indent(level, by=indent.by), "")
-#   attr_space <- ifelse(nchar(all.attributes) > 0, " ", "")
-#   new.cmmt   <- ifelse(shine > 0, "\n", " ")
-#   new.cmmt.indent <- ifelse(shine > 1, indent(level + 1, by=indent.by), "")
-#   comment.indent <- ifelse(shine > 0, indent(level + 1, by=indent.by), "")
+  if(missing(child)){
+    indent_child <- ""
+    child <- ""
+    next_close <- ""
+  } else {}
 
   return(
     paste0(
       indent_node, start, first_attr,
-      indent_attrs, attrs, attr_space, next_attr,
+      indent_attrs, attrs, next_attr,
       indent_end, end, first_child,
-      if(!missing(child)){
-        paste0(
-          indent_child, child,
-          next_close
-        )
-      },
+      indent_child, trim(child),
+      next_close,
       indent_close, close,
       next_node
     )
