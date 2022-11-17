@@ -16,7 +16,7 @@ pasteXML(obj, ...)
   obj,
   level = 1,
   shine = 1,
-  indent.by = "\\t",
+  indent.by = getOption("XiMpLe_indent", "\\t"),
   tidy = TRUE,
   tidy.omit = c("![CDATA[", "*![CDATA["),
   as_script = FALSE,
@@ -26,7 +26,7 @@ pasteXML(obj, ...)
 \S4method{pasteXML}{XiMpLe.doc}(
   obj,
   shine = 1,
-  indent.by = "\\t",
+  indent.by = getOption("XiMpLe_indent", "\\t"),
   tidy = TRUE,
   tidy.omit = c("![CDATA[", "*![CDATA["),
   as_script = FALSE,

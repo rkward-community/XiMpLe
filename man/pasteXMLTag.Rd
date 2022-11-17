@@ -13,7 +13,7 @@ pasteXMLTag(
   allow.empty = FALSE,
   rename = NULL,
   shine = 2,
-  indent.by = "\\t",
+  indent.by = getOption("XiMpLe_indent", "\\t"),
   tidy = TRUE,
   as_script = FALSE,
   func_name = paste0(tag, "_"),

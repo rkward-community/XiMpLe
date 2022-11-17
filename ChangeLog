@@ -1,6 +1,6 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.11-1 (2022-11-22)
+changes in version 0.11-1 (2022-11-17)
 unreleased:
   - this release is under development
 breaking:
@@ -17,11 +17,19 @@ changed:
   - parseXMLTree(): is now able to fix empty attributes by adding the
     attribute name as its value; to silently drop empty attributes instead,
     you can use the new drop="empty_attributes" option
+  - pasteXML()/pasteXMLTag(): re-wrote most oft the pasting routine
+    resulting in better formatted output
 added:
   - gen_tag_functions(): generate shortcut functions to create XML tags
     with less typing and better readability of your code
   - provide_file(): function to keep referenced files up to date in a project
     directory
+  - pasteXML()/pasteXMLTag(): new arguments "as_script", "func_name",
+    and "func_rename"; if "as_script=TRUE" you will not get XML code but
+    R script code that can be used together with gen_tag_functions() to
+    re-generate the XiMpLe object. a use case is existing XML code you
+    would like to maintain with XiMpLe: import it with parseXMLTree()
+    and make an initial script with pasteXML(as_script=TRUE)
   - you can now define the default indentation character by setting the
     global option "XiMpLe_indent"
 

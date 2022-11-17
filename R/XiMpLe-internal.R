@@ -200,6 +200,8 @@ indent <- function(level, by="\t"){
 # level: level of indentation for the tag; indentation of arguments or child nodes depends on 'shine'
 # indent.by: indentation character
 # shine: shine level
+# space_child: useful for e.g. comment tags to add a single space between start/closing tags and value
+# space_attrs: similar to space_child, but adds an extra space only before the end tag
 # as_script: logical, whether to separate by space (FALSE) or comma (TRUE)
 paste_shine <- function(
   start,
@@ -210,6 +212,8 @@ paste_shine <- function(
   level,
   indent.by="\t",
   shine=1,
+  space_child=FALSE,
+  space_attrs=FALSE,
   as_script=FALSE
 ){
   if(isTRUE(as_script)){
@@ -222,8 +226,14 @@ paste_shine <- function(
   indent_child <- indent(level=level + 1, by=indent.by)
   indent_end <- indent(level=level, by=indent.by)
   indent_close <- indent(level=level, by=indent.by)
-  next_node <- paste0(next_sep, "\n")
-  next_attr <- paste0(next_sep, "\n")
+  next_node <- "\n"
+  extra_space_child <-""
+  extra_space_attrs <-""
+  if(isTRUE(as_script)){
+    next_attr <- next_sep
+  } else {
+    next_attr <- paste0(next_sep, "\n")
+  }
   next_close <- "\n"
   first_attr <- "\n"
   first_child <- "\n"
@@ -234,14 +244,32 @@ paste_shine <- function(
     indent_child <- ""
     indent_end <- ""
     indent_close <- ""
-    next_node <- next_sep
-    next_attr <- next_sep
+    next_node <- ""
     next_close <- ""
-    first_attr <- " "
+    if(isTRUE(as_script)){
+      next_attr <- paste0(next_sep, " ")
+      first_attr <- ""
+    } else {
+      next_attr <- next_sep
+      first_attr <- " "
+      if(isTRUE(space_child)){
+        extra_space_child <-" "
+      } else {}
+      if(isTRUE(space_attrs)){
+        extra_space_attrs <-" "
+      } else {}
+    }
     first_child <- ""
-  } else if (shine < 2){
+  } else if(shine < 2){
     # shine is 1
-    indent_attrs <- " "
+    if(isTRUE(as_script)){
+      indent_attrs <- ""
+    } else {
+      indent_attrs <- " "
+      if(isTRUE(space_attrs)){
+        extra_space_attrs <-" "
+      } else {}
+    }
     indent_end <- ""
     next_attr <- next_sep
     first_attr <- ""
@@ -255,11 +283,17 @@ paste_shine <- function(
     indent_end <- ""
     next_attr <- ""
     first_attr <- ""
+    if(isTRUE(space_attrs)){
+      extra_space_attrs <-" "
+    } else {}
   } else if(identical(trim(attrs), "")){
     indent_attrs <- ""
     indent_end <- ""
     next_attr <- ""
     first_attr <- ""
+    if(isTRUE(space_attrs)){
+      extra_space_attrs <-" "
+    } else {}
   }
 
   if(missing(close)){
@@ -267,20 +301,62 @@ paste_shine <- function(
       stop(simpleError("Invalid call to XiMpLe:::paste_shine(): Missing closing tag!"))
     } else {}
     close <- ""
+    if(all(shine > 1, !identical(trim(attrs), ""))){
+      indent_end <- paste0("\n", indent_end)
+    } else {}
   } else {}
 
   if(missing(child)){
     indent_child <- ""
     child <- ""
-    next_close <- ""
+    next_attr <- ""
+    first_child <- ""
+    extra_space_child <-""
   } else {}
+
+  if(
+      all(
+        isTRUE(as_script),
+        any(
+          identical(attrs, ""),
+          identical(shine, 1)
+        ),
+        identical(child, "")
+      )
+  ){
+    next_close <- ""
+    indent_close <- ""
+  } else {}
+
+  message(
+    paste0(
+      "level: ", level, "\n",
+      "indent_node: ", deparse(indent_node), "\n",
+      "start: ", deparse(start), "\n",
+      "first_attr: ", deparse(first_attr), "\n",
+      "indent_attrs: ", deparse(indent_attrs), "\n",
+      "attrs: ", deparse(attrs), "\n",
+      "next_attr: ", deparse(next_attr), "\n",
+      "extra_space_attrs: ", deparse(extra_space_attrs), "\n",
+      "indent_end: ", deparse(indent_end), "\n",
+      "end: ", deparse(end), "\n",
+      "first_child: ", deparse(first_child), "\n",
+      "indent_child: ", deparse(indent_child), "\n",
+      "extra_space_child: ", deparse(extra_space_child), "\n",
+      "child: ", deparse(child), "\n",
+      "next_close: ", deparse(next_close), "\n",
+      "indent_close: ", deparse(indent_close), "\n",
+      "close: ", deparse(close), "\n",
+      "next_node: ", deparse(next_node), "\n"
+    )
+  )
 
   return(
     paste0(
       indent_node, start, first_attr,
-      indent_attrs, attrs, next_attr,
+      indent_attrs, attrs, next_attr, extra_space_attrs,
       indent_end, end, first_child,
-      indent_child, trim(child),
+      indent_child, extra_space_child, trim(child), extra_space_child,
       next_close,
       indent_close, close,
       next_node
@@ -497,7 +573,7 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
   } else {
     return(list())
   }
-} # end function attr2list()
+} ## end function attr2list()
 
 
 ## function parseXMLAttr()
@@ -533,6 +609,7 @@ parseXMLAttr <- function(tag, drop_empty_tags=FALSE){
 
   return(parsed.list)
 } ## end function parseXMLAttr()
+
 
 ## function trim()
 # cuts off space at start and end of a character string

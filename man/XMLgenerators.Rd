@@ -11,7 +11,7 @@ XMLgenerators(
   validity,
   prefix = "XML",
   checkValidity = TRUE,
-  indent.by = "\\t",
+  indent.by = getOption("XiMpLe_indent", "\\t"),
   roxygenDocs = FALSE,
   valParam = "validity",
   replaceChar = "_",
