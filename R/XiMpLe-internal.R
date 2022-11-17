@@ -328,28 +328,29 @@ paste_shine <- function(
     indent_close <- ""
   } else {}
 
-  message(
-    paste0(
-      "level: ", level, "\n",
-      "indent_node: ", deparse(indent_node), "\n",
-      "start: ", deparse(start), "\n",
-      "first_attr: ", deparse(first_attr), "\n",
-      "indent_attrs: ", deparse(indent_attrs), "\n",
-      "attrs: ", deparse(attrs), "\n",
-      "next_attr: ", deparse(next_attr), "\n",
-      "extra_space_attrs: ", deparse(extra_space_attrs), "\n",
-      "indent_end: ", deparse(indent_end), "\n",
-      "end: ", deparse(end), "\n",
-      "first_child: ", deparse(first_child), "\n",
-      "indent_child: ", deparse(indent_child), "\n",
-      "extra_space_child: ", deparse(extra_space_child), "\n",
-      "child: ", deparse(child), "\n",
-      "next_close: ", deparse(next_close), "\n",
-      "indent_close: ", deparse(indent_close), "\n",
-      "close: ", deparse(close), "\n",
-      "next_node: ", deparse(next_node), "\n"
-    )
-  )
+  # debugging:
+  # message(
+  #   paste0(
+  #     "level: ", level, "\n",
+  #     "indent_node: ", deparse(indent_node), "\n",
+  #     "start: ", deparse(start), "\n",
+  #     "first_attr: ", deparse(first_attr), "\n",
+  #     "indent_attrs: ", deparse(indent_attrs), "\n",
+  #     "attrs: ", deparse(attrs), "\n",
+  #     "next_attr: ", deparse(next_attr), "\n",
+  #     "extra_space_attrs: ", deparse(extra_space_attrs), "\n",
+  #     "indent_end: ", deparse(indent_end), "\n",
+  #     "end: ", deparse(end), "\n",
+  #     "first_child: ", deparse(first_child), "\n",
+  #     "indent_child: ", deparse(indent_child), "\n",
+  #     "extra_space_child: ", deparse(extra_space_child), "\n",
+  #     "child: ", deparse(child), "\n",
+  #     "next_close: ", deparse(next_close), "\n",
+  #     "indent_close: ", deparse(indent_close), "\n",
+  #     "close: ", deparse(close), "\n",
+  #     "next_node: ", deparse(next_node), "\n"
+  #   )
+  # )
 
   return(
     paste0(
