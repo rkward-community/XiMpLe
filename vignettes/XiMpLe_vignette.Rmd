@@ -135,6 +135,7 @@ sample.XML.html <- XMLNode("html", XMLNode("head", ""), sample.XML.body)
 
 It should be noted, however, that `XiMpLe` doesn't perform even the slightest checks on what you provide as `DOCTYPE` or `xml` attributes.
 
+
 # Writing XML files
 
 We've learned earlier that `XiMpLe` objects do not contain the actual XML code. If you would like to write the XML code to a file, you should use `pasteXML()`, which will translate the R objects into a character string:
@@ -153,6 +154,7 @@ cat(pasteXML(sample.XML.tree), file="example.html")
 
 And that's it. The method `pasteXML()` has some arguments to configure the output, like `shine`, which sets the level of code formatting. If you set `shine=0`, no formatting is done, not even newlines.
 
+
 # Reading XML files
 
 We've also just created an example file we can read back in, to see how XML parsing looks like with `XiMpLe`:
@@ -168,6 +170,7 @@ sample.XML.parsed <- parseXMLTree("example.html")
 my.XML.stuff <- c("<start>here it begins","</start>")
 parseXMLTree(my.XML.stuff, object=TRUE)
 ```
+
 
 # Mining nodes
 
@@ -189,4 +192,21 @@ This way it's easy to get the value of all attributes or the link text. You can 
 node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="href") <- "http://example.com/foobar"
 node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="target") <- NULL
 sample.XML.tree
+```
+
+
+# Turning XML into script code
+
+There's a fancy way of generating XML nodes and trees using wrapper functions around `XMLNode()`. The function `gen_tag_functions()` takes a character vector of tag names and generates those wrappers for you in a defined environment, which by default is the current global environment. This means you can start using these wrappers right after they were created, as if you had loaded a package. For safety reasons, i.e. to not collide with existing objects, the function names have by default a trailing underscore and are not created if an object by that name already exists.
+
+```{r}
+gen_tag_functions(c("html", "head", "body", "a"))
+
+# see them in action
+(sample.XML.tree2 <- html_(
+  head_(),
+  body_(
+    a_(href="http://example.com", target="_blank", "klick here!")
+  )
+))
 ```
