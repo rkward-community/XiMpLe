@@ -35,14 +35,18 @@ So now you know. If you need a full-featured package to parse or generate XML in
 
 Basically, `XiMpLe` can do these things for you:
 
+* parse XML from files into an R object, using the `parseXMLTree()` function
+* generate XML R objects, by calling `XMLNode()` and `XMLTree()`
+* extract nodes from XML R objects, or change their content, using the `node()` method
+* write back XML files from R objects, using the `pasteXML()` method
 
-* parse XML from files into an R object, using the `parseXML()` function
-* generate XML R objects, using the functions `XMLNode()` and `XMLTree()`
-* extract nodes from XML R objects, or change their content, using the `node()` function
-* write back XML files from R objects, using the `pasteXML()` function
+That about covers it. XML nodes can of course be nested to construct complex trees. Finally, there's also some shortcuts to get the job done very efficient:
 
+* generate simple wrapper functions around `XMLNode()` to quickly script XML trees, using the `gen_tag_functions()` function
+* turn an XML object into script code using those wrapper functions, via `pasteXML(..., as_script=TRUE)`
 
-That about covers it. XML nodes can of course be nested to construct complex trees, but that's all. Let's look at some examples.
+Let's look at some examples.
+
 
 # Naming conventions
 Let's quickly explain what we'll be talking about here. If you're parsing an XML document, it will contain an **XML tree**. This tree is made up of **XML nodes**. A node is indicated by arrow brackets, *must* have a **name**, *can* have **attributes**, and is either **empty** or not. Nodes can be nested, where nodes inside a node are its **child nodes**.
