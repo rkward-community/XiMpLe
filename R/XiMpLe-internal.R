@@ -538,30 +538,37 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
         )
       )
     } else {}
-    # now we can assume the range of attribute values
-    # make it a list to keep them separated
-    # each list entry is a vector of one full attribute value
-    attr_values <- lapply(
-      1:sum(attr_on),
-      function(n){
-        which(attr_on)[n]:which(attr_off)[n]
-      }
-    )
-    # right before each attribute value should be the attribute's name
-    attr_names <- sapply(
-      attr_values,
-      function(val){
-        if(val[1] < 2){
-          stop(simpleError("I've detected an attribute value without an attribute name!"))
-        } else {
-          arg_name_n <- val[1] - 1
+    if(sum(attr_on, attr_off) > 0){
+      # now we can assume the range of attribute values
+      # make it a list to keep them separated
+      # each list entry is a vector of one full attribute value
+      attr_values <- lapply(
+        1:sum(attr_on),
+        function(n){
+          which(attr_on)[n]:which(attr_off)[n]
         }
-        if(!isTRUE(grepl("[-_:[:alnum:]]", attr_tokens[arg_name_n]))){
-          warning(paste0("This attribute name might be invalid, please check: \"", attr_tokens[arg_name_n], "\""), call.=FALSE)
-        } else {}
-        return(arg_name_n)
-      }
-    )
+      )
+      # right before each attribute value should be the attribute's name
+      attr_names <- sapply(
+        attr_values,
+        function(val){
+          if(val[1] < 2){
+            stop(simpleError("I've detected an attribute value without an attribute name!"))
+          } else {
+            arg_name_n <- val[1] - 1
+          }
+          if(!isTRUE(grepl("[-_:[:alnum:]]", attr_tokens[arg_name_n]))){
+            warning(paste0("This attribute name might be invalid, please check: \"", attr_tokens[arg_name_n], "\""), call.=FALSE)
+          } else {}
+          return(arg_name_n)
+        }
+      )
+    } else {
+      # only empty attributes?
+      attr_values <- list()
+      attr_names <- attr_tokens
+    }
+
     # for safety reasons, consider putting arg names in quotes when non alphanumeric strings are used
     non_alnum_names <- grepl("[^[:alnum:]]", attr_tokens[attr_names])
     if(any(non_alnum_names)){
@@ -574,7 +581,7 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
     if(length(attr_unknown) > 0){
       attr_unknown <- attr_unknown[!grepl("^[[:space:]]+$", attr_tokens[attr_unknown])]
       if(length(attr_unknown) > 0){
-        # set s/t value for empty attribute
+        # set value for empty attribute
         attr_tokens <- unlist(sapply(
           tokens_n,
           function(n){
@@ -590,7 +597,7 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
           }
         ))
         # recalculate attr_off
-        attr_off <- grepl("^[[:space:]]*\"[[:space:]]*$", attr_tokens)
+        attr_off <- grepl("^[[:space:]]*\"[[:space:]]*$|^[[:space:]]*=character\\(\\)[[:space:]]*$", attr_tokens)
       } else {}
     } else {}
     # all but the last value closing will need a comma separator
@@ -610,15 +617,16 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
 ## function parseXMLAttr()
 # takes a whole XML tag and returns a named list with its attributes
 parseXMLAttr <- function(tag, drop_empty_tags=FALSE){
-  if(XML.doctype(tag)){
-    stripped.tag <- gsub("<!((?i)DOCTYPE)[[:space:]]+([^[:space:]]+)[[:space:]]*([^\"[:space:]]*)[[:space:]]*.*>",
-      "doctype=\"\\2\", decl=\"\\3\"", tag)
-    stripped.tag2 <- eval(parse(text=paste("c(",gsub("[^\"]*[\"]?([^\"]*)[\"]?[^\"]*", "\"\\1\",", tag),"NULL)")))
-    is.dtd <- grepl("\\.dtd", stripped.tag2)
-    doct.decl <- ifelse(sum(!is.dtd) > 0, paste0(stripped.tag2[!is.dtd][1]), paste0(""))
-    doct.ref <- ifelse(sum(is.dtd) > 0, paste0(stripped.tag2[is.dtd][1]), paste0(""))
-    parsed.list <- eval(parse(text=paste0("list(", stripped.tag, ", id=\"", doct.decl,"\"", ", refer=\"", doct.ref,"\")")))
-  } else if(XML.endTag(tag) | XML.comment(tag) | XML.cdata(tag)){
+#   if(XML.doctype(tag)){
+#     stripped.tag <- gsub("<!((?i)DOCTYPE)[[:space:]]+([^[:space:]]+)[[:space:]]*([^\"[:space:]]*)[[:space:]]*.*>",
+#       "doctype=\"\\2\", decl=\"\\3\"", tag)
+#     stripped.tag2 <- eval(parse(text=paste("c(",gsub("[^\"]*[\"]?([^\"]*)[\"]?[^\"]*", "\"\\1\",", tag),"NULL)")))
+#     is.dtd <- grepl("\\.dtd", stripped.tag2)
+#     doct.decl <- ifelse(sum(!is.dtd) > 0, paste0(stripped.tag2[!is.dtd][1]), paste0(""))
+#     doct.ref <- ifelse(sum(is.dtd) > 0, paste0(stripped.tag2[is.dtd][1]), paste0(""))
+#     parsed.list <- eval(parse(text=paste0("list(", stripped.tag, ", id=\"", doct.decl,"\"", ", refer=\"", doct.ref,"\")")))
+#   } else if(XML.endTag(tag) | XML.comment(tag) | XML.cdata(tag)){
+  if(XML.endTag(tag) | XML.comment(tag) | XML.cdata(tag)){
     # end tags, comments and CDATA don't have attributes
     parsed.list <- ""
   } else {
