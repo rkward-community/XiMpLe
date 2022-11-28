@@ -55,7 +55,7 @@ XMLTree <- function(..., xml=NULL, dtd=NULL, .children=list(...)){
   # check for text values
   all.children <- sapply(child.list(.children), function(this.child){
     if(is.character(this.child)){
-      this.child <- new("XiMpLe.node",
+      this.child <- XiMpLe_node(
           name="",
           value=this.child
         )
@@ -70,7 +70,7 @@ XMLTree <- function(..., xml=NULL, dtd=NULL, .children=list(...)){
     dtd <- list()
   } else {}
   
-  newTree <- new("XiMpLe.doc",
+  newTree <- XiMpLe_doc(
     xml=xml,
     dtd=dtd,
     children=all.children

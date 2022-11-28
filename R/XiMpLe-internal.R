@@ -878,17 +878,19 @@ XML.nodes <- function(single.tags, end.here=NA, drop_empty_tags=FALSE, start=1){
     } else {}
     # we must test for commented CDATA first, because XML.value() would be TRUE, too
     if(XML.commcdata(this.tag)){
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name="*![CDATA[",
-        value=XML.commcdata(this.tag, get=TRUE))
+        value=XML.commcdata(this.tag, get=TRUE)
+      )
       names(children)[nxt.child] <- "*![CDATA["
       tag.no <- tag.no + 1
       next
     } else {}
     if(XML.value(this.tag)){
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name="",
-        value=XML.value(this.tag, get=TRUE))
+        value=XML.value(this.tag, get=TRUE)
+      )
       names(children)[nxt.child] <- "!value!"
       tag.no <- tag.no + 1
       next
@@ -896,25 +898,28 @@ XML.nodes <- function(single.tags, end.here=NA, drop_empty_tags=FALSE, start=1){
       child.attr <- parseXMLAttr(this.tag, drop_empty_tags=drop_empty_tags)
     }
     if(XML.declaration(this.tag)){
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name=child.name,
-        attributes=child.attr)
+        attributes=child.attr
+      )
       names(children)[nxt.child] <- child.name
       tag.no <- tag.no + 1
       next
     } else {}
     if(XML.comment(this.tag)){
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name="!--",
-        value=XML.comment(this.tag, get=TRUE))
+        value=XML.comment(this.tag, get=TRUE)
+      )
       names(children)[nxt.child] <- "!--"
       tag.no <- tag.no + 1
       next
     } else {}
     if(XML.cdata(this.tag)){
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name="![CDATA[",
-        value=XML.cdata(this.tag, get=TRUE))
+        value=XML.cdata(this.tag, get=TRUE)
+      )
       names(children)[nxt.child] <- "![CDATA["
       tag.no <- tag.no + 1
       next
@@ -926,20 +931,22 @@ XML.nodes <- function(single.tags, end.here=NA, drop_empty_tags=FALSE, start=1){
     ## uncomment to debug:
     # cat(child.name, ":", tag.no, "-", child.end.tag,"\n")
       rec.nodes <- XML.nodes(single.tags.env, end.here=child.name, drop_empty_tags=drop_empty_tags, start=tag.no + 1)
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name=child.name,
         attributes=child.attr,
         children=rec.nodes$children,
         # this value will force the node to remain non-empty if it had no children,
         # it would be turned into an empty tag otherwise
-        value="")
+        value=""
+      )
       names(children)[nxt.child] <- child.name
       tag.no <- rec.nodes$tag.no + 1
       next
     } else {
-      children[[nxt.child]] <- new("XiMpLe.node",
+      children[[nxt.child]] <- XiMpLe_node(
         name=child.name,
-        attributes=child.attr)
+        attributes=child.attr
+      )
       names(children)[nxt.child] <- child.name
       tag.no <- tag.no + 1
       next
