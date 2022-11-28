@@ -21,7 +21,7 @@ pasteXML(obj, ...)
   tidy.omit = c("![CDATA[", "*![CDATA["),
   as_script = FALSE,
   func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_",
-    `!DOCTYPE` = "DOCTYPE_")
+    `!DOCTYPE_` = "DOCTYPE_")
 )
 
 \S4method{pasteXML}{XiMpLe.doc}(
@@ -32,7 +32,7 @@ pasteXML(obj, ...)
   tidy.omit = c("![CDATA[", "*![CDATA["),
   as_script = FALSE,
   func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_",
-    `!DOCTYPE` = "DOCTYPE_")
+    `!DOCTYPE_` = "DOCTYPE_")
 )
 }
 \arguments{

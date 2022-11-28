@@ -81,7 +81,7 @@ pasteXMLTag <- function(
     "?xml_"="xml_",
     "!--_"="comment_",
     "![CDATA[_"="CDATA_",
-    "!DOCTYPE"="DOCTYPE_"
+    "!DOCTYPE_"="DOCTYPE_"
   )
 ){
   # what attributes do we have?
@@ -175,6 +175,33 @@ pasteXMLTag <- function(
         indent.by=indent.by,
         shine=shine,
         space_child=TRUE
+      )
+    }
+  } else if(identical(tag, "!DOCTYPE")){
+    # clean up value if needed
+    if(!is.null(child)){
+      stop(simpleError("A DOCTYPE definition must not have child nodes!"))
+    } else {}
+    if(isTRUE(as_script)){
+      full.tag <- paste_shine(
+        start=paste0(func_name, "("),
+        end="",
+        attrs=all.attributes,
+        close=")",
+        level=level,
+        indent.by=indent.by,
+        shine=shine,
+        as_script=TRUE
+      )
+    } else {
+      full.tag <- paste_shine(
+        start="<!DOCTYPE",
+        end=">",
+        attrs=all.attributes,
+        level=level,
+        indent.by=indent.by,
+        shine=shine,
+        space_attrs=TRUE
       )
     }
   } else if(identical(tag, "![CDATA[")){

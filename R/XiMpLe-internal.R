@@ -443,8 +443,18 @@ pasteXMLAttr <- function(
           } else {
             attr.name <- this.attr
           }
+          if(identical(attr[[this.attr]], character())){
+            # empty argument
+            if(isTRUE(as_script)){
+              attr_value <- "=character()"
+            } else {
+              attr_value <- ""
+            }
+          } else {
+            attr_value <- paste0("=\"", attr[[this.attr]], "\"")
+          }
           return(
-            trim(paste0(full.attr, new.attr, new.indent, attr.name, "=\"", attr[[this.attr]], "\""))
+            trim(paste0(full.attr, new.attr, new.indent, attr.name, attr_value))
           )
         }
       }
@@ -467,8 +477,17 @@ pasteXMLAttr <- function(
     } else {
       attr.name <- names(attr)
     }
-    # look up attribute name to paste
-    full.attr <- paste0(attr.name, "=\"", attr[[1]], "\"")
+    if(identical(attr[[1]], character())){
+      # empty argument
+      if(isTRUE(as_script)){
+        attr_value <- "=character()"
+      } else {
+        attr_value <- ""
+      }
+    } else {
+      attr_value <- paste0("=\"", attr[[1]], "\"")
+    }
+    full.attr <- paste0(attr.name, attr_value)
   }
   return(full.attr)
 } ## end function pasteXMLAttr()
@@ -478,7 +497,7 @@ pasteXMLAttr <- function(
 # takes a string that was separated from a tag, containing only its attributes,
 # and tries to turn it into a named list
 # drop_empty_tags: if set to TRUE, empty tags will be removed, otherwise they will
-#   get a value assigned to them simply taking their name
+#   get an empty character value assigned to them
 attr2list <- function(attr, drop_empty_tags=FALSE){
   # split into individual characters
   attr_chars <- unlist(strsplit(trim(attr), ""))
@@ -563,7 +582,7 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
               if(isTRUE(drop_empty_tags)){
                 return("")
               } else {
-                return(c(attr_tokens[n], "=\"", attr_tokens[n], "\""))
+                return(c(attr_tokens[n], "=character()"))
               }
             } else {
               return(attr_tokens[n])

@@ -18,7 +18,7 @@ pasteXMLTag(
   as_script = FALSE,
   func_name = paste0(tag, "_"),
   func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_",
-    `!DOCTYPE` = "DOCTYPE_")
+    `!DOCTYPE_` = "DOCTYPE_")
 )
 }
 \arguments{

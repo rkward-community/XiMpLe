@@ -27,7 +27,8 @@
 #' @param tag_name Character string, the tag name.
 #' @param ... Optional children for the tag. Must be either objects of class XiMpLe.node or character strings,
 #'    which are treated as attributes if they are named, and as simple text values otherwise.
-#'    If this is empty, the tag will be treated as an empty tag. To force a closing tag, supply an empty
+#'    Use a named \code{character()} value for empty attributes.
+#'    If this argument is empty, the tag will be treated as an empty tag. To force a closing tag, supply an empty
 #'    string, i.e. \code{""}.
 #' @param attrs An optional named list of attributes. Will be appended to attributes already defined in
 #'    the \code{...} argument.
@@ -95,7 +96,12 @@ XMLNode <- function(
             USE.NAMES=FALSE
         )
         # force numerics into character
-        .children[dots_is_char] <- as.character(.children[dots_is_char])
+        .children[which(dots_is_char)] <- sapply(
+            which(dots_is_char),
+            function(this_dot){
+                as.character(.children[[this_dot]])
+            }
+        )
         dots_attrs <- lapply(.children[dots_is_char & !names(.children) == ""], as.character)
         # remove args from children list
         .children[dots_is_char & !names(.children) == ""] <- NULL

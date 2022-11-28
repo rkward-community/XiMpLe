@@ -35,6 +35,7 @@
 #'
 #' @slot name Name of the node (i.e., the XML tag identifier). For special names see details.
 #' @slot attributes A list of named character values, representing the attributes of this node.
+#'    Use \code{character()} as value for empty attributes.
 #' @slot children A list of further objects of class XiMpLe.node, representing child nodes of this node.
 #' @slot value Plain text to be used as the enclosed value of this node. Set to \code{value=""} if you
 #'    want a childless node to be forced into an non-empty pair of start and end tags by \code{\link[XiMpLe:pasteXMLNode]{pasteXMLNode}}.
