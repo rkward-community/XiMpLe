@@ -43,7 +43,11 @@
 #' sample.XML.object <- parseXMLTree("~/data/sample_file.xml")
 #' }
 
-parseXMLTree <- function(file, drop=NULL, object=FALSE){
+parseXMLTree <- function(
+  file,
+  drop=NULL,
+  object=FALSE
+){
   if(isTRUE(object)){
     xml.raw <- paste(file, collapse="\n")
     filePath <- "object"
@@ -90,11 +94,12 @@ parseXMLTree <- function(file, drop=NULL, object=FALSE){
   # try to iterate through the single tags
   children <- XML.nodes(single.tags, drop_empty_tags=isTRUE("empty_attributes" %in% drop))[["children"]]
   
-  results <- new("XiMpLe.doc",
+  results <- XiMpLe_doc(
     file=filePath,
     xml=XML.decl,
     dtd=XML.doct,
-    children=children)
+    children=children
+  )
   
   return(results)
 }

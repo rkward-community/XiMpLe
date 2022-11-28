@@ -127,7 +127,7 @@ XMLNode <- function(
         # check for text values
         all_children <- lapply(child.list(.children), function(this_chld){
                 if(is.character(this_chld)){
-                    this_chld <- new("XiMpLe.node",
+                    this_chld <- XiMpLe_node(
                         name="",
                         value=this_chld
                     )
@@ -139,7 +139,7 @@ XMLNode <- function(
         value <- character()
     }
 
-    newNode <- new("XiMpLe.node",
+    newNode <- XiMpLe_node(
         name=tag_name,
         attributes=attrs,
         children=all_children,
