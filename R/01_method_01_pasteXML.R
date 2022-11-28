@@ -235,16 +235,47 @@ setMethod("pasteXML",
       )), collapse="")
     } else {}
 
-    if(any(nchar(unlist(tree.doctype)) > 0)) {
-      doc.doctype <- paste("<!DOCTYPE", tree.doctype[["doctype"]], tree.doctype[["decl"]], sep=" ")
-      for (elmt in c("id", "refer")){
-        if(length(tree.doctype[[elmt]]) > 0) {
-          if(nchar(tree.doctype[[elmt]]) > 0){
-            doc.doctype <- paste0(doc.doctype, " \"",tree.doctype[[elmt]], "\"")
-          } else {}
+#     if(any(nchar(unlist(tree.doctype)) > 0)) {
+#       doc.doctype <- paste("<!DOCTYPE", tree.doctype[["doctype"]], tree.doctype[["decl"]], sep=" ")
+#       for (elmt in c("id", "refer")){
+#         if(length(tree.doctype[[elmt]]) > 0) {
+#           if(nchar(tree.doctype[[elmt]]) > 0){
+#             doc.doctype <- paste0(doc.doctype, " \"",tree.doctype[[elmt]], "\"")
+#           } else {}
+#         } else {}
+#       }
+#       doc.doctype <- paste0(doc.doctype, ">", new.node)
+    if(length(tree.doctype) > 0) {
+      if(any(c("doctype", "decl", "id", "refer") %in% names(tree.doctype))){
+        # convert old syntax
+        doc.doctype.attrs <- list()
+        if(isTRUE("doctype" %in% names(tree.doctype))){
+          doc.doctype.attrs[[tree.doctype[["doctype"]]]] <- character()
         } else {}
-      }
-      doc.doctype <- paste0(doc.doctype, ">", new.node)
+        if(isTRUE("decl" %in% names(tree.doctype))){
+          doc.doctype.attrs[[tree.doctype[["decl"]]]] <- character()
+        } else {}
+        if(isTRUE("id" %in% names(tree.doctype))){
+          doc.doctype.attrs[[paste0("\"", tree.doctype[["id"]], "\"")]] <- character()
+        } else {}
+        if(isTRUE("refer" %in% names(tree.doctype))){
+          doc.doctype.attrs[[paste0("\"", tree.doctype[["refer"]], "\"")]] <- character()
+        } else {}
+        tree.doctype <- doc.doctype.attrs
+      } else {}
+      doc.doctype <- pasteXML(
+        XMLNode(
+          "!DOCTYPE",
+          attrs=tree.doctype
+        ),
+        level=1,
+        shine=shine,
+        indent.by=indent.by,
+        tidy=tidy,
+        tidy.omit=tidy.omit,
+        as_script=as_script,
+        func_rename=func_rename
+      )
     } else {
       doc.doctype <- ""
     }

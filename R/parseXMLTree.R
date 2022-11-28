@@ -89,7 +89,7 @@ parseXMLTree <- function(
     XML.doct <- parseXMLAttr(single.tags[1], drop_empty_tags=isTRUE("empty_attributes" %in% drop))
     single.tags <- single.tags[-1]
   } else {
-    XML.doct <- list(doctype="", id="", decl="", refer="")
+    XML.doct <- list()
   }
   # try to iterate through the single tags
   children <- XML.nodes(single.tags, drop_empty_tags=isTRUE("empty_attributes" %in% drop))[["children"]]
