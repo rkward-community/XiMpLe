@@ -41,7 +41,8 @@ A contructor function \code{XiMpLe_node(...)} is available to be used instead of
       the XML tag identifier). For special names see details.}
 
 \item{\code{attributes}}{A list of named character values,
-      representing the attributes of this node.}
+      representing the attributes of this node.
+Use \code{character()} as value for empty attributes.}
 
 \item{\code{children}}{A list of further objects of class XiMpLe.node,
       representing child nodes of this node.}

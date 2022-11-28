@@ -66,14 +66,15 @@ gen_tag_functions <- function(
         "?xml_"="xml_",
         "!--_"="comment_",
         "![CDATA[_"="CDATA_",
-        "!DOCTYPE"="DOCTYPE_"
+        "!DOCTYPE_"="DOCTYPE_"
     )
 ){
     tags <- unique(tags)
     func_names <- unique(func_names)
     func_name_rename <- names(func_rename) %in% func_names
     if(any(func_name_rename)){
-        func_names[func_names %in% names(func_rename)[func_name_rename]] <- func_rename[func_name_rename]
+        renamable <- which(func_names %in% names(func_rename)[func_name_rename])
+        func_names[renamable] <- func_rename[func_names[renamable]]
     } else {}
     if(!identical(length(tags), length(func_names))){
         stop(simpleError("'tags' must be the same length as 'func_names' (unique values)!"))

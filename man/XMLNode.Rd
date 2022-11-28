@@ -18,8 +18,9 @@ XMLNode(
 
 \item{...}{Optional children for the tag. Must be either objects of class XiMpLe.node or character strings,
 which are treated as attributes if they are named, and as simple text values otherwise.
-If this is empty, the tag will be treated as an empty tag. To force a closing tag,
-      supply an empty
+Use a named \code{character()} value for empty attributes.
+If this argument is empty,
+      the tag will be treated as an empty tag. To force a closing tag, supply an empty
 string, i.e. \code{""}.}
 
 \item{attrs}{An optional named list of attributes. Will be appended to attributes already defined in

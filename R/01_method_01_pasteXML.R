@@ -79,7 +79,7 @@ setMethod("pasteXML",
       "?xml_"="xml_",
       "!--_"="comment_",
       "![CDATA[_"="CDATA_",
-      "!DOCTYPE"="DOCTYPE_"
+      "!DOCTYPE_"="DOCTYPE_"
     )
   ){
     if(isTRUE(as_script)){
@@ -192,7 +192,7 @@ setMethod("pasteXML",
       "?xml_"="xml_",
       "!--_"="comment_",
       "![CDATA[_"="CDATA_",
-      "!DOCTYPE"="DOCTYPE_"
+      "!DOCTYPE_"="DOCTYPE_"
     )
   ){
     filename <- slot(obj, "file")
