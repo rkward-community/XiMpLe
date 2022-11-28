@@ -52,6 +52,11 @@ gen_tag_functions(tags=c("a", "div", "p"))
 
 # It also works for nested tags:
 (my_node3 <- div_(a_(href="foo", "some content")))
+
+# if you don't want these functions filling up your .GlobalEnv,
+# you can also put them in an attached environment, e.g.
+attach(list(), name="XiMpLe_wrappers")
+gen_tag_functions(tags=c("head", "body"), envir=as.environment("XiMpLe_wrappers"))
 }
 \seealso{
 \code{\link[XiMpLe:XMLNode]{XMLNode}},

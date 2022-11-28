@@ -1,4 +1,4 @@
-## ---- include=FALSE, cache=FALSE----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ---- include=FALSE, cache=FALSE---------------------------------------------------
 library(XiMpLe)
 
 ## ---- set-options, echo=FALSE, cache=FALSE-----------------------------------------
@@ -60,4 +60,22 @@ node(sample.XML.tree, node=list("html","body","a"), what="value")
 node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="href") <- "http://example.com/foobar"
 node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="target") <- NULL
 sample.XML.tree
+
+## ----------------------------------------------------------------------------------
+gen_tag_functions(c("html", "head", "body", "a"))
+
+# see them in action
+(sample.XML.tree2 <- html_(
+  head_(),
+  body_(
+    a_(href="http://example.com", target="_blank", "klick here!")
+  )
+))
+
+## ----------------------------------------------------------------------------------
+attach(list(), name="XiMpLe_wrappers")
+gen_tag_functions(tags=c("p", "div"), envir=as.environment("XiMpLe_wrappers"))
+
+## ----------------------------------------------------------------------------------
+cat(pasteXML(sample.XML.tree2, as_script=TRUE))
 
