@@ -3,6 +3,7 @@
 \docType{class}
 \name{XiMpLe.node,-class}
 \alias{XiMpLe.node,-class}
+\alias{XiMpLe_node}
 \alias{XiMpLe.node-class}
 \alias{is.XiMpLe.node}
 \title{Class XiMpLe.node}
@@ -29,6 +30,9 @@ There are certain special values predefined for the \code{name} slot to easily c
       where the CDATA markers are
       commented out by \code{/* */}, as is used for JavaScript in XHTML.}
 }
+
+A contructor function \code{XiMpLe_node(...)} is available to be used instead of \code{new("XiMpLe.node",
+      ...)}.
 }
 \section{Slots}{
 

@@ -9,7 +9,8 @@ gen_tag_functions(
   func_names = paste0(tags, "_"),
   envir = .GlobalEnv,
   replace = FALSE,
-  func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_")
+  func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_",
+    `!DOCTYPE` = "DOCTYPE_")
 )
 }
 \arguments{

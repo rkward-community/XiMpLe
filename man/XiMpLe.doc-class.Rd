@@ -3,6 +3,7 @@
 \docType{class}
 \name{XiMpLe.doc,-class}
 \alias{XiMpLe.doc,-class}
+\alias{XiMpLe_doc}
 \alias{XiMpLe.doc-class}
 \alias{is.XiMpLe.doc}
 \title{Class XiMpLe.doc}
@@ -14,6 +15,10 @@ is.XiMpLe.doc(x)
 }
 \description{
 This class is used for objects that are returned by \code{\link[XiMpLe:parseXMLTree]{parseXMLTree}}.
+}
+\details{
+A contructor function \code{XiMpLe_doc(...)} is available to be used instead of \code{new("XiMpLe.doc",
+      ...)}.
 }
 \section{Slots}{
 

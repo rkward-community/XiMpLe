@@ -80,7 +80,8 @@ pasteXMLTag <- function(
   func_rename=c(
     "?xml_"="xml_",
     "!--_"="comment_",
-    "![CDATA[_"="CDATA_"
+    "![CDATA[_"="CDATA_",
+    "!DOCTYPE"="DOCTYPE_"
   )
 ){
   # what attributes do we have?

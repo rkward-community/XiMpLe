@@ -1,6 +1,6 @@
 ChangeLog for package XiMpLe
 
-changes in version 0.11-1 (2022-11-17)
+changes in version 0.11-1 (2022-11-28)
 unreleased:
   - this release is under development
 breaking:
@@ -19,6 +19,8 @@ changed:
     you can use the new drop="empty_attributes" option
   - pasteXML()/pasteXMLTag(): re-wrote most oft the pasting routine
     resulting in better formatted output
+  - XMLValidity(): constructor function is now directly derived from the
+    class definition instead of a separate function/file
 added:
   - gen_tag_functions(): generate shortcut functions to create XML tags
     with less typing and better readability of your code
@@ -32,6 +34,8 @@ added:
     and make an initial script with pasteXML(as_script=TRUE)
   - you can now define the default indentation character by setting the
     global option "XiMpLe_indent"
+  - XiMpLe_node()/XiMpLe_doc(): new constructor functions to be used
+    instead of new("XiMpLe.node")/new("XiMpLe.doc")
 
 changes in version 0.10-3 (2020-09-19)
 fixed:

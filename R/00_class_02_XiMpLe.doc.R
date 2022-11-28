@@ -1,4 +1,4 @@
-# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -20,6 +20,8 @@
 #'
 #' This class is used for objects that are returned by \code{\link[XiMpLe:parseXMLTree]{parseXMLTree}}.
 #'
+#' A contructor function \code{XiMpLe_doc(...)} is available to be used instead of \code{new("XiMpLe.doc", ...)}.
+#'
 #' @slot file Character string, Name of the file.
 #' @slot xml Either a named list of character values (attributes for the XML declaration of the file),
 #'    or a list of XiMpLe.nodes with tags whose names must start with a "?".
@@ -31,9 +33,10 @@
 #' @import methods
 #' @keywords classes
 #' @rdname XiMpLe.doc-class
-#' @export
+#' @export XiMpLe_doc
+#' @exportClass XiMpLe.doc
 
-setClass("XiMpLe.doc",
+XiMpLe_doc <- setClass("XiMpLe.doc",
   representation=representation(
     file="character",
     xml="list",
