@@ -1,13 +1,12 @@
 Package: XiMpLe
 Type: Package
 Title: A Simple XML Tree Parser and Generator
-Description: Provides a simple XML tree parser/generator. It includes
-        functions to read XML files into R objects, get information out of
-        and into nodes, and write R objects back to XML code. It's not as
-        powerful as the 'XML' package and doesn't aim to be, but for simple
-        XML handling it could be useful. It was originally developed for
-        the R GUI and IDE 'RKWard' <https://rkward.kde.org>, to make plugin
-        development easier.
+Description: Provides a simple XML tree parser/generator. It includes functions to read
+          XML files into R objects, get information out of and into nodes, and write R
+          objects back to XML code. It's not as powerful as the 'XML' package and doesn't
+          aim to be, but for simple XML handling it could be useful. It was originally
+          developed for the R GUI and IDE 'RKWard' <https://rkward.kde.org>, to make
+          plugin development easier.
 Author: Meik Michalke [aut, cre]
 Maintainer: Meik Michalke <meik.michalke@hhu.de>
 Depends: R (>= 2.9.0)
@@ -19,8 +18,8 @@ BugReports: https://github.com/rkward-community/XiMpLe/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyLoad: yes
-Authors@R: c(person(given="Meik", family="Michalke",
-        email="meik.michalke@hhu.de", role=c("aut", "cre")))
+Authors@R: c(person(given="Meik", family="Michalke", email="meik.michalke@hhu.de",
+          role=c("aut", "cre")))
 Version: 0.11-1
 Date: 2022-11-28
 RoxygenNote: 7.2.2
@@ -36,7 +35,6 @@ Collate:
     '01_method_05_XMLgenerators.R'
     'XMLNode.R'
     'XMLTree.R'
-    'XMLValidity.R'
     'XiMpLe-package.R'
     'gen_tag_functions.R'
     'parseXMLTree.R'

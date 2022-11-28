@@ -20,7 +20,7 @@
 #'
 #' Used for objects that describe valid child nodes and attributes of XiMpLe.nodes.
 #' 
-#' You should use \code{\link[XiMpLe:XMLValidity]{XMLValidity}} to create objects of this class.
+#' A contructor function \code{XMLValidity(...)} is available to be used instead of \code{new("XiMpLe.validity", ...)}.
 #'
 #' @slot children Named list of vectors or XiMpLe.validity objects. The element name defines the parent node
 #'    name and each character string a valid child node name. If a value is in turn of class XiMpLe.validity,
@@ -36,9 +36,10 @@
 #' @import methods
 #' @keywords classes
 #' @seealso
-#'    \code{\link[XiMpLe:XMLValidity]{XMLValidity}},
 #'    \code{\link[XiMpLe:validXML]{validXML}}
 #' @rdname XiMpLe.validity-class
+#' @export XMLValidity
+#' @exportClass XiMpLe.validity
 #' @examples
 #' HTMLish <- XMLValidity(
 #'    children=list(
@@ -78,9 +79,8 @@
 #'      b=c("bar")
 #'    )
 #'  )
-#' @export
 
-setClass("XiMpLe.validity",
+XMLValidity <- setClass("XiMpLe.validity",
   representation=representation(
     children="list",
     attrs="list",

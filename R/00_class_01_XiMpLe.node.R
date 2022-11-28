@@ -1,4 +1,4 @@
-# Copyright 2011-2017 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -31,6 +31,8 @@
 #'       commented out by \code{/* */}, as is used for JavaScript in XHTML.}
 #' }
 #'
+#' A contructor function \code{XiMpLe_node(...)} is available to be used instead of \code{new("XiMpLe.node", ...)}.
+#'
 #' @slot name Name of the node (i.e., the XML tag identifier). For special names see details.
 #' @slot attributes A list of named character values, representing the attributes of this node.
 #' @slot children A list of further objects of class XiMpLe.node, representing child nodes of this node.
@@ -41,9 +43,10 @@
 #' @import methods
 #' @keywords classes
 #' @rdname XiMpLe.node-class
-#' @export
+#' @export XiMpLe_node
+#' @exportClass XiMpLe.node
 
-setClass("XiMpLe.node",
+XiMpLe_node <- setClass("XiMpLe.node",
   representation=representation(
     name="character",
     attributes="list",

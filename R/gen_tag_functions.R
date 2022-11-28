@@ -65,7 +65,8 @@ gen_tag_functions <- function(
     func_rename=c(
         "?xml_"="xml_",
         "!--_"="comment_",
-        "![CDATA[_"="CDATA_"
+        "![CDATA[_"="CDATA_",
+        "!DOCTYPE"="DOCTYPE_"
     )
 ){
     tags <- unique(tags)
