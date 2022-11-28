@@ -195,7 +195,7 @@ sample.XML.tree
 ```
 
 
-# Turning XML into script code
+# Less typing with wrappers
 
 There's a fancy way of generating XML nodes and trees using wrapper functions around `XMLNode()`. The function `gen_tag_functions()` takes a character vector of tag names and generates those wrappers for you in a defined environment, which by default is the current global environment. This means you can start using these wrappers right after they were created, as if you had loaded a package. For safety reasons, i.e. to not collide with existing objects, the function names have by default a trailing underscore and are not created if an object by that name already exists.
 
@@ -210,3 +210,26 @@ gen_tag_functions(c("html", "head", "body", "a"))
   )
 ))
 ```
+
+If you don't want these functions filling up your `.GlobalEnv`, you can also put them in an attached environment.
+Let's call it `XiMpLe_wrappers`:
+
+```{r}
+attach(list(), name="XiMpLe_wrappers")
+gen_tag_functions(tags=c("p", "div"), envir=as.environment("XiMpLe_wrappers"))
+```
+
+Since the evironment is in the search path, you should be able to call the functions directly as well.
+
+
+# Turning XML into script code
+
+The already introduced method `pasteXML()` usually shows you the nexted R objects as XML code. But it is also capable of turning them into script code that uses the syntax of the wrapper functions we have just created. To get this, simply use `as_script=TRUE`:
+
+```{r}
+cat(pasteXML(sample.XML.tree2, as_script=TRUE))
+```
+
+A use case for this might be existing XML documents tht you would like to maintain with R scripts. You can first import the documents with `parseXMLTree()` and then have `pasteXML()` turn it into scripts that would generate the same XML code in return.
+
+Be aware that the code generated might not always run out of the box. Obviously, you'll have to create the needed wrapper functions. Some XML nodes might be skipped if the parser doesn't fully understand them, and the code will be as nested as the input. However, it it's probably a good start saving you a lot of time anyway.

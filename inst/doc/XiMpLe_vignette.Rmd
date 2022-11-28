@@ -27,7 +27,7 @@ Before I even begin, I would like to stress that `XiMpLe` can *not* replace the 
 
 Historically, this package was written for exactly one purpose: I wanted to be able to read and write the XML documents of [RKWard](https://rkward.kde.org), because I was about to write an R package for scripting plugins for this R GUI. I actually had started another project shortly before, using the `XML` package as a dependency, but soon got complaints from Windows users. As it turned out, that package was not available for Windows, because somehow it couldn't be built automatically. When I realised that I only needed a small subset of its features anyway, I figured it might be easiest to quickly implement those features myself.
 
-Instead of hiding them in the internals of what eventually became the [rkwarddev](https://files.kde.org/rkward/R/pckg/rkwarddev) package, I then started working on this package first. And well, "quickly" was rather optimistic... but since I'm happily using `XiMpLe` in other packages as well (like [roxyPackage](https://reaktanz.de/?c=hacking\&s=roxyPackage)), I'm satisfied it was worth it.
+Instead of hiding them in the internals of what eventually became the [rkwarddev](https://files.kde.org/rkward/R/pckg/rkwarddev/) package, I then started working on this package first. And well, "quickly" was rather optimistic... but since I'm happily using `XiMpLe` in other packages as well (like [roxyPackage](https://reaktanz.de/?c=hacking\&s=roxyPackage)), I'm satisfied it was worth it.
 
 So now you know. If you need a full-featured package to parse or generate XML in R, try the `XML` package. Otherwise, keep on reading.
 
@@ -35,14 +35,18 @@ So now you know. If you need a full-featured package to parse or generate XML in
 
 Basically, `XiMpLe` can do these things for you:
 
+* parse XML from files into an R object, using the `parseXMLTree()` function
+* generate XML R objects, by calling `XMLNode()` and `XMLTree()`
+* extract nodes from XML R objects, or change their content, using the `node()` method
+* write back XML files from R objects, using the `pasteXML()` method
 
-* parse XML from files into an R object, using the `parseXML()` function
-* generate XML R objects, using the functions `XMLNode()` and `XMLTree()`
-* extract nodes from XML R objects, or change their content, using the `node()` function
-* write back XML files from R objects, using the `pasteXML()` function
+That about covers it. XML nodes can of course be nested to construct complex trees. Finally, there's also some shortcuts to get the job done very efficient:
 
+* generate simple wrapper functions around `XMLNode()` to quickly script XML trees, using the `gen_tag_functions()` function
+* turn an XML object into script code using those wrapper functions, via `pasteXML(..., as_script=TRUE)`
 
-That about covers it. XML nodes can of course be nested to construct complex trees, but that's all. Let's look at some examples.
+Let's look at some examples.
+
 
 # Naming conventions
 Let's quickly explain what we'll be talking about here. If you're parsing an XML document, it will contain an **XML tree**. This tree is made up of **XML nodes**. A node is indicated by arrow brackets, *must* have a **name**, *can* have **attributes**, and is either **empty** or not. Nodes can be nested, where nodes inside a node are its **child nodes**.
@@ -131,6 +135,7 @@ sample.XML.html <- XMLNode("html", XMLNode("head", ""), sample.XML.body)
 
 It should be noted, however, that `XiMpLe` doesn't perform even the slightest checks on what you provide as `DOCTYPE` or `xml` attributes.
 
+
 # Writing XML files
 
 We've learned earlier that `XiMpLe` objects do not contain the actual XML code. If you would like to write the XML code to a file, you should use `pasteXML()`, which will translate the R objects into a character string:
@@ -149,6 +154,7 @@ cat(pasteXML(sample.XML.tree), file="example.html")
 
 And that's it. The method `pasteXML()` has some arguments to configure the output, like `shine`, which sets the level of code formatting. If you set `shine=0`, no formatting is done, not even newlines.
 
+
 # Reading XML files
 
 We've also just created an example file we can read back in, to see how XML parsing looks like with `XiMpLe`:
@@ -164,6 +170,7 @@ sample.XML.parsed <- parseXMLTree("example.html")
 my.XML.stuff <- c("<start>here it begins","</start>")
 parseXMLTree(my.XML.stuff, object=TRUE)
 ```
+
 
 # Mining nodes
 
@@ -186,3 +193,43 @@ node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="
 node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="target") <- NULL
 sample.XML.tree
 ```
+
+
+# Less typing with wrappers
+
+There's a fancy way of generating XML nodes and trees using wrapper functions around `XMLNode()`. The function `gen_tag_functions()` takes a character vector of tag names and generates those wrappers for you in a defined environment, which by default is the current global environment. This means you can start using these wrappers right after they were created, as if you had loaded a package. For safety reasons, i.e. to not collide with existing objects, the function names have by default a trailing underscore and are not created if an object by that name already exists.
+
+```{r}
+gen_tag_functions(c("html", "head", "body", "a"))
+
+# see them in action
+(sample.XML.tree2 <- html_(
+  head_(),
+  body_(
+    a_(href="http://example.com", target="_blank", "klick here!")
+  )
+))
+```
+
+If you don't want these functions filling up your `.GlobalEnv`, you can also put them in an attached environment.
+Let's call it `XiMpLe_wrappers`:
+
+```{r}
+attach(list(), name="XiMpLe_wrappers")
+gen_tag_functions(tags=c("p", "div"), envir=as.environment("XiMpLe_wrappers"))
+```
+
+Since the evironment is in the search path, you should be able to call the functions directly as well.
+
+
+# Turning XML into script code
+
+The already introduced method `pasteXML()` usually shows you the nexted R objects as XML code. But it is also capable of turning them into script code that uses the syntax of the wrapper functions we have just created. To get this, simply use `as_script=TRUE`:
+
+```{r}
+cat(pasteXML(sample.XML.tree2, as_script=TRUE))
+```
+
+A use case for this might be existing XML documents tht you would like to maintain with R scripts. You can first import the documents with `parseXMLTree()` and then have `pasteXML()` turn it into scripts that would generate the same XML code in return.
+
+Be aware that the code generated might not always run out of the box. Obviously, you'll have to create the needed wrapper functions. Some XML nodes might be skipped if the parser doesn't fully understand them, and the code will be as nested as the input. However, it it's probably a good start saving you a lot of time anyway.
