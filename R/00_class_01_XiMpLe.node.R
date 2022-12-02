@@ -39,6 +39,8 @@
 #' @slot children A list of further objects of class XiMpLe.node, representing child nodes of this node.
 #' @slot value Plain text to be used as the enclosed value of this node. Set to \code{value=""} if you
 #'    want a childless node to be forced into an non-empty pair of start and end tags by \code{\link[XiMpLe:pasteXMLNode]{pasteXMLNode}}.
+#' @slot shine A numeric integer value between 0 and 2, overwriting the \code{shine} value of, e.g., \code{\link[XiMpLe:pasteXML]{pasteXML}}
+#'    for this particular node.
 #' @name XiMpLe.node,-class
 #' @aliases XiMpLe.node-class XiMpLe.node,-class
 #' @import methods
@@ -52,13 +54,15 @@ XiMpLe_node <- setClass("XiMpLe.node",
     name="character",
     attributes="list",
     children="list",
-    value="character"
+    value="character",
+    shine="numeric"
   ),
   prototype(
     name=character(),
     attributes=list(),
     children=list(),
-    value=character()
+    value=character(),
+    shine=numeric()
   )
 )
 

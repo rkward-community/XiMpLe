@@ -32,6 +32,8 @@
 #'    string, i.e. \code{""}.
 #' @param attrs An optional named list of attributes. Will be appended to attributes already defined in
 #'    the \code{...} argument.
+#' @param shine A numeric integer value between 0 and 2, overwriting the \code{shine} value of, e.g., \code{\link[XiMpLe:pasteXML]{pasteXML}}
+#'    for this particular node.
 #' @param namespace Currently ignored.
 #' @param namespaceDefinitions Currently ignored.
 #' @param .children Alternative way of specifying children, if you have them already as a list.
@@ -69,8 +71,9 @@ XMLNode <- function(
     tag_name,
     ...,
     attrs,
-    namespace="",
-    namespaceDefinitions=NULL,
+    shine,
+    namespace,
+    namespaceDefinitions,
     .children=list(...)
 ){
     # check if this might be old code not aware of the "tag_name" argument,
@@ -117,6 +120,10 @@ XMLNode <- function(
         attrs <- append(dots_attrs, as.list(attrs))
     }
 
+    if(missing(shine)){
+        shine <- numeric()
+    } else {}
+
     all_children <- list()
 
     # text node?
@@ -149,7 +156,8 @@ XMLNode <- function(
         name=tag_name,
         attributes=attrs,
         children=all_children,
-        value=value
+        value=value,
+        shine=shine
     )
 
     return(newNode)
