@@ -8,8 +8,9 @@ XMLNode(
   tag_name,
   ...,
   attrs,
-  namespace = "",
-  namespaceDefinitions = NULL,
+  shine,
+  namespace,
+  namespaceDefinitions,
   .children = list(...)
 )
 }
@@ -25,6 +26,10 @@ string, i.e. \code{""}.}
 
 \item{attrs}{An optional named list of attributes. Will be appended to attributes already defined in
 the \code{...} argument.}
+
+\item{shine}{A numeric integer value between 0 and 2,
+      overwriting the \code{shine} value of, e.g., \code{\link[XiMpLe:pasteXML]{pasteXML}}
+for this particular node.}
 
 \item{namespace}{Currently ignored.}
 

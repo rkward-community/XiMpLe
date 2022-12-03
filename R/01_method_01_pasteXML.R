@@ -87,31 +87,33 @@ setMethod("pasteXML",
     } else {
       next_sep <- ""
     }
-    new.indent <- ifelse(shine > 0, indent(level+1, by=indent.by), "")
-    new.node   <- ifelse(shine > 0, paste0(next_sep, "\n"), paste0(next_sep, " "))
+    new_indent <- ifelse(shine > 0, indent(level+1, by=indent.by), "")
+    new_node   <- ifelse(shine > 0, paste0(next_sep, "\n"), paste0(next_sep, " "))
 
     # get the slot contents
-    node.name <- slot(obj, "name")
-    node.attr <- slot(obj, "attributes")
-    node.chld <- slot(obj, "children")
-    node.val  <- slot(obj, "value")
+    node_name <- slot(obj, "name")
+    node_attr <- slot(obj, "attributes")
+    node_chld <- slot(obj, "children")
+    node_val  <- slot(obj, "value")
 
-    if(!length(node.attr) > 0){
-      node.attr <- NULL
+    if(!length(node_attr) > 0){
+      node_attr <- NULL
     } else {}
 
-    if(length(node.chld) > 0){
-      node.chld <- paste0(unlist(sapply(
-        node.chld,
-        function(this.node){
-          if(slot(this.node, "name") %in% tidy.omit){
+    if(length(node_chld) > 0){
+      # check for shine overwrites, pass it down to children
+      shine_override <- slot(obj, "shine")
+      node_chld <- paste0(unlist(sapply(
+        node_chld,
+        function(this_node){
+          if(slot(this_node, "name") %in% tidy.omit){
             tidy <- FALSE
           } else {}
-          if(slot(this.node, "name") == ""){
-            this.node.pasted <- trim(pasteXML(
-              this.node,
+          if(slot(this_node, "name") == ""){
+            this_node_pasted <- trim(pasteXML(
+              this_node,
               level=level,
-              shine=shine,
+              shine=ifelse(length(shine_override) > 0, shine_override, shine),
               indent.by=indent.by,
               tidy=tidy,
               tidy.omit=tidy.omit,
@@ -119,10 +121,10 @@ setMethod("pasteXML",
               func_rename=func_rename
             ))
           } else {
-            this.node.pasted <- trim(pasteXML(
-              this.node,
+            this_node_pasted <- trim(pasteXML(
+              this_node,
               level=(level + 1),
-              shine=shine,
+              shine=ifelse(length(shine_override) > 0, shine_override, shine),
               indent.by=indent.by,
               tidy=tidy,
               tidy.omit=tidy.omit,
@@ -130,40 +132,40 @@ setMethod("pasteXML",
               func_rename=func_rename
             ))
           }
-          return(this.node.pasted)
+          return(this_node_pasted)
         },
         USE.NAMES=FALSE
-      )), collapse=paste0(new.node, new.indent))
-      node.empty <- FALSE
+      )), collapse=paste0(new_node, new_indent))
+      node_empty <- FALSE
     } else {
-      node.chld <- NULL
-      node.empty <- TRUE
+      node_chld <- NULL
+      node_empty <- TRUE
     }
 
     # take care of text value
-    if(length(node.val) > 0){
-      node.empty <- FALSE
-      if(nchar(node.val) > 0){
-        if(all(isTRUE(tidy), !node.name %in% tidy.omit)){
-          node.val <- sapply(node.val, xml.tidy, USE.NAMES=FALSE)
+    if(length(node_val) > 0){
+      node_empty <- FALSE
+      if(nchar(node_val) > 0){
+        if(all(isTRUE(tidy), !node_name %in% tidy.omit)){
+          node_val <- sapply(node_val, xml.tidy, USE.NAMES=FALSE)
         } else {}
-        node.chld <- paste0(
-          node.chld,
+        node_chld <- paste0(
+          node_chld,
           trim(
             paste0(
-              node.val,
-              collapse=new.node
+              node_val,
+              collapse=new_node
             )
           )
         )
       } else {}
     } else {}
 
-    pasted.node <- pasteXMLTag(
-      node.name,
-      attr=node.attr,
-      child=node.chld,
-      empty=node.empty,
+    result <- pasteXMLTag(
+      node_name,
+      attr=node_attr,
+      child=node_chld,
+      empty=node_empty,
       level=level,
       allow.empty=TRUE,
       rename=NULL,
@@ -174,7 +176,7 @@ setMethod("pasteXML",
       func_rename=func_rename
     )
 
-    return(pasted.node)
+    return(result)
   }
 )
 
@@ -196,17 +198,17 @@ setMethod("pasteXML",
     )
   ){
     filename <- slot(obj, "file")
-    tree.xml <- slot(obj, "xml")
-    tree.doctype <- slot(obj, "dtd")
-    tree.nodes <- slot(obj, "children")
+    tree_xml <- slot(obj, "xml")
+    tree_doctype <- slot(obj, "dtd")
+    tree_nodes <- slot(obj, "children")
 
-    doc.xml <- ""
-    new.node <- ifelse(shine > 0, "\n", "")
-    if(all(sapply(tree.xml, is.character, USE.NAMES=FALSE))){
-      if(any(nchar(unlist(tree.xml)) > 0)) {
-        doc.xml <- pasteXMLTag(
+    doc_xml <- ""
+    new_node <- ifelse(shine > 0, "\n", "")
+    if(all(sapply(tree_xml, is.character, USE.NAMES=FALSE))){
+      if(any(nchar(unlist(tree_xml)) > 0)) {
+        doc_xml <- pasteXMLTag(
           "?xml",
-          attr=tree.xml,
+          attr=tree_xml,
           empty=TRUE,
           level=1,
           allow.empty=FALSE,
@@ -217,9 +219,9 @@ setMethod("pasteXML",
           func_rename=func_rename
         )
       } else {}
-    } else if(all(sapply(tree.xml, is.XiMpLe.node, USE.NAMES=FALSE))){
-      doc.xml <- paste0(unlist(sapply(
-        tree.xml,
+    } else if(all(sapply(tree_xml, is.XiMpLe.node, USE.NAMES=FALSE))){
+      doc_xml <- paste0(unlist(sapply(
+        tree_xml,
         function(this.decl){
           pasteXML(
             this.decl,
@@ -235,38 +237,28 @@ setMethod("pasteXML",
       )), collapse="")
     } else {}
 
-#     if(any(nchar(unlist(tree.doctype)) > 0)) {
-#       doc.doctype <- paste("<!DOCTYPE", tree.doctype[["doctype"]], tree.doctype[["decl"]], sep=" ")
-#       for (elmt in c("id", "refer")){
-#         if(length(tree.doctype[[elmt]]) > 0) {
-#           if(nchar(tree.doctype[[elmt]]) > 0){
-#             doc.doctype <- paste0(doc.doctype, " \"",tree.doctype[[elmt]], "\"")
-#           } else {}
-#         } else {}
-#       }
-#       doc.doctype <- paste0(doc.doctype, ">", new.node)
-    if(length(tree.doctype) > 0) {
-      if(any(c("doctype", "decl", "id", "refer") %in% names(tree.doctype))){
+    if(length(tree_doctype) > 0) {
+      if(any(c("doctype", "decl", "id", "refer") %in% names(tree_doctype))){
         # convert old syntax
-        doc.doctype.attrs <- list()
-        if(isTRUE("doctype" %in% names(tree.doctype))){
-          doc.doctype.attrs[[tree.doctype[["doctype"]]]] <- character()
+        doc_doctype_attrs <- list()
+        if(isTRUE("doctype" %in% names(tree_doctype))){
+          doc_doctype_attrs[[tree_doctype[["doctype"]]]] <- character()
         } else {}
-        if(isTRUE("decl" %in% names(tree.doctype))){
-          doc.doctype.attrs[[tree.doctype[["decl"]]]] <- character()
+        if(isTRUE("decl" %in% names(tree_doctype))){
+          doc_doctype_attrs[[tree_doctype[["decl"]]]] <- character()
         } else {}
-        if(isTRUE("id" %in% names(tree.doctype))){
-          doc.doctype.attrs[[paste0("\"", tree.doctype[["id"]], "\"")]] <- character()
+        if(isTRUE("id" %in% names(tree_doctype))){
+          doc_doctype_attrs[[paste0("\"", tree_doctype[["id"]], "\"")]] <- character()
         } else {}
-        if(isTRUE("refer" %in% names(tree.doctype))){
-          doc.doctype.attrs[[paste0("\"", tree.doctype[["refer"]], "\"")]] <- character()
+        if(isTRUE("refer" %in% names(tree_doctype))){
+          doc_doctype_attrs[[paste0("\"", tree_doctype[["refer"]], "\"")]] <- character()
         } else {}
-        tree.doctype <- doc.doctype.attrs
+        tree_doctype <- doc_doctype_attrs
       } else {}
-      doc.doctype <- pasteXML(
+      doc_doctype <- pasteXML(
         XMLNode(
           "!DOCTYPE",
-          attrs=tree.doctype
+          attrs=tree_doctype
         ),
         level=1,
         shine=shine,
@@ -277,16 +269,16 @@ setMethod("pasteXML",
         func_rename=func_rename
       )
     } else {
-      doc.doctype <- ""
+      doc_doctype <- ""
     }
 
-    if(length(tree.nodes) > 0) {
-      doc.nodes <- paste0(unlist(sapply(
-        tree.nodes,
-        function(this.node){
+    if(length(tree_nodes) > 0) {
+      doc_nodes <- paste0(unlist(sapply(
+        tree_nodes,
+        function(this_node){
           return(
             pasteXML(
-              this.node,
+              this_node,
               level=1,
               shine=shine,
               indent.by=indent.by,
@@ -300,10 +292,10 @@ setMethod("pasteXML",
         USE.NAMES=FALSE
       )), collapse="")
     } else {
-      doc.nodes <- ""
+      doc_nodes <- ""
     }
 
-    doc.all <- paste0(doc.xml, doc.doctype, doc.nodes, collapse="")
+    doc.all <- paste0(doc_xml, doc_doctype, doc_nodes, collapse="")
 
     return(doc.all)
   }

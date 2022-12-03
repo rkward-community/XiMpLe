@@ -49,6 +49,10 @@ Use \code{character()} as value for empty attributes.}
 
 \item{\code{value}}{Plain text to be used as the enclosed value of this node. Set to \code{value=""} if you
 want a childless node to be forced into an non-empty pair of start and end tags by \code{\link[XiMpLe:pasteXMLNode]{pasteXMLNode}}.}
+
+\item{\code{shine}}{A numeric integer value between 0 and 2,
+      overwriting the \code{shine} value of, e.g., \code{\link[XiMpLe:pasteXML]{pasteXML}}
+for this particular node.}
 }}
 
 \keyword{classes}
