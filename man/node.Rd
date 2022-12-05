@@ -52,14 +52,14 @@ node(
 ) <- value
 }
 \arguments{
-\item{obj}{An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} or
-\code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.}
+\item{obj}{An object of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}} or
+\code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}.}
 
 \item{node}{A list of node names (or their numeric values), where each element is
 the child of its previous element. duplicate matches will be returned as a list.}
 
 \item{what}{A character string,
-      must be a valid slot name of class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}, like
+      must be a valid slot name of class \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}, like
 \code{"attributes"} or \code{"value"}. If not \code{NULL},
       only that part of a node will be returned.
 There's also two special properties for this option: \code{what="@path"} will not return the
@@ -83,7 +83,7 @@ elements will be returned.}
 This method can be used to get parts of a parsed XML tree object,
       or to fill it with new values.
 
-\code{XiMpLe.XML} is a class union for objects of classes \code{XiMpLe.node} and \code{XiMpLe.doc}.
+\code{XiMpLe.XML} is a class union for objects of classes \code{XiMpLe_node} and \code{XiMpLe_doc}.
 }
 \examples{
 \dontrun{

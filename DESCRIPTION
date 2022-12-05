@@ -21,7 +21,7 @@ LazyLoad: yes
 Authors@R: c(person(given="Meik", family="Michalke", email="meik.michalke@hhu.de",
           role=c("aut", "cre")))
 Version: 0.11-1
-Date: 2022-12-03
+Date: 2022-12-05
 RoxygenNote: 7.2.2
 Collate: 
     '00_class_01_XiMpLe.node.R'

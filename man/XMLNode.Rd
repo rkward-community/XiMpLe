@@ -40,7 +40,7 @@ for this particular node.}
 This argument completely replaces values defined in the \code{...} argument.}
 }
 \value{
-An object of class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.
+An object of class \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}.
 }
 \description{
 Can be used to create XML nodes.

@@ -8,7 +8,7 @@ XMLTree(..., xml = NULL, dtd = NULL, .children = list(...))
 }
 \arguments{
 \item{...}{Optional children for the XML tree. Must be either objects of class
-\code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} or character strings,
+\code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}} or character strings,
 which are treated as simple text values.}
 
 \item{xml}{A named list, XML declaration of the XML tree. Currently just pasted,
@@ -23,7 +23,7 @@ which are treated as simple text values.}
       if you have them already as a list.}
 }
 \value{
-An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+An object of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
 }
 \description{
 Can be used to create full XML trees.

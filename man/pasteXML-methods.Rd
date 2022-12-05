@@ -7,12 +7,13 @@
 \alias{pasteXML,XiMpLe.doc-method}
 \alias{pasteXMLNode}
 \alias{pasteXMLTree}
+\alias{pasteXML,XiMpLe_node-method}
 \alias{pasteXML,XiMpLe.node-method}
 \title{Paste methods for XiMpLe XML objects}
 \usage{
 pasteXML(obj, ...)
 
-\S4method{pasteXML}{XiMpLe.node}(
+\S4method{pasteXML}{XiMpLe_node}(
   obj,
   level = 1,
   shine = 1,
@@ -23,6 +24,8 @@ pasteXML(obj, ...)
   func_rename = c(`?xml_` = "xml_", `!--_` = "comment_", `![CDATA[_` = "CDATA_",
     `!DOCTYPE_` = "DOCTYPE_")
 )
+
+\S4method{pasteXML}{XiMpLe.node}(obj, ...)
 
 \S4method{pasteXML}{XiMpLe.doc}(
   obj,
@@ -36,7 +39,7 @@ pasteXML(obj, ...)
 )
 }
 \arguments{
-\item{obj}{An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}.}
+\item{obj}{An object of class \code{XiMpLe_node} or \code{XiMpLe_doc}.}
 
 \item{...}{Additional options for the generic method, see options for a specific method,
       respectively.}
@@ -70,15 +73,15 @@ Only used when \code{as_script=TRUE}. Use the same names and values as you used 
 \code{\link[XiMpLe:gen_tag_functions]{gen_tag_functions}}.}
 }
 \description{
-These methods can be used to paste objects if class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
-or \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}.
+These methods can be used to paste objects if class \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}
+or \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}.
 }
 \note{
 The functions pasteXMLNode() and pasteXMLTree() have been replaced by the pasteXML methods.
    They should no longer be used.
 }
 \seealso{
-\code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}, 
-   \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+\code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}, 
+   \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
 }
 \keyword{methods}

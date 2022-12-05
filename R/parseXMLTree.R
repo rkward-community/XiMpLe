@@ -25,18 +25,18 @@
 #'    empty attributes (as used in HTML).
 #' @param object Logical, if \code{TRUE}, \code{file} will not be treated as a path name but as a
 #'    character vector to be parsed as XML directly.
-#' @return An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} with four slots:
+#' @return An object of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}} with four slots:
 #'    \describe{
 #'      \item{\code{file}:}{Full path to the parsed file, or \code{"object"} if \code{object=TRUE}.}
 #'      \item{\code{xml}:}{XML declaration, if found.}
 #'      \item{\code{dtd}:}{Doctype definition, if found.}
-#'      \item{\code{children}:}{A list of objects of class \code{XiMpLe.node}, with the elements
+#'      \item{\code{children}:}{A list of objects of class \code{XiMpLe_node}, with the elements
 #'        \code{"name"} (the node name), \code{"attributes"} (list of attributes, if found),
-#'        \code{"children"} (list of \code{XiMpLe.node} object, if found) and \code{"value"}
+#'        \code{"children"} (list of \code{XiMpLe_node} object, if found) and \code{"value"}
 #'        (text value between a pair of start/end tags, if found).}
 #'    }
-#' @seealso \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}},
-#'    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+#' @seealso \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}},
+#'    \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
 #' @export
 #' @examples
 #' \dontrun{

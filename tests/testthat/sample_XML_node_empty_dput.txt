@@ -1,4 +1,4 @@
-new("XiMpLe.node"
+new("XiMpLe_node"
     , name = "empty"
     , attributes = list()
     , children = list()

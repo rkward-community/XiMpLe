@@ -38,7 +38,7 @@
 #' @param namespaceDefinitions Currently ignored.
 #' @param .children Alternative way of specifying children, if you have them already as a list.
 #'    This argument completely replaces values defined in the \code{...} argument.
-#' @return An object of class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.
+#' @return An object of class \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}.
 #' @seealso
 #'    \code{\link[XiMpLe:XMLTree]{XMLTree}},
 #'    \code{\link[XiMpLe:pasteXML]{pasteXML}}
@@ -120,8 +120,9 @@ XMLNode <- function(
         attrs <- append(dots_attrs, as.list(attrs))
     }
 
-    if(missing(shine)){
-        shine <- numeric()
+    extra <- list()
+    if(!missing(shine)){
+        extra[["shine"]] <- shine
     } else {}
 
     all_children <- list()
@@ -157,7 +158,7 @@ XMLNode <- function(
         attributes=attrs,
         children=all_children,
         value=value,
-        shine=shine
+        extra=extra
     )
 
     return(newNode)
