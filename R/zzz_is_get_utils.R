@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -19,14 +19,20 @@
 ## the name "zzz_*" is just to ensure roxygen doesn't parse it before XMLNode.R and XMLTree.R
 
 #' @param x An arbitrary \code{R} object.
-#' @rdname XiMpLe.node-class
+#' @rdname XiMpLe_node-class
 #' @export
 is.XiMpLe.node <- function(x){
   inherits(x, "XiMpLe.node")
 }
 
+#' @rdname XiMpLe_node-class
+#' @export
+is.XiMpLe_node <- function(x){
+  inherits(x, "XiMpLe_node")
+}
+
 #' @param x An arbitrary \code{R} object.
-#' @rdname XiMpLe.doc-class
+#' @rdname XiMpLe_doc-class
 #' @export
 is.XiMpLe.doc <- function(x){
   inherits(x, "XiMpLe.doc")
@@ -39,30 +45,104 @@ is.XiMpLe.validity <- function(x){
   inherits(x, "XiMpLe.validity")
 }
 
+#' @rdname XiMpLe_node-class
+#' @docType methods
+#' @export
+setGeneric("as_XiMpLe_node", function(obj, ...) standardGeneric("as_XiMpLe_node"))
+
+#' @rdname XiMpLe_node-class
+#' @export
+#' @docType methods
+#' @aliases
+#'    as_XiMpLe_node,-methods
+#'    as_XiMpLe_node,XiMpLe.node-method
+setMethod("as_XiMpLe_node",
+  signature=signature(obj="XiMpLe.node"),
+  function (obj, extra=list(), version=2){
+    children <- slot(obj, "children")
+    if(length(children) > 0){
+      children <- lapply(children, as_XiMpLe_node, extra=extra, version=version)
+    } else {}
+    obj <- XiMpLe_node(
+      name=slot(obj, "name"),
+      attributes=slot(obj, "attributes"),
+      children=children,
+      value=slot(obj, "value"),
+      extra=extra,
+      version=version
+    )
+    return(obj)
+  }
+)
+
+#' @rdname XiMpLe_doc-class
+#' @docType methods
+#' @export
+setGeneric("as_XiMpLe_doc", function(obj, ...) standardGeneric("as_XiMpLe_doc"))
+
+#' @rdname XiMpLe_doc-class
+#' @export
+#' @docType methods
+#' @aliases
+#'    as_XiMpLe_doc,-methods
+#'    as_XiMpLe_doc,XiMpLe.doc-method
+setMethod("as_XiMpLe_doc",
+  signature=signature(obj="XiMpLe.doc"),
+  function (obj, extra=list(), version=2){
+    xml <- slot(obj, "xml")
+    children <- slot(obj, "children")
+    if(length(xml) > 0){
+      xml <- lapply(
+        xml,
+        function(this_child){
+          if(is.XiMpLe.node(this_child)){
+            return(as_XiMpLe_node(this_child, extra=extra, version=version))
+          } else {
+            return(this_child)
+          }
+        }
+      )
+    } else {}
+    if(length(children) > 0){
+      children <- lapply(children, as_XiMpLe_node, extra=extra, version=version)
+    } else {}
+    obj <- XiMpLe_doc(
+      file=slot(obj, "file"),
+      xml=xml,
+      dtd=slot(obj, "dtd"),
+      children=children,
+      extra=extra,
+      version=version
+    )
+    return(obj)
+  }
+)
+
+
 #' Getter/setter methods for S4 objects of XiMpLe XML classes
 #'
-#' Used to get/set certain slots from objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
-#' and \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.
+#' Used to get/set certain slots from objects of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
+#' and \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}.
 #' 
 #' These are convenience methods to get or set slots from XML objects without using the \code{@@} operator.
 #'
 #' \itemize{
-#'    \item{\code{XMLName()}: }{get/set the XML node name (slot \code{name} of class \code{XiMpLe.node})}
-#'    \item{\code{XMLAttrs()}: }{get/set the XML node attributes (slot \code{attrs} of class \code{XiMpLe.node})}
-#'    \item{\code{XMLValue()}: }{get/set the XML node value (slot \code{value} of class \code{XiMpLe.node})}
-#'    \item{\code{XMLChildren()}: }{get/set the XML child nodes (slot \code{children} of both classes \code{XiMpLe.node}
-#'      and  \code{XiMpLe.doc})}
-#'    \item{\code{XMLFile()}: }{get/set the XML document file name  (slot \code{file} of class \code{XiMpLe.doc})}
-#'    \item{\code{XMLDecl()}: }{get/set the XML document declaration (slot \code{xml} of class \code{XiMpLe.doc})}
-#'    \item{\code{XMLDTD()}: }{get/set the XML document doctype definition (slot \code{dtd} of class \code{XiMpLe.doc})}
+#'    \item{\code{XMLName()}: }{get/set the XML node name (slot \code{name} of class \code{XiMpLe_node})}
+#'    \item{\code{XMLAttrs()}: }{get/set the XML node attributes (slot \code{attrs} of class \code{XiMpLe_node})}
+#'    \item{\code{XMLValue()}: }{get/set the XML node value (slot \code{value} of class \code{XiMpLe_node})}
+#'    \item{\code{XMLChildren()}: }{get/set the XML child nodes (slot \code{children} of both classes \code{XiMpLe_node}
+#'      and  \code{XiMpLe_doc})}
+#'    \item{\code{XMLFile()}: }{get/set the XML document file name  (slot \code{file} of class \code{XiMpLe_doc})}
+#'    \item{\code{XMLDecl()}: }{get/set the XML document declaration (slot \code{xml} of class \code{XiMpLe_doc})}
+#'    \item{\code{XMLDTD()}: }{get/set the XML document doctype definition (slot \code{dtd} of class \code{XiMpLe_doc})}
 #' }
 #'
 #' Another special method can scan a node/document tree object for appearances of nodes with a particular name:
 #'
 #' \itemize{
 #'    \item{\code{XMLScan(obj, name, as.list=FALSE)}: }{get/set the XML nodes by name (recursively searches slot \code{name} of both classes
-#'      \code{XiMpLe.node} and  \code{XiMpLe.doc}). If \code{as.list=TRUE} allways returns a list (or NULL), otherwise if exactly one result is found,
-#'      it will be returned as as single \code{XiMpLe.node}.}
+#'      \code{XiMpLe_node} and  \code{XiMpLe_doc}). If \code{as.list=TRUE} allways returns a list (or NULL), otherwise if exactly one result is found,
+#'      it will be returned as as single \code{XiMpLe_node}.}
 #' }
 #'
 #' Finally, there is a method to scan for certain values in XiMpLe objects and just list them. For instance, it can be used to
@@ -71,11 +151,11 @@ is.XiMpLe.validity <- function(x){
 #' \itemize{
 #'    \item{\code{XMLScanDeep(obj, find, search="attributes")}: }{returns all found instances of \code{find} in all slots defined by \code{search}.}
 #' }
-#' @param obj An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}
+#' @param obj An object of class \code{XiMpLe_node} or \code{XiMpLe_doc}
 #' @seealso
 #'    \code{\link[XiMpLe:node]{node}},
-#'    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}},
-#'    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
+#'    \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}},
+#'    \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}
 #' @keywords methods
 #' @docType methods
 #' @rdname XMLGetters-methods
@@ -101,7 +181,7 @@ setGeneric("XMLName", function(obj){standardGeneric("XMLName")})
 setMethod("XMLName",
   signature=signature(obj="XiMpLe.node"),
   function(obj){
-    return(obj@name)
+    return(slot(obj, "name"))
   }
 )
 
@@ -119,7 +199,7 @@ setGeneric("XMLName<-", function(obj, value){standardGeneric("XMLName<-")})
 setMethod("XMLName<-",
   signature=signature(obj="XiMpLe.node"),
   function(obj, value){
-    obj@name <- value
+    slot(obj, "name") <- value
     return(obj)
   }
 )
@@ -138,7 +218,7 @@ setGeneric("XMLAttrs", function(obj){standardGeneric("XMLAttrs")})
 setMethod("XMLAttrs",
   signature=signature(obj="XiMpLe.node"),
   function(obj){
-    return(obj@attributes)
+    return(slot(obj, "attributes"))
   }
 )
 
@@ -156,7 +236,7 @@ setGeneric("XMLAttrs<-", function(obj, value){standardGeneric("XMLAttrs<-")})
 setMethod("XMLAttrs<-",
   signature=signature(obj="XiMpLe.node"),
   function(obj, value){
-    obj@attributes <- value
+    slot(obj, "attributes") <- value
     return(obj)
   }
 )
@@ -175,7 +255,7 @@ setGeneric("XMLChildren", function(obj){standardGeneric("XMLChildren")})
 setMethod("XMLChildren",
   signature=signature(obj="XiMpLe.node"),
   function(obj){
-    return(obj@children)
+    return(slot(obj ,"children"))
   }
 )
 
@@ -188,7 +268,7 @@ setMethod("XMLChildren",
 setMethod("XMLChildren",
   signature=signature(obj="XiMpLe.doc"),
   function(obj){
-    return(obj@children)
+    return(slot(obj ,"children"))
   }
 )
 
@@ -207,7 +287,7 @@ setGeneric("XMLChildren<-", function(obj, value){standardGeneric("XMLChildren<-"
 setMethod("XMLChildren<-",
   signature=signature(obj="XiMpLe.node"),
   function(obj, value){
-    obj@children <- child.list(value)
+    slot(obj ,"children") <- child.list(value)
     return(obj)
   }
 )
@@ -221,7 +301,7 @@ setMethod("XMLChildren<-",
 setMethod("XMLChildren<-",
   signature=signature(obj="XiMpLe.doc"),
   function(obj, value){
-    obj@children <- child.list(value)
+    slot(obj ,"children") <- child.list(value)
     return(obj)
   }
 )
@@ -279,7 +359,7 @@ setGeneric("XMLValue<-", function(obj, value){standardGeneric("XMLValue<-")})
 setMethod("XMLValue<-",
   signature=signature(obj="XiMpLe.node"),
   function(obj, value){
-    obj@value <- value
+    slot(obj ,"value") <- value
     return(obj)
   }
 )
@@ -298,7 +378,7 @@ setGeneric("XMLFile", function(obj){standardGeneric("XMLFile")})
 setMethod("XMLFile",
   signature=signature(obj="XiMpLe.doc"),
   function(obj){
-    return(obj@file)
+    return(slot(obj ,"file"))
   }
 )
 
@@ -316,7 +396,7 @@ setGeneric("XMLFile<-", function(obj, value){standardGeneric("XMLFile<-")})
 setMethod("XMLFile<-",
   signature=signature(obj="XiMpLe.doc"),
   function(obj, value){
-    obj@file <- value
+    slot(obj ,"file") <- value
     return(obj)
   }
 )
@@ -335,7 +415,7 @@ setGeneric("XMLDecl", function(obj){standardGeneric("XMLDecl")})
 setMethod("XMLDecl",
   signature=signature(obj="XiMpLe.doc"),
   function(obj){
-    return(obj@xml)
+    return(slot(obj ,"xml"))
   }
 )
 
@@ -353,7 +433,7 @@ setGeneric("XMLDecl<-", function(obj, value){standardGeneric("XMLDecl<-")})
 setMethod("XMLDecl<-",
   signature=signature(obj="XiMpLe.doc"),
   function(obj, value){
-    obj@xml <- value
+    slot(obj ,"xml") <- value
     return(obj)
   }
 )
@@ -372,7 +452,7 @@ setGeneric("XMLDTD", function(obj){standardGeneric("XMLDTD")})
 setMethod("XMLDTD",
   signature=signature(obj="XiMpLe.doc"),
   function(obj){
-    return(obj@dtd)
+    return(slot(obj ,"dtd"))
   }
 )
 
@@ -390,7 +470,7 @@ setGeneric("XMLDTD<-", function(obj, value){standardGeneric("XMLDTD<-")})
 setMethod("XMLDTD<-",
   signature=signature(obj="XiMpLe.doc"),
   function(obj, value){
-    obj@dtd <- value
+    slot(obj ,"dtd") <- value
     return(obj)
   }
 )
@@ -398,7 +478,7 @@ setMethod("XMLDTD<-",
 ## scan a tree for appearances of nodes
 #' @param name Character, name of nodes to scan for.
 #' @param as.list Logical, if \code{TRUE} allways returns a list (or NULL), otherwise if exactly one result is found,
-#'    it will be returned as as single \code{XiMpLe.node}.
+#'    it will be returned as as single \code{XiMpLe_node}.
 #' @rdname XMLGetters-methods
 #' @docType methods
 #' @export

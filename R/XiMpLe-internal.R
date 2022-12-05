@@ -498,12 +498,37 @@ pasteXMLAttr <- function(
 # and tries to turn it into a named list
 # drop_empty_tags: if set to TRUE, empty tags will be removed, otherwise they will
 #   get an empty character value assigned to them
-attr2list <- function(attr, drop_empty_tags=FALSE){
+# doctype_args: if TRUE, quoted empty attributes will temporarily be named for
+#   counting the start and end points of arguments, to not confuse the parser
+attr2list <- function(attr, drop_empty_tags=FALSE, doctype_args=FALSE){
+  # regular expression to detect alphanumeric characters (we'll also accept some more,
+  # this is mainly needed to safely detect spaces and quotes from argument values
+  alnum_plus <- "[-_|*#@+~&%$.,:;(){}[:alnum:]]"
+  doctype_restore <- FALSE
+  qr_to_use <- ""
+  if(isTRUE(doctype_args) & grepl("\"", attr)){
+    # find a temporary name for quoted empty attributes,
+    # testing a few that are unlikely used here
+    quote_replacer <- c("Ä", "ł", "ŧ", "æ", "ø", "ð")
+    qr_in_attrs <- sapply(
+      quote_replacer,
+      function(this_qr){
+        any(grepl(this_qr, x=attr))
+      }
+    )
+    if(!all(qr_in_attrs)){
+      qr_to_use <- names(which.min(!qr_in_attrs))
+      attr <- gsub("[[:space:]]\"", paste0(" ", qr_to_use, "=\""), attr)
+      doctype_restore <- TRUE
+    } else {
+      # go on without replacement, this will likely result in an error
+    }
+  } else {}
   # split into individual characters
   attr_chars <- unlist(strsplit(trim(attr), ""))
   if(length(attr_chars) > 0){
     # which one is alphanumeric (we'll also accept "-" and "_"?
-    attr_alnum <- grepl("[-_:[:alnum:]]", attr_chars)
+    attr_alnum <- grepl(alnum_plus, attr_chars)
     # find continuous patterns in the boolean vector, i.e. detect words vs. nonwords
     attr_alnum_rle <- rle(attr_alnum)
     # add zero for the sapply loop
@@ -557,7 +582,7 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
           } else {
             arg_name_n <- val[1] - 1
           }
-          if(!isTRUE(grepl("[-_:[:alnum:]]", attr_tokens[arg_name_n]))){
+          if(!isTRUE(grepl(alnum_plus, attr_tokens[arg_name_n]))){
             warning(paste0("This attribute name might be invalid, please check: \"", attr_tokens[arg_name_n], "\""), call.=FALSE)
           } else {}
           return(arg_name_n)
@@ -605,9 +630,20 @@ attr2list <- function(attr, drop_empty_tags=FALSE){
       add_comma <- which(attr_off)
       add_comma <- add_comma[1:(length(add_comma) - 1)]
       attr_tokens[add_comma] <- paste0(attr_tokens[add_comma], ",")
-    }
-
-    return(eval(parse(text=paste("list(", paste0(attr_tokens, collapse=""), ")"))))
+    } else {}
+    result <- eval(parse(text=paste("list(", paste0(attr_tokens, collapse=""), ")")))
+    if(isTRUE(doctype_restore)){
+      # restore the original attributes
+      to_restore <- which(names(result) %in% qr_to_use)
+      if(length(to_restore) > 0){
+        new_names <- paste0("\"", result[to_restore], "\"")
+        for(this_attr in to_restore){
+          result[[this_attr]] <- character()
+        }
+        names(result)[to_restore] <- new_names
+      } else {}
+    } else {}
+    return(result)
   } else {
     return(list())
   }
@@ -633,7 +669,7 @@ parseXMLAttr <- function(tag, drop_empty_tags=FALSE){
     # first strip of start and end characters
     stripped.tag <- gsub("<([?[:space:]]*)[^[:space:]]+[[:space:]]*(.*)", "\\2", tag, perl=TRUE)
     stripped.tag <- trim(gsub("[/?]*>$", "", stripped.tag, perl=TRUE))
-    parsed.list <- attr2list(stripped.tag, drop_empty_tags=drop_empty_tags)
+    parsed.list <- attr2list(stripped.tag, drop_empty_tags=drop_empty_tags, doctype_args=XML.doctype(tag))
   }
   if(XML.declaration(tag)){
     # only enforce validation for <?xml ... ?>

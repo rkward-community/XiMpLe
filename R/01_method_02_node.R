@@ -47,12 +47,13 @@ setGeneric(
 )
 
 # define class union to make life easier
-#' @description \code{XiMpLe.XML} is a class union for objects of classes \code{XiMpLe.node} and \code{XiMpLe.doc}.
+#' @description \code{XiMpLe.XML} is a class union for objects of classes \code{XiMpLe_node} and \code{XiMpLe_doc}.
 #' @rdname node
 #' @export
 setClassUnion(
   "XiMpLe.XML",
   members=c(
+    "XiMpLe_node",
     "XiMpLe.node",
     "XiMpLe.doc"
   )
@@ -64,11 +65,11 @@ setClassUnion(
 #'    node,XiMpLe.doc-method
 #'    node,XiMpLe.node-method
 #'    node,XiMpLe.XML-method
-#' @param obj An object of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}} or
-#'    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}.
+#' @param obj An object of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}} or
+#'    \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}.
 #' @param node A list of node names (or their numeric values), where each element is
 #'    the child of its previous element. duplicate matches will be returned as a list.
-#' @param what A character string, must be a valid slot name of class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}, like
+#' @param what A character string, must be a valid slot name of class \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}, like
 #'    \code{"attributes"} or \code{"value"}. If not \code{NULL}, only that part of a node will be returned.
 #'    There's also two special properties for this option: \code{what="@@path"} will not return the
 #'    node or it's contents, but a character string with the "path" to it in the object; \code{what="obj@@path"}

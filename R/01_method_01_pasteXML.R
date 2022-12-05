@@ -18,21 +18,21 @@
 
 #' Paste methods for XiMpLe XML objects
 #' 
-#' These methods can be used to paste objects if class \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
-#' or \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}.
+#' These methods can be used to paste objects if class \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}
+#' or \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}.
 #'
 #' @note The functions pasteXMLNode() and pasteXMLTree() have been replaced by the pasteXML methods.
 #'    They should no longer be used.
 #'
-#' @param obj An object of class \code{XiMpLe.node} or \code{XiMpLe.doc}.
+#' @param obj An object of class \code{XiMpLe_node} or \code{XiMpLe_doc}.
 #' @param ... Additional options for the generic method, see options for a specific method, respectively.
 #' @aliases
 #'    pasteXML,-methods
 #'    pasteXML,XiMpLe.doc-method
 #'    pasteXMLNode
 #'    pasteXMLTree
-#' @seealso \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}, 
-#'    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
+#' @seealso \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}, 
+#'    \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
 #' @keywords methods
 #' @import methods
 #' @rdname pasteXML-methods
@@ -64,9 +64,9 @@ setGeneric("pasteXML", function(obj, ...){
 #'    \code{\link[XiMpLe:gen_tag_functions]{gen_tag_functions}}.
 #' @rdname pasteXML-methods
 #' @aliases
-#'    pasteXML,XiMpLe.node-method
+#'    pasteXML,XiMpLe_node-method
 setMethod("pasteXML",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(
     obj,
     level=1,
@@ -102,7 +102,7 @@ setMethod("pasteXML",
 
     if(length(node_chld) > 0){
       # check for shine overwrites, pass it down to children
-      shine_override <- slot(obj, "shine")
+      shine_override <- slot(obj, "extra")[["shine"]]
       node_chld <- paste0(unlist(sapply(
         node_chld,
         function(this_node){
@@ -179,6 +179,20 @@ setMethod("pasteXML",
     return(result)
   }
 )
+
+#' @rdname pasteXML-methods
+#' @aliases
+#'    pasteXML,XiMpLe.node-method
+setMethod("pasteXML",
+  signature=signature(obj="XiMpLe.node"),
+  function(obj, ...){
+    pasteXML(
+      as_XiMpLe_node(obj),
+      ...
+    )
+  }
+)
+
 
 #' @rdname pasteXML-methods
 setMethod("pasteXML",

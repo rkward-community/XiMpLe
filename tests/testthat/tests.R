@@ -57,6 +57,7 @@ test_that("generate generator functions", {
 test_that("generate nested XML tag tree", {
   # re-create object sampleXMLTree
   load("sample_XML_tree.RData")
+  #sampleXMLTree <- as_XiMpLe_doc(sampleXMLTree)
 
   sampleXMLnode.empty <- XMLNode("empty")
   sampleXMLnode.closed <- XMLNode("empty", "")
@@ -89,7 +90,7 @@ test_that("parse XML file", {
 
   expect_that(
     sampleXMLparsed.test,
-    equals(sampleXMLparsed))
+    equals(sampleRSSparsed))
 })
 
 

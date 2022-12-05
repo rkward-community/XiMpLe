@@ -18,15 +18,15 @@
 
 #' Validate S4 objects of XiMpLe XML classes
 #' 
-#' Checks whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
-#' or \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} have valid child nodes.
+#' Checks whether objects of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
+#' or \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}} have valid child nodes.
 #' 
 #' XiMpLe can't handle DOM specifications yet, but this method can be used to construct
 #' validation schemes.
 #' 
 #' @note: If no \code{parent} is specified, \code{obj} will be checked recursively.
 #'
-#' @param obj An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL}, this object
+#' @param obj An object of class \code{XiMpLe_doc} or \code{XiMpLe_node}. If \code{parent=NULL}, this object
 #'    will be checked for validity, including its child nodes. If \code{parent} is either a character string
 #'    or another XiMpLe node, it will be checked whether \code{obj} is a valid child node of \code{parent}.
 #' @param validity An object of class \code{\link[XiMpLe:XiMpLe.validity-class]{XiMpLe.validity}},
@@ -50,8 +50,8 @@
 #' @seealso
 #'    \code{\link[XiMpLe:validXML]{validXML}},
 #'    \code{\link[XiMpLe:XMLValidity]{XMLValidity}},
-#'    \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}, and
-#'    \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
+#'    \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}, and
+#'    \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}
 #' @keywords methods
 #' @docType methods
 #' @export

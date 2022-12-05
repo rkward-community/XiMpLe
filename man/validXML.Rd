@@ -32,7 +32,7 @@ validXML(
 )
 }
 \arguments{
-\item{obj}{An object of class \code{XiMpLe.doc} or \code{XiMpLe.node}. If \code{parent=NULL},
+\item{obj}{An object of class \code{XiMpLe_doc} or \code{XiMpLe_node}. If \code{parent=NULL},
       this object
 will be checked for validity,
       including its child nodes. If \code{parent} is either a character string
@@ -66,8 +66,8 @@ Returns \code{TRUE} if tests pass,
    an error if a test fails.
 }
 \description{
-Checks whether objects of class \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}
-or \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}} have valid child nodes.
+Checks whether objects of class \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}
+or \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}} have valid child nodes.
 }
 \details{
 XiMpLe can't handle DOM specifications yet, but this method can be used to construct
@@ -134,7 +134,7 @@ validXML(
 \seealso{
 \code{\link[XiMpLe:validXML]{validXML}},
    \code{\link[XiMpLe:XMLValidity]{XMLValidity}},
-   \code{\link[XiMpLe:XiMpLe.doc-class]{XiMpLe.doc}}, and
-   \code{\link[XiMpLe:XiMpLe.node-class]{XiMpLe.node}}
+   \code{\link[XiMpLe:XiMpLe_doc-class]{XiMpLe_doc}}, and
+   \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}
 }
 \keyword{methods}
