@@ -4,11 +4,10 @@
 \name{pasteXML}
 \alias{pasteXML}
 \alias{pasteXML,-methods}
-\alias{pasteXML,XiMpLe.doc-method}
 \alias{pasteXMLNode}
 \alias{pasteXMLTree}
 \alias{pasteXML,XiMpLe_node-method}
-\alias{pasteXML,XiMpLe.node-method}
+\alias{pasteXML,XiMpLe_doc-method}
 \title{Paste methods for XiMpLe XML objects}
 \usage{
 pasteXML(obj, ...)
@@ -25,9 +24,7 @@ pasteXML(obj, ...)
     `!DOCTYPE_` = "DOCTYPE_")
 )
 
-\S4method{pasteXML}{XiMpLe.node}(obj, ...)
-
-\S4method{pasteXML}{XiMpLe.doc}(
+\S4method{pasteXML}{XiMpLe_doc}(
   obj,
   shine = 1,
   indent.by = getOption("XiMpLe_indent", "\\t"),

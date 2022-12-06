@@ -54,6 +54,7 @@ setClassUnion(
   "XiMpLe.XML",
   members=c(
     "XiMpLe_node",
+    "XiMpLe_doc",
     "XiMpLe.node",
     "XiMpLe.doc"
   )
@@ -62,6 +63,8 @@ setClassUnion(
 #' @rdname node
 #' @aliases
 #'    node,-methods
+#'    node,XiMpLe_doc-method
+#'    node,XiMpLe_node-method
 #'    node,XiMpLe.doc-method
 #'    node,XiMpLe.node-method
 #'    node,XiMpLe.XML-method
@@ -235,6 +238,8 @@ setGeneric(
 #' @rdname node
 #' @aliases
 #'    node<-,-methods
+#'    node<-,XiMpLe_doc-method
+#'    node<-,XiMpLe_node-method
 #'    node<-,XiMpLe.doc-method
 #'    node<-,XiMpLe.node-method
 #'    node<-,XiMpLe.XML-method

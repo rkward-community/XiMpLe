@@ -181,11 +181,11 @@ setGeneric("XMLName", function(obj){standardGeneric("XMLName")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLName,-methods
-#'    XMLName,XiMpLe.node-method
+#'    XMLName,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLName",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj){
     return(slot(obj, "name"))
   }
@@ -199,11 +199,11 @@ setGeneric("XMLName<-", function(obj, value){standardGeneric("XMLName<-")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLName<-,-methods
-#'    XMLName<-,XiMpLe.node-method
+#'    XMLName<-,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLName<-",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, value){
     slot(obj, "name") <- value
     return(obj)
@@ -218,11 +218,11 @@ setGeneric("XMLAttrs", function(obj){standardGeneric("XMLAttrs")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLAttrs,-methods
-#'    XMLAttrs,XiMpLe.node-method
+#'    XMLAttrs,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLAttrs",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj){
     return(slot(obj, "attributes"))
   }
@@ -236,11 +236,11 @@ setGeneric("XMLAttrs<-", function(obj, value){standardGeneric("XMLAttrs<-")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLAttrs<-,-methods
-#'    XMLAttrs<-,XiMpLe.node-method
+#'    XMLAttrs<-,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLAttrs<-",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, value){
     slot(obj, "attributes") <- value
     return(obj)
@@ -255,11 +255,11 @@ setGeneric("XMLChildren", function(obj){standardGeneric("XMLChildren")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLChildren,-methods
-#'    XMLChildren,XiMpLe.node-method
+#'    XMLChildren,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLChildren",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj){
     return(slot(obj ,"children"))
   }
@@ -268,11 +268,11 @@ setMethod("XMLChildren",
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLChildren,-methods
-#'    XMLChildren,XiMpLe.doc-method
+#'    XMLChildren,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLChildren",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj){
     return(slot(obj ,"children"))
   }
@@ -287,11 +287,11 @@ setGeneric("XMLChildren<-", function(obj, value){standardGeneric("XMLChildren<-"
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLChildren<-,-methods
-#'    XMLChildren<-,XiMpLe.node-method
+#'    XMLChildren<-,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLChildren<-",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, value){
     slot(obj ,"children") <- child.list(value)
     return(obj)
@@ -301,11 +301,11 @@ setMethod("XMLChildren<-",
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLChildren<-,-methods
-#'    XMLChildren<-,XiMpLe.doc-method
+#'    XMLChildren<-,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLChildren<-",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, value){
     slot(obj ,"children") <- child.list(value)
     return(obj)
@@ -321,11 +321,11 @@ setGeneric("XMLValue", function(obj){standardGeneric("XMLValue")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLValue,-methods
-#'    XMLValue,XiMpLe.node-method
+#'    XMLValue,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLValue",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj){
     directValue <- slot(obj, "value")
     children <- XMLChildren(obj)
@@ -359,11 +359,11 @@ setGeneric("XMLValue<-", function(obj, value){standardGeneric("XMLValue<-")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLValue<-,-methods
-#'    XMLValue<-,XiMpLe.node-method
+#'    XMLValue<-,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLValue<-",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, value){
     slot(obj ,"value") <- value
     return(obj)
@@ -378,11 +378,11 @@ setGeneric("XMLFile", function(obj){standardGeneric("XMLFile")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLFile,-methods
-#'    XMLFile,XiMpLe.doc-method
+#'    XMLFile,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLFile",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj){
     return(slot(obj ,"file"))
   }
@@ -396,11 +396,11 @@ setGeneric("XMLFile<-", function(obj, value){standardGeneric("XMLFile<-")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLFile<-,-methods
-#'    XMLFile<-,XiMpLe.doc-method
+#'    XMLFile<-,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLFile<-",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, value){
     slot(obj ,"file") <- value
     return(obj)
@@ -415,11 +415,11 @@ setGeneric("XMLDecl", function(obj){standardGeneric("XMLDecl")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLDecl,-methods
-#'    XMLDecl,XiMpLe.doc-method
+#'    XMLDecl,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLDecl",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj){
     return(slot(obj ,"xml"))
   }
@@ -433,11 +433,11 @@ setGeneric("XMLDecl<-", function(obj, value){standardGeneric("XMLDecl<-")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLDecl<-,-methods
-#'    XMLDecl<-,XiMpLe.doc-method
+#'    XMLDecl<-,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLDecl<-",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, value){
     slot(obj ,"xml") <- value
     return(obj)
@@ -452,11 +452,11 @@ setGeneric("XMLDTD", function(obj){standardGeneric("XMLDTD")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLDTD,-methods
-#'    XMLDTD,XiMpLe.doc-method
+#'    XMLDTD,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLDTD",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj){
     return(slot(obj ,"dtd"))
   }
@@ -470,11 +470,11 @@ setGeneric("XMLDTD<-", function(obj, value){standardGeneric("XMLDTD<-")})
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLDTD<-,-methods
-#'    XMLDTD<-,XiMpLe.doc-method
+#'    XMLDTD<-,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLDTD<-",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, value){
     slot(obj ,"dtd") <- value
     return(obj)
@@ -506,11 +506,11 @@ find.nodes <- function(nodes, nName){
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLScan,-methods
-#'    XMLScan,XiMpLe.node-method
+#'    XMLScan,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLScan",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, name, as.list=FALSE){
     node.list <- find.nodes(
       nodes=child.list(obj),
@@ -527,11 +527,11 @@ setMethod("XMLScan",
 
 #' @rdname XMLGetters-methods
 #' @aliases
-#'    XMLScan,XiMpLe.doc-method
+#'    XMLScan,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLScan",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, name, as.list=FALSE){
     node.list <- find.nodes(
       nodes=XMLChildren(obj),
@@ -573,11 +573,11 @@ replace.nodes <- function(nodes, nName, replacement){
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLScan<-,-methods
-#'    XMLScan<-,XiMpLe.node-method
+#'    XMLScan<-,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLScan<-",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, name, value){
     # prevent the creation of invalid results
     stopifnot(is.XiMpLe.node(value) || is.null(value))
@@ -597,11 +597,11 @@ setMethod("XMLScan<-",
 
 #' @rdname XMLGetters-methods
 #' @aliases
-#'    XMLScan<-,XiMpLe.doc-method
+#'    XMLScan<-,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLScan<-",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, name, value){
     # prevent the creation of invalid results
     stopifnot(is.XiMpLe.node(value) || is.null(value))
@@ -662,11 +662,11 @@ recursiveScan <- function(robj, rfind, rsearch, recResult=list(), result, envID=
 #' @rdname XMLGetters-methods
 #' @aliases
 #'    XMLScanDeep,-methods
-#'    XMLScanDeep,XiMpLe.node-method
+#'    XMLScanDeep,XiMpLe_node-method
 #' @docType methods
 #' @include 00_class_01_XiMpLe.node.R
 setMethod("XMLScanDeep",
-  signature=signature(obj="XiMpLe.node"),
+  signature=signature(obj="XiMpLe_node"),
   function(obj, find, search){
     result <- new.env()
     assign(find, c(), envir=result)
@@ -677,11 +677,11 @@ setMethod("XMLScanDeep",
 
 #' @rdname XMLGetters-methods
 #' @aliases
-#'    XMLScanDeep,XiMpLe.doc-method
+#'    XMLScanDeep,XiMpLe_doc-method
 #' @docType methods
 #' @include 00_class_02_XiMpLe.doc.R
 setMethod("XMLScanDeep",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(obj, find, search){
     result <- new.env()
     assign(find, c(), envir=result)
