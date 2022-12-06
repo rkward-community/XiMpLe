@@ -24,6 +24,8 @@
 #' @param object An object of class \code{XiMpLe_doc} or \code{XiMpLe_node}
 #' @aliases
 #'    show,-methods
+#'    show,XiMpLe_doc-method
+#'    show,XiMpLe_node-method
 #'    show,XiMpLe.doc-method
 #'    show,XiMpLe.node-method
 #'    show,XiMpLe.XML-method

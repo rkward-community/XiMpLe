@@ -28,7 +28,6 @@
 #' @param ... Additional options for the generic method, see options for a specific method, respectively.
 #' @aliases
 #'    pasteXML,-methods
-#'    pasteXML,XiMpLe.doc-method
 #'    pasteXMLNode
 #'    pasteXMLTree
 #' @seealso \code{\link[XiMpLe:XiMpLe_node-class]{XiMpLe_node}}, 
@@ -182,21 +181,9 @@ setMethod("pasteXML",
 
 #' @rdname pasteXML-methods
 #' @aliases
-#'    pasteXML,XiMpLe.node-method
+#'    pasteXML,XiMpLe_doc-method
 setMethod("pasteXML",
-  signature=signature(obj="XiMpLe.node"),
-  function(obj, ...){
-    pasteXML(
-      as_XiMpLe_node(obj),
-      ...
-    )
-  }
-)
-
-
-#' @rdname pasteXML-methods
-setMethod("pasteXML",
-  signature=signature(obj="XiMpLe.doc"),
+  signature=signature(obj="XiMpLe_doc"),
   function(
     obj,
     shine=1,

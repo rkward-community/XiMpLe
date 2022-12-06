@@ -4,6 +4,8 @@
 \name{show,XiMpLe.XML-method}
 \alias{show,XiMpLe.XML-method}
 \alias{show,-methods}
+\alias{show,XiMpLe_doc-method}
+\alias{show,XiMpLe_node-method}
 \alias{show,XiMpLe.doc-method}
 \alias{show,XiMpLe.node-method}
 \title{Show method for S4 objects of XiMpLe XML classes}

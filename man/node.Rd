@@ -6,11 +6,15 @@
 \alias{XiMpLe.XML-class}
 \alias{node,XiMpLe.XML-method}
 \alias{node,-methods}
+\alias{node,XiMpLe_doc-method}
+\alias{node,XiMpLe_node-method}
 \alias{node,XiMpLe.doc-method}
 \alias{node,XiMpLe.node-method}
 \alias{node<-}
 \alias{node<-,XiMpLe.XML-method}
 \alias{node<-,-methods}
+\alias{node<-,XiMpLe_doc-method}
+\alias{node<-,XiMpLe_node-method}
 \alias{node<-,XiMpLe.doc-method}
 \alias{node<-,XiMpLe.node-method}
 \title{Extract/manipulate a node or parts of it from an XML tree}

@@ -3,140 +3,140 @@
 \docType{methods}
 \name{XMLName}
 \alias{XMLName}
-\alias{XMLName,XiMpLe.node-method}
+\alias{XMLName,XiMpLe_node-method}
 \alias{XMLName,-methods}
 \alias{XMLName<-}
-\alias{XMLName<-,XiMpLe.node-method}
+\alias{XMLName<-,XiMpLe_node-method}
 \alias{XMLName<-,-methods}
 \alias{XMLAttrs}
-\alias{XMLAttrs,XiMpLe.node-method}
+\alias{XMLAttrs,XiMpLe_node-method}
 \alias{XMLAttrs,-methods}
 \alias{XMLAttrs<-}
-\alias{XMLAttrs<-,XiMpLe.node-method}
+\alias{XMLAttrs<-,XiMpLe_node-method}
 \alias{XMLAttrs<-,-methods}
 \alias{XMLChildren}
-\alias{XMLChildren,XiMpLe.node-method}
+\alias{XMLChildren,XiMpLe_node-method}
 \alias{XMLChildren,-methods}
-\alias{XMLChildren,XiMpLe.doc-method}
+\alias{XMLChildren,XiMpLe_doc-method}
 \alias{XMLChildren<-}
-\alias{XMLChildren<-,XiMpLe.node-method}
+\alias{XMLChildren<-,XiMpLe_node-method}
 \alias{XMLChildren<-,-methods}
-\alias{XMLChildren<-,XiMpLe.doc-method}
+\alias{XMLChildren<-,XiMpLe_doc-method}
 \alias{XMLValue}
-\alias{XMLValue,XiMpLe.node-method}
+\alias{XMLValue,XiMpLe_node-method}
 \alias{XMLValue,-methods}
 \alias{XMLValue<-}
-\alias{XMLValue<-,XiMpLe.node-method}
+\alias{XMLValue<-,XiMpLe_node-method}
 \alias{XMLValue<-,-methods}
 \alias{XMLFile}
-\alias{XMLFile,XiMpLe.doc-method}
+\alias{XMLFile,XiMpLe_doc-method}
 \alias{XMLFile,-methods}
 \alias{XMLFile<-}
-\alias{XMLFile<-,XiMpLe.doc-method}
+\alias{XMLFile<-,XiMpLe_doc-method}
 \alias{XMLFile<-,-methods}
 \alias{XMLDecl}
-\alias{XMLDecl,XiMpLe.doc-method}
+\alias{XMLDecl,XiMpLe_doc-method}
 \alias{XMLDecl,-methods}
 \alias{XMLDecl<-}
-\alias{XMLDecl<-,XiMpLe.doc-method}
+\alias{XMLDecl<-,XiMpLe_doc-method}
 \alias{XMLDecl<-,-methods}
 \alias{XMLDTD}
-\alias{XMLDTD,XiMpLe.doc-method}
+\alias{XMLDTD,XiMpLe_doc-method}
 \alias{XMLDTD,-methods}
 \alias{XMLDTD<-}
-\alias{XMLDTD<-,XiMpLe.doc-method}
+\alias{XMLDTD<-,XiMpLe_doc-method}
 \alias{XMLDTD<-,-methods}
 \alias{XMLScan}
-\alias{XMLScan,XiMpLe.node-method}
+\alias{XMLScan,XiMpLe_node-method}
 \alias{XMLScan,-methods}
-\alias{XMLScan,XiMpLe.doc-method}
+\alias{XMLScan,XiMpLe_doc-method}
 \alias{XMLScan<-}
-\alias{XMLScan<-,XiMpLe.node-method}
+\alias{XMLScan<-,XiMpLe_node-method}
 \alias{XMLScan<-,-methods}
-\alias{XMLScan<-,XiMpLe.doc-method}
+\alias{XMLScan<-,XiMpLe_doc-method}
 \alias{XMLScanDeep}
-\alias{XMLScanDeep,XiMpLe.node-method}
+\alias{XMLScanDeep,XiMpLe_node-method}
 \alias{XMLScanDeep,-methods}
-\alias{XMLScanDeep,XiMpLe.doc-method}
+\alias{XMLScanDeep,XiMpLe_doc-method}
 \title{Getter/setter methods for S4 objects of XiMpLe XML classes}
 \usage{
 XMLName(obj)
 
-\S4method{XMLName}{XiMpLe.node}(obj)
+\S4method{XMLName}{XiMpLe_node}(obj)
 
 XMLName(obj) <- value
 
-\S4method{XMLName}{XiMpLe.node}(obj) <- value
+\S4method{XMLName}{XiMpLe_node}(obj) <- value
 
 XMLAttrs(obj)
 
-\S4method{XMLAttrs}{XiMpLe.node}(obj)
+\S4method{XMLAttrs}{XiMpLe_node}(obj)
 
 XMLAttrs(obj) <- value
 
-\S4method{XMLAttrs}{XiMpLe.node}(obj) <- value
+\S4method{XMLAttrs}{XiMpLe_node}(obj) <- value
 
 XMLChildren(obj)
 
-\S4method{XMLChildren}{XiMpLe.node}(obj)
+\S4method{XMLChildren}{XiMpLe_node}(obj)
 
-\S4method{XMLChildren}{XiMpLe.doc}(obj)
+\S4method{XMLChildren}{XiMpLe_doc}(obj)
 
 XMLChildren(obj) <- value
 
-\S4method{XMLChildren}{XiMpLe.node}(obj) <- value
+\S4method{XMLChildren}{XiMpLe_node}(obj) <- value
 
-\S4method{XMLChildren}{XiMpLe.doc}(obj) <- value
+\S4method{XMLChildren}{XiMpLe_doc}(obj) <- value
 
 XMLValue(obj)
 
-\S4method{XMLValue}{XiMpLe.node}(obj)
+\S4method{XMLValue}{XiMpLe_node}(obj)
 
 XMLValue(obj) <- value
 
-\S4method{XMLValue}{XiMpLe.node}(obj) <- value
+\S4method{XMLValue}{XiMpLe_node}(obj) <- value
 
 XMLFile(obj)
 
-\S4method{XMLFile}{XiMpLe.doc}(obj)
+\S4method{XMLFile}{XiMpLe_doc}(obj)
 
 XMLFile(obj) <- value
 
-\S4method{XMLFile}{XiMpLe.doc}(obj) <- value
+\S4method{XMLFile}{XiMpLe_doc}(obj) <- value
 
 XMLDecl(obj)
 
-\S4method{XMLDecl}{XiMpLe.doc}(obj)
+\S4method{XMLDecl}{XiMpLe_doc}(obj)
 
 XMLDecl(obj) <- value
 
-\S4method{XMLDecl}{XiMpLe.doc}(obj) <- value
+\S4method{XMLDecl}{XiMpLe_doc}(obj) <- value
 
 XMLDTD(obj)
 
-\S4method{XMLDTD}{XiMpLe.doc}(obj)
+\S4method{XMLDTD}{XiMpLe_doc}(obj)
 
 XMLDTD(obj) <- value
 
-\S4method{XMLDTD}{XiMpLe.doc}(obj) <- value
+\S4method{XMLDTD}{XiMpLe_doc}(obj) <- value
 
 XMLScan(obj, name, as.list = FALSE)
 
-\S4method{XMLScan}{XiMpLe.node}(obj, name, as.list = FALSE)
+\S4method{XMLScan}{XiMpLe_node}(obj, name, as.list = FALSE)
 
-\S4method{XMLScan}{XiMpLe.doc}(obj, name, as.list = FALSE)
+\S4method{XMLScan}{XiMpLe_doc}(obj, name, as.list = FALSE)
 
 XMLScan(obj, name) <- value
 
-\S4method{XMLScan}{XiMpLe.node}(obj, name) <- value
+\S4method{XMLScan}{XiMpLe_node}(obj, name) <- value
 
-\S4method{XMLScan}{XiMpLe.doc}(obj, name) <- value
+\S4method{XMLScan}{XiMpLe_doc}(obj, name) <- value
 
 XMLScanDeep(obj, find = NULL, search = "attributes")
 
-\S4method{XMLScanDeep}{XiMpLe.node}(obj, find = NULL, search = "attributes")
+\S4method{XMLScanDeep}{XiMpLe_node}(obj, find = NULL, search = "attributes")
 
-\S4method{XMLScanDeep}{XiMpLe.doc}(obj, find = NULL, search = "attributes")
+\S4method{XMLScanDeep}{XiMpLe_doc}(obj, find = NULL, search = "attributes")
 }
 \arguments{
 \item{obj}{An object of class \code{XiMpLe_node} or \code{XiMpLe_doc}}

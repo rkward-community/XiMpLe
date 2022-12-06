@@ -620,10 +620,10 @@ a package. For safety reasons, i.e. to not collide with existing
 objects, the function names have by default a trailing underscore and
 are not created if an object by that name already exists.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_tag_functions</span>(<span class="fu">c</span>(<span class="st">&quot;html&quot;</span>, <span class="st">&quot;head&quot;</span>, <span class="st">&quot;body&quot;</span>, <span class="st">&quot;a&quot;</span>))</span></code></pre></div>
-<pre><code>## Creating new function: &quot;html_&quot;</code></pre>
-<pre><code>## Creating new function: &quot;head_&quot;</code></pre>
-<pre><code>## Creating new function: &quot;body_&quot;</code></pre>
-<pre><code>## Creating new function: &quot;a_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;html_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;head_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;body_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;a_&quot;</code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see them in action</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>(sample.XML.tree2 <span class="ot">&lt;-</span> <span class="fu">html_</span>(</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head_</span>(),</span>
