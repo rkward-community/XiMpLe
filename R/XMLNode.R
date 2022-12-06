@@ -16,7 +16,7 @@
 # along with XiMpLe.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#' Constructor function for XiMpLe.node objects
+#' Constructor function for \code{XiMpLe_node} objects
 #' 
 #' Can be used to create XML nodes.
 #' 
@@ -25,8 +25,8 @@
 #' Note that all defined attributes will silently be dropped if a text node, CDATA node or comment is generated.
 #' 
 #' @param tag_name Character string, the tag name.
-#' @param ... Optional children for the tag. Must be either objects of class XiMpLe.node or character strings,
-#'    which are treated as attributes if they are named, and as simple text values otherwise.
+#' @param ... Optional children for the tag. Must be either objects of class \code{\link[XiMpLe:XiMpLe_node]{XiMpLe_node}}
+#'    or character strings, which are treated as attributes if they are named, and as simple text values otherwise.
 #'    Use a named \code{character()} value for empty attributes.
 #'    If this argument is empty, the tag will be treated as an empty tag. To force a closing tag, supply an empty
 #'    string, i.e. \code{""}.

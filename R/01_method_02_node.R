@@ -167,7 +167,7 @@ setMethod("node",
     if(!is.null(what)){
       stopifnot(length(what) == 1)
       if(!what %in% c(slotNames(XiMpLe_node()), "@path", "obj@path")){
-        stop(simpleError(paste0("Invalid slot for class XiMpLe.node:", paste(sQuote(what), collapse=", "), "!")))
+        stop(simpleError(paste0("Invalid slot for class XiMpLe_node:", paste(sQuote(what), collapse=", "), "!")))
       } else {}
       if(identical(what, "@path")){
         ## return subtituted path info

@@ -1,4 +1,4 @@
-# Copyright 2015 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2015-2022 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -18,7 +18,7 @@
 
 #' Class XiMpLe.validity
 #'
-#' Used for objects that describe valid child nodes and attributes of XiMpLe.nodes.
+#' Used for objects that describe valid child nodes and attributes of \code{XiMpLe_node}s.
 #' 
 #' A contructor function \code{XMLValidity(...)} is available to be used instead of \code{new("XiMpLe.validity", ...)}.
 #'

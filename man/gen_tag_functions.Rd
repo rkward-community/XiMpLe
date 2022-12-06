@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen_tag_functions.R
 \name{gen_tag_functions}
 \alias{gen_tag_functions}
-\title{Function generator to simplify generation of XiMpLe.node objects}
+\title{Function generator to simplify generation of \code{XiMpLe_node} objects}
 \usage{
 gen_tag_functions(
   tags,
@@ -32,7 +32,8 @@ As many functions as specified by \code{tags}/\code{func_names}.
 }
 \description{
 Takes a vector of character strings and turns them into functions in the defined environment
-which in turn will generate XiMpLe.node objects with the string values as tag names.
+which in turn will generate \code{\link[XiMpLe:XiMpLe_node]{XiMpLe_node}} objects with the
+string values as tag names.
 }
 \details{
 The generated functions will be named according to \code{func_names} and only have a dots

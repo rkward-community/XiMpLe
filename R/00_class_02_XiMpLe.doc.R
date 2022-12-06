@@ -31,10 +31,10 @@
 #'
 #' @slot file Character string, Name of the file.
 #' @slot xml Either a named list of character values (attributes for the XML declaration of the file),
-#'    or a list of XiMpLe.nodes with tags whose names must start with a "?".
+#'    or a list of \code{XiMpLe_node}s with tags whose names must start with a "?".
 #' @slot dtd A named list, attributes for the doctype definition of the file.
 #' @slot children A list of objects of class \code{\link[XiMpLe:XiMpLe_node]{XiMpLe_node}} (\code{XiMpLe_doc} only), or
-#'    \code{\link[XiMpLe:XiMpLe.node]{XiMpLe.node}} (old, \code{XiMpLe.doc} only), representing the DOM structure of the XML document.
+#'    \code{\link[XiMpLe:XiMpLe_node]{XiMpLe.node}} (old, \code{XiMpLe.doc} only), representing the DOM structure of the XML document.
 #' @name XiMpLe_doc,-class
 #' @rdname XiMpLe_doc-class
 #' @aliases XiMpLe.doc-class XiMpLe.doc,-class

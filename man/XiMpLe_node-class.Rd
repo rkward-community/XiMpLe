@@ -19,12 +19,19 @@ is.XiMpLe.node(x)
 
 is.XiMpLe_node(x)
 
-as_XiMpLe_node(obj, ...)
+as_XiMpLe_node(obj, extra = list(), version = 2)
 
 \S4method{as_XiMpLe_node}{XiMpLe.node}(obj, extra = list(), version = 2)
 }
 \arguments{
 \item{x}{An arbitrary \code{R} object.}
+
+\item{obj}{An object of old class \code{XiMpLe.node}.}
+
+\item{extra}{A list of values to set the \code{extra} slot. Note that this will be applied recursively on child nodes also.}
+
+\item{version}{Integer numeric,
+      to set the \code{version} slot. Note that this will be applied recursively on child nodes also.}
 }
 \description{
 These classes are used to create DOM trees of XML documents,

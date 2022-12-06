@@ -16,12 +16,19 @@
 \usage{
 is.XiMpLe.doc(x)
 
-as_XiMpLe_doc(obj, ...)
+as_XiMpLe_doc(obj, extra = list(), version = 2)
 
 \S4method{as_XiMpLe_doc}{XiMpLe.doc}(obj, extra = list(), version = 2)
 }
 \arguments{
 \item{x}{An arbitrary \code{R} object.}
+
+\item{obj}{An object of old class \code{XiMpLe.doc}.}
+
+\item{extra}{A list of values to set the \code{extra} slot. Note that this will be applied recursively on child nodes also.}
+
+\item{version}{Integer numeric,
+      to set the \code{version} slot. Note that this will be applied recursively on child nodes also.}
 }
 \description{
 This class is used for objects that are returned by \code{\link[XiMpLe:parseXMLTree]{parseXMLTree}}.
@@ -46,13 +53,13 @@ There's also \code{XiMpLe_doc_old(...)} to be used instead of \code{new("XiMpLe.
 \item{\code{file}}{Character string, Name of the file.}
 
 \item{\code{xml}}{Either a named list of character values (attributes for the XML declaration of the file),
-or a list of XiMpLe.nodes with tags whose names must start with a "?".}
+or a list of \code{XiMpLe_node}s with tags whose names must start with a "?".}
 
 \item{\code{dtd}}{A named list, attributes for the doctype definition of the file.}
 
 \item{\code{children}}{A list of objects of class \code{\link[XiMpLe:XiMpLe_node]{XiMpLe_node}} (\code{XiMpLe_doc} only),
       or
-\code{\link[XiMpLe:XiMpLe.node]{XiMpLe.node}} (old, \code{XiMpLe.doc} only),
+\code{\link[XiMpLe:XiMpLe_node]{XiMpLe.node}} (old, \code{XiMpLe.doc} only),
       representing the DOM structure of the XML document.}
 
 \item{\code{extra}}{A named list that can be used to store additional information on a document (\code{XiMpLe_doc} only).}
