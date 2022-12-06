@@ -508,8 +508,16 @@ attr2list <- function(attr, drop_empty_tags=FALSE, doctype_args=FALSE){
   qr_to_use <- ""
   if(isTRUE(doctype_args) & grepl("\"", attr)){
     # find a temporary name for quoted empty attributes,
-    # testing a few that are unlikely used here
-    quote_replacer <- c("Ä", "ł", "ŧ", "æ", "ø", "ð")
+    # testing a few that are unlikely all used here
+    quote_replacer <- c(
+      "\u0142", # "ł" (latin small letter "L" with stroke)
+      "\u014B", # "ŋ" (latin small letter "Eng")
+      "\u0167", # "ŧ" (latin small letter "T" with stroke)
+      "\u00E6", # "æ" (latin small letter "Ae")
+      "\u00F0", # "ð" (latin small letter "Eth")
+      "\u00F8", # "ø" (latin small letter "O" with stroke)
+      "\u00FE"  # "þ" (latin small letter "Thorn")
+    )
     qr_in_attrs <- sapply(
       quote_replacer,
       function(this_qr){

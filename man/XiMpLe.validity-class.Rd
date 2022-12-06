@@ -15,7 +15,7 @@ is.XiMpLe.validity(x)
 \item{x}{An arbitrary \code{R} object.}
 }
 \description{
-Used for objects that describe valid child nodes and attributes of XiMpLe.nodes.
+Used for objects that describe valid child nodes and attributes of \code{XiMpLe_node}s.
 }
 \details{
 A contructor function \code{XMLValidity(...)} is available to be used instead of \code{new("XiMpLe.validity",

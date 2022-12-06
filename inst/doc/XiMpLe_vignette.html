@@ -12,7 +12,7 @@
 
 <meta name="author" content="m.eik michalke" />
 
-<meta name="date" content="2022-11-28" />
+<meta name="date" content="2022-12-06" />
 
 <title>The XiMpLe Package</title>
 
@@ -351,7 +351,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">The XiMpLe Package</h1>
 <h4 class="author">m.eik michalke</h4>
-<h4 class="date">2022-11-28</h4>
+<h4 class="date">2022-12-06</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>This package provides basic tools for parsing and generating XML into
@@ -460,7 +460,7 @@ it the name of that node:</p>
 <pre><code>## &lt;useless /&gt;</code></pre>
 <p>As you see, you will be shown XML code on the console. But what this
 function returns is actually an R object of class
-<code>XiMpLe.node</code>, so what you see is an <em>interpretation</em>
+<code>XiMpLe_node</code>, so what you see is an <em>interpretation</em>
 of that object, made by the <code>show()</code> method for objects of
 this type (see section <a href="#writing-xml-files">Writing XML
 files</a> on how to export XML to files).</p>
@@ -510,7 +510,7 @@ could generate an XHTML document:</p>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">id=</span><span class="st">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span>,</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refer=</span><span class="st">&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</span>)))</span></code></pre></div>
 <pre><code>## &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-## &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+## &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot; &gt;
 ## &lt;html&gt;
 ##   &lt;head&gt;
 ##   &lt;/head&gt;
@@ -597,7 +597,7 @@ the URL and remove the <code>target</code> attribute completely:</p>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">node</span>(sample.XML.tree, <span class="at">node=</span><span class="fu">list</span>(<span class="st">&quot;html&quot;</span>,<span class="st">&quot;body&quot;</span>,<span class="st">&quot;a&quot;</span>), <span class="at">what=</span><span class="st">&quot;attributes&quot;</span>, <span class="at">element=</span><span class="st">&quot;target&quot;</span>) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sample.XML.tree</span></code></pre></div>
 <pre><code>## &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-## &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+## &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot; &gt;
 ## &lt;html&gt;
 ##   &lt;head&gt;
 ##   &lt;/head&gt;
@@ -620,10 +620,10 @@ a package. For safety reasons, i.e. to not collide with existing
 objects, the function names have by default a trailing underscore and
 are not created if an object by that name already exists.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_tag_functions</span>(<span class="fu">c</span>(<span class="st">&quot;html&quot;</span>, <span class="st">&quot;head&quot;</span>, <span class="st">&quot;body&quot;</span>, <span class="st">&quot;a&quot;</span>))</span></code></pre></div>
-<pre><code>## Object exists, skipping: &quot;html_&quot;</code></pre>
-<pre><code>## Object exists, skipping: &quot;head_&quot;</code></pre>
-<pre><code>## Object exists, skipping: &quot;body_&quot;</code></pre>
-<pre><code>## Object exists, skipping: &quot;a_&quot;</code></pre>
+<pre><code>## Creating new function: &quot;html_&quot;</code></pre>
+<pre><code>## Creating new function: &quot;head_&quot;</code></pre>
+<pre><code>## Creating new function: &quot;body_&quot;</code></pre>
+<pre><code>## Creating new function: &quot;a_&quot;</code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see them in action</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>(sample.XML.tree2 <span class="ot">&lt;-</span> <span class="fu">html_</span>(</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head_</span>(),</span>

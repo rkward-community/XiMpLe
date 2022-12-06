@@ -16,10 +16,11 @@
 # along with XiMpLe.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#' Function generator to simplify generation of XiMpLe.node objects
+#' Function generator to simplify generation of \code{XiMpLe_node} objects
 #' 
 #' Takes a vector of character strings and turns them into functions in the defined environment
-#' which in turn will generate XiMpLe.node objects with the string values as tag names.
+#' which in turn will generate \code{\link[XiMpLe:XiMpLe_node]{XiMpLe_node}} objects with the
+#' string values as tag names.
 #' 
 #' The generated functions will be named according to \code{func_names} and only have a dots
 #' argument that is given to \code{\link[XiMpLe:XMLNode]{XMLNode}}. See the examples to

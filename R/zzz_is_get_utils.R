@@ -45,10 +45,13 @@ is.XiMpLe.validity <- function(x){
   inherits(x, "XiMpLe.validity")
 }
 
+#' @param obj An object of old class \code{XiMpLe.node}.
+#' @param extra A list of values to set the \code{extra} slot. Note that this will be applied recursively on child nodes also.
+#' @param version Integer numeric, to set the \code{version} slot. Note that this will be applied recursively on child nodes also.
 #' @rdname XiMpLe_node-class
 #' @docType methods
 #' @export
-setGeneric("as_XiMpLe_node", function(obj, ...) standardGeneric("as_XiMpLe_node"))
+setGeneric("as_XiMpLe_node", function(obj, extra=list(), version=2) standardGeneric("as_XiMpLe_node"))
 
 #' @rdname XiMpLe_node-class
 #' @export
@@ -75,10 +78,13 @@ setMethod("as_XiMpLe_node",
   }
 )
 
+#' @param obj An object of old class \code{XiMpLe.doc}.
+#' @param extra A list of values to set the \code{extra} slot. Note that this will be applied recursively on child nodes also.
+#' @param version Integer numeric, to set the \code{version} slot. Note that this will be applied recursively on child nodes also.
 #' @rdname XiMpLe_doc-class
 #' @docType methods
 #' @export
-setGeneric("as_XiMpLe_doc", function(obj, ...) standardGeneric("as_XiMpLe_doc"))
+setGeneric("as_XiMpLe_doc", function(obj, extra=list(), version=2) standardGeneric("as_XiMpLe_doc"))
 
 #' @rdname XiMpLe_doc-class
 #' @export

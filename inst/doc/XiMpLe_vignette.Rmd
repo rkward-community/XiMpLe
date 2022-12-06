@@ -72,7 +72,7 @@ Now let's see how these nodes can be generated using the `XiMpLe` package. Singl
 XMLNode("useless")
 ```
 
-As you see, you will be shown XML code on the console. But what this function returns is actually an R object of class `XiMpLe.node`, so what you see is an *interpretation* of that object, made by the `show()` method for objects of this type (see section [Writing XML files] on how to export XML to files).
+As you see, you will be shown XML code on the console. But what this function returns is actually an R object of class `XiMpLe_node`, so what you see is an *interpretation* of that object, made by the `show()` method for objects of this type (see section [Writing XML files] on how to export XML to files).
 
 The second node in the example above has an attribute. Attributes can be specified with the `attrs` argument, which expects a named list:
 
