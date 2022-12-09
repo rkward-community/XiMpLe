@@ -503,7 +503,7 @@ pasteXMLAttr <- function(
 attr2list <- function(attr, drop_empty_tags=FALSE, doctype_args=FALSE){
   # regular expression to detect alphanumeric characters (we'll also accept some more,
   # this is mainly needed to safely detect spaces and quotes from argument values
-  alnum_plus <- "[-_|*#@+~&%$.,:;(){}[:alnum:]]"
+  alnum_plus <- "[-_/'|*#@+~&%$§.,:;(){}?![:alnum:]]"
   doctype_restore <- FALSE
   qr_to_use <- ""
   if(isTRUE(doctype_args) & grepl("\"", attr)){
