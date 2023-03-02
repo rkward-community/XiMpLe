@@ -18,7 +18,7 @@ provide_file(rel, to, from, overwrite = TRUE, mode = "0777", quiet = FALSE)
 \item{mode}{Permissions for newly created directories below \code{to}.}
 
 \item{quiet}{Logical,
-      whether you would like to see a message whem files are copied or already exist.}
+      whether you would like to see a message when files are copied or already exist.}
 }
 \value{
 When called, the file is copied from the \code{from} to the \code{to} directory,
@@ -29,7 +29,7 @@ When called, the file is copied from the \code{from} to the \code{to} directory,
 }
 \description{
 Copies or overwrites files from a source directory to your project directory. Can be used
-to make sure that files you are referencng in your generated XML code are present and up to date.
+to make sure that files you are referencing in your generated XML code are present and up to date.
 }
 \details{
 The function returns the relative path that was given as its first argument,
@@ -37,7 +37,7 @@ The function returns the relative path that was given as its first argument,
 inside \code{XMLNode} to add relative paths to arguments while also copying the referenced file
 to the given output directory, keeping the relative path.
 
-It can be useful to write a simple wrapper around theis function to set the relevant \code{from}
+It can be useful to write a simple wrapper around this function to set the relevant \code{from}
 and \code{to} paths for a project (see examples).
 }
 \examples{

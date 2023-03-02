@@ -503,20 +503,21 @@ pasteXMLAttr <- function(
 attr2list <- function(attr, drop_empty_tags=FALSE, doctype_args=FALSE){
   # regular expression to detect alphanumeric characters (we'll also accept some more,
   # this is mainly needed to safely detect spaces and quotes from argument values
-  alnum_plus <- "[-_/'|*#@+~&%$§.,:;(){}?![:alnum:]]"
+  # unicode 00A7 is the section sign ("§", non-ASCII)
+  alnum_plus <- "[-_/'|*#@+~&%$\u00A7.,:;(){}?![:alnum:]]"
   doctype_restore <- FALSE
   qr_to_use <- ""
   if(isTRUE(doctype_args) & grepl("\"", attr)){
     # find a temporary name for quoted empty attributes,
     # testing a few that are unlikely all used here
     quote_replacer <- c(
-      "\u0142", # "ł" (latin small letter "L" with stroke)
-      "\u014B", # "ŋ" (latin small letter "Eng")
-      "\u0167", # "ŧ" (latin small letter "T" with stroke)
-      "\u00E6", # "æ" (latin small letter "Ae")
-      "\u00F0", # "ð" (latin small letter "Eth")
-      "\u00F8", # "ø" (latin small letter "O" with stroke)
-      "\u00FE"  # "þ" (latin small letter "Thorn")
+      "\u0142", # ł (latin small letter "L" with stroke)
+      "\u014B", # ŋ (latin small letter "Eng")
+      "\u0167", # ŧ (latin small letter "T" with stroke)
+      "\u00E6", # æ (latin small letter "Ae")
+      "\u00F0", # ð (latin small letter "Eth")
+      "\u00F8", # ø (latin small letter "O" with stroke)
+      "\u00FE"  # þ (latin small letter "Thorn")
     )
     qr_in_attrs <- sapply(
       quote_replacer,
@@ -661,15 +662,6 @@ attr2list <- function(attr, drop_empty_tags=FALSE, doctype_args=FALSE){
 ## function parseXMLAttr()
 # takes a whole XML tag and returns a named list with its attributes
 parseXMLAttr <- function(tag, drop_empty_tags=FALSE){
-#   if(XML.doctype(tag)){
-#     stripped.tag <- gsub("<!((?i)DOCTYPE)[[:space:]]+([^[:space:]]+)[[:space:]]*([^\"[:space:]]*)[[:space:]]*.*>",
-#       "doctype=\"\\2\", decl=\"\\3\"", tag)
-#     stripped.tag2 <- eval(parse(text=paste("c(",gsub("[^\"]*[\"]?([^\"]*)[\"]?[^\"]*", "\"\\1\",", tag),"NULL)")))
-#     is.dtd <- grepl("\\.dtd", stripped.tag2)
-#     doct.decl <- ifelse(sum(!is.dtd) > 0, paste0(stripped.tag2[!is.dtd][1]), paste0(""))
-#     doct.ref <- ifelse(sum(is.dtd) > 0, paste0(stripped.tag2[is.dtd][1]), paste0(""))
-#     parsed.list <- eval(parse(text=paste0("list(", stripped.tag, ", id=\"", doct.decl,"\"", ", refer=\"", doct.ref,"\")")))
-#   } else if(XML.endTag(tag) | XML.comment(tag) | XML.cdata(tag)){
   if(XML.endTag(tag) | XML.comment(tag) | XML.cdata(tag)){
     # end tags, comments and CDATA don't have attributes
     parsed.list <- ""
@@ -900,22 +892,6 @@ XML.tagName <- function(tag){
   )
   return(tag.names)
 } ## end function XML.tagName()
-
-
-# unused?
-# ## function parseXMLTag()
-# parseXMLTag <- function(tag, drop_empty_tags=FALSE){
-#   tag.name <- XML.tagName(tag)
-#   tag.attr <- parseXMLAttr(tag, drop_empty_tags=drop_empty_tags)
-#   if(!is.null(tag.attr)){
-#     parsed.tag <- list()
-#     parsed.tag[[tag.name]] <- list(attr=tag.attr)
-#   } else {
-#     parsed.tag <- list()
-#     parsed.tag[[tag.name]] <- list()
-#   }
-#   return(parsed.tag)
-# } ## end function parseXMLTag()
 
 
 ## function XML.nodes()

@@ -1,4 +1,4 @@
-# Copyright 2022 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2023 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -19,13 +19,13 @@
 #' Manage static files in project directory
 #'
 #' Copies or overwrites files from a source directory to your project directory. Can be used
-#' to make sure that files you are referencng in your generated XML code are present and up to date.
+#' to make sure that files you are referencing in your generated XML code are present and up to date.
 #'
 #' The function returns the relative path that was given as its first argument, e.g. it can be used
 #' inside \code{XMLNode} to add relative paths to arguments while also copying the referenced file
 #' to the given output directory, keeping the relative path.
 #' 
-#' It can be useful to write a simple wrapper around theis function to set the relevant \code{from}
+#' It can be useful to write a simple wrapper around this function to set the relevant \code{from}
 #' and \code{to} paths for a project (see examples).
 #'
 #' @param rel Relative path of file as to be used in HTML.
@@ -33,7 +33,7 @@
 #' @param from Full path to the directory where the file can be found under its \code{rel_path}.
 #' @param overwrite Logical, whether existing files should be re-written or kept in place.
 #' @param mode Permissions for newly created directories below \code{to}.
-#' @param quiet Logical, whether you would like to see a message whem files are copied or already exist.
+#' @param quiet Logical, whether you would like to see a message when files are copied or already exist.
 #' @return When called, the file is copied from the \code{from} to the \code{to} directory,
 #'    including the relative path given by \code{rel}. Missing target directories below \code{to}
 #'    are created on-the-fly. If successful, the function finally returns an invisible character
