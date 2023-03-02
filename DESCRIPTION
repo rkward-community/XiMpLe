@@ -8,8 +8,6 @@ Description: Provides a simple XML tree parser/generator. It includes
         XML handling it could be useful. It was originally developed for
         the R GUI and IDE 'RKWard' <https://rkward.kde.org>, to make plugin
         development easier.
-Author: Meik Michalke [aut, cre]
-Maintainer: Meik Michalke <meik.michalke@hhu.de>
 Depends: R (>= 2.9.0)
 Imports: methods
 Suggests: testthat,knitr,rmarkdown
@@ -22,7 +20,7 @@ LazyLoad: yes
 Authors@R: c(person(given="Meik", family="Michalke",
         email="meik.michalke@hhu.de", role=c("aut", "cre")))
 Version: 0.11-1
-Date: 2022-12-06
+Date: 2023-03-02
 RoxygenNote: 7.2.2
 Collate: 
     '00_class_01_XiMpLe.node.R'

@@ -53,12 +53,17 @@ Let's quickly explain what we'll be talking about here. If you're parsing an XML
 
 
 ```
-<!-- following is an empty node named "useless" -->
+<!--
+  following is an empty node named "useless"
+-->
 <useless />
 
-<!-- the next node is non-empty and has an attribute foo with value bar -->
+<!--
+  the next node is non-empty and has an attribute foo with value bar
+-->
 <other foo="bar">
   this text is the child of the "other" node.
+  it can have multiple entries.
 </other>
 ```
 
@@ -74,53 +79,62 @@ XMLNode("useless")
 
 As you see, you will be shown XML code on the console. But what this function returns is actually an R object of class `XiMpLe_node`, so what you see is an *interpretation* of that object, made by the `show()` method for objects of this type (see section [Writing XML files] on how to export XML to files).
 
-The second node in the example above has an attribute. Attributes can be specified with the `attrs` argument, which expects a named list:
+The second node in the initial example has an attribute. Attributes can comfortably be specified as named character strings via the `...` argument:
+
+```{r}
+XMLNode("other", foo="bar")
+```
+
+Alternatively, you can provide attributes as a named list via the `attrs` argument. You will need to use this if any attribute you would like to have in an XML node collides with the argument names of `XMLNode()`:
 
 ```{r}
 XMLNode("other", attrs=list(foo="bar"))
 ```
 
-So, by default, as long as our node doesn't have any children, it's assumed to be an empty node. To force it into a non-empty node (i.e., opening and closing tag) even without content, we'd have to provide an empty character string as its child. Child nodes can be provided in two ways -- either one by one via the `...` argument, or as one list via the `.children` argument:
+By default, as long as our node doesn't have any children, it's assumed to be an empty node. To force it into a non-empty node (i.e., opening and closing tag) even without content, we'd have to provide an empty character string as its child. Like attributes, child nodes can also be provided in two ways -- either one by one via the `...` argument:
 
 ```{r}
-XMLNode("other", "", attrs=list(foo="bar"))
+XMLNode("other", "", foo="bar")
 ```
+
+Or as one list via the `.children` argument. However, due to the implementation invoking the `.children` argument currently has the side effect of *replacing* the `...` argument, which will then ignore any names attribute definitions you might have given there. Therefore, you would then also have to put attributes in the `attrs` argument as well:
+
 ```{r}
 XMLNode("other", attrs=list(foo="bar"), .children=list(""))
 ```
 
-Of course this is also the place to provide our node with the text value:
+Anyway, this is also the place to provide our node with the text value:
 
 ```{r}
 XMLNode(
   "other",
   "this text is the child of the \"other\" node.",
-  attrs=list(foo="bar")
+  "it can have multiple entries.",
+  foo="bar"
 )
 ```
 
-But how about the comments? Well, `XiMpLe` does detect some special node names, one being `"!--"` to indicate a comment:
+How about the comments? Well, `XiMpLe` does detect some special node names, one being `"!--"` to indicate a comment:
 
 ```{r}
 XMLNode("!--", "following is an empty node named \"useless\"")
 ```
 
-OK, that's single nodes. In most cases, you want to have nested nodes which combine into an XML tree. As a practical example, this is how you could generate an XHTML document:
+So far we genrated single nodes. In most cases, you want to have nested nodes which combine into an XML tree. You can achieve this by simply using nodes as child nodes. As a practical example, this is how you could generate an XHTML document:
 
 ```{r}
-sample.XML.a <- XMLNode("a", "klick here!", attrs=list(href="http://example.com", target="_blank"))
-sample.XML.body <- XMLNode("body", sample.XML.a)
-sample.XML.html <- XMLNode("html", XMLNode("head", ""), sample.XML.body)
-(sample.XML.tree <- XMLTree(sample.XML.html,
+sample_XML_a <- XMLNode("a", "klick here!", href="http://example.com", target="_blank")
+sample_XML_body <- XMLNode("body", sample_XML_a)
+sample_XML_html <- XMLNode("html", XMLNode("head", ""), sample_XML_body)
+(sample_XML_tree <- XMLTree(sample_XML_html,
   xml=list(version="1.0", encoding="UTF-8"),
   dtd=list(doctype="html", decl="PUBLIC",
   id="-//W3C//DTD XHTML 1.0 Transitional//EN",
   refer="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd")))
 ```
-<!-- \begin{Soutput}
+<!--
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
 <html>
   <head>
   </head>
@@ -130,7 +144,7 @@ sample.XML.html <- XMLNode("html", XMLNode("head", ""), sample.XML.body)
     </a>
   </body>
 </html>
-\end{Soutput} -->
+-->
 
 
 It should be noted, however, that `XiMpLe` doesn't perform even the slightest checks on what you provide as `DOCTYPE` or `xml` attributes.
@@ -138,21 +152,25 @@ It should be noted, however, that `XiMpLe` doesn't perform even the slightest ch
 
 # Writing XML files
 
-We've learned earlier that `XiMpLe` objects do not contain the actual XML code. If you would like to write the XML code to a file, you should use `pasteXML()`, which will translate the R objects into a character string:
+We've learned earlier that `XiMpLe` objects do not contain actual XML code. If you would like to write the XML code to a file, you should use `pasteXML()`, which will translate the R objects into a character string:
 
 
 ```{r}
-useless.node <- XMLNode("useless")
-pasteXML(useless.node)
+useless_node <- XMLNode("useless")
+pasteXML(useless_node)
 ```
 
 Now let's write the XHTML code we created in the previous section to a file called `example.html`:
 
 ```{r, eval=FALSE}
-cat(pasteXML(sample.XML.tree), file="example.html")
+cat(pasteXML(sample_XML_tree), file="example.html")
 ```
 
-And that's it. The method `pasteXML()` has some arguments to configure the output, like `shine`, which sets the level of code formatting. If you set `shine=0`, no formatting is done, not even newlines.
+And that's it. The method `pasteXML()` has some arguments to configure the output, like `shine`, which sets the level of code formatting. If you set `shine=0`, no formatting is done, not even newlines, `shine=1` (default) uses individual lines for nodes and adds indentation for better readability, and `shine=2` uses indented lines for each attribute as well:
+
+```{r, eval=FALSE}
+cat(pasteXML(sample_XML_tree, shine=2))
+```
 
 
 # Reading XML files
@@ -160,7 +178,7 @@ And that's it. The method `pasteXML()` has some arguments to configure the outpu
 We've also just created an example file we can read back in, to see how XML parsing looks like with `XiMpLe`:
 
 ```{r, eval=FALSE}
-sample.XML.parsed <- parseXMLTree("example.html")
+sample_XML_parsed <- parseXMLTree("example.html")
 ```
 
 `parseXMLTree()` can also digest XML directly if it comes in single character strings or vectors. You only need to tell it that you're not providing a file name this time, using the `object` argument:
@@ -180,30 +198,30 @@ That's a job for `node()`. This method can be used to extract parts from XML tre
 
 
 ```{r}
-node(sample.XML.tree, node=list("html","body","a"), what="attributes")
+node(sample_XML_tree, node=list("html","body","a"), what="attributes")
 ```
 ```{r}
-node(sample.XML.tree, node=list("html","body","a"), what="value")
+node(sample_XML_tree, node=list("html","body","a"), what="value")
 ```
 
 This way it's easy to get the value of all attributes or the link text. You can also change values with `node()`. Let's change the URL and remove the `target` attribute completely:
 
 ```{r}
-node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="href") <- "http://example.com/foobar"
-node(sample.XML.tree, node=list("html","body","a"), what="attributes", element="target") <- NULL
-sample.XML.tree
+node(sample_XML_tree, node=list("html","body","a"), what="attributes", element="href") <- "http://example.com/foobar"
+node(sample_XML_tree, node=list("html","body","a"), what="attributes", element="target") <- NULL
+sample_XML_tree
 ```
 
 
 # Less typing with wrappers
 
-There's a fancy way of generating XML nodes and trees using wrapper functions around `XMLNode()`. The function `gen_tag_functions()` takes a character vector of tag names and generates those wrappers for you in a defined environment, which by default is the current global environment. This means you can start using these wrappers right after they were created, as if you had loaded a package. For safety reasons, i.e. to not collide with existing objects, the function names have by default a trailing underscore and are not created if an object by that name already exists.
+There's a fancy way of generating XML nodes and trees using wrapper functions around `XMLNode()`. The function `gen_tag_functions()` takes a character vector of tag names and generates those wrappers for you in a defined environment, which by default is the current global environment. This means you can start using these wrappers right after they were created, as if you had loaded a package. For safety reasons, i.e. to not collide with existing objects, these functions by default are named with a trailing underscore and are not created if an object by that name already exists.
 
 ```{r}
 gen_tag_functions(c("html", "head", "body", "a"))
 
 # see them in action
-(sample.XML.tree2 <- html_(
+(sample_XML_tree2 <- html_(
   head_(),
   body_(
     a_(href="http://example.com", target="_blank", "klick here!")
@@ -224,12 +242,14 @@ Since the evironment is in the search path, you should be able to call the funct
 
 # Turning XML into script code
 
-The already introduced method `pasteXML()` usually shows you the nexted R objects as XML code. But it is also capable of turning them into script code that uses the syntax of the wrapper functions we have just created. To get this, simply use `as_script=TRUE`:
+The already introduced method `pasteXML()` usually shows you the nested R objects as XML code. But it is also capable of turning them into script code that uses the syntax of the wrapper functions we have just created. To get this, simply use `as_script=TRUE`:
 
 ```{r}
-cat(pasteXML(sample.XML.tree2, as_script=TRUE))
+cat(pasteXML(sample_XML_tree2, as_script=TRUE))
 ```
 
-A use case for this might be existing XML documents tht you would like to maintain with R scripts. You can first import the documents with `parseXMLTree()` and then have `pasteXML()` turn it into scripts that would generate the same XML code in return.
+A use case for this might be existing XML documents that you would like to maintain with R scripts. You can first import the documents with `parseXMLTree()` and then have `pasteXML()` turn it into scripts that would generate the original XML code in return.
 
 Be aware that the code generated might not always run out of the box. Obviously, you'll have to create the needed wrapper functions. Some XML nodes might be skipped if the parser doesn't fully understand them, and the code will be as nested as the input. However, it it's probably a good start saving you a lot of time anyway.
+
+If you find that useful, you might also want to check out the function `provide_file()`. It can be used as a wrapper around a file name that a node is referencing (like the value of `src` of an `<img />` tag) and make an actual copy of that file to a defined path.

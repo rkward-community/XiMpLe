@@ -43,7 +43,7 @@ understand how it's supposed to work.
 \examples{
 # Say we would like to generate an HTML website and want to use
 # <a>, <div> and <p> tags.
-# The standard way of creatig a <div> node would be this:
+# The standard way of creating a <div> node would be this:
 (my_node <- XMLNode("div", "some content", class="important"))
 
 # By using gen_tag_functions(), we can create some shortcut functions
@@ -55,7 +55,7 @@ gen_tag_functions(tags=c("a", "div", "p"))
 # It also works for nested tags:
 (my_node3 <- div_(a_(href="foo", "some content")))
 
-# if you don't want these functions filling up your .GlobalEnv,
+# If you don't want these functions filling up your .GlobalEnv,
 # you can also put them in an attached environment, e.g.
 attach(list(), name="XiMpLe_wrappers")
 gen_tag_functions(tags=c("head", "body"), envir=as.environment("XiMpLe_wrappers"))
