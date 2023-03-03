@@ -1,4 +1,4 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: XiMpLe
 Upstream-Contact: Meik Michalke <meik.michalke@hhu.de>
 Comment:
@@ -16,9 +16,9 @@ Comment:
   found in /usr/lib/R/site-library/XiMpLe/DESCRIPTION.
 
 Files: *
-Copyright: 2017 Meik Michalke
+Copyright: 2023 Meik Michalke
 License: GPL (>= 3)
-  XiMpLe Copyright (C) 2017 Meik Michalke, released under the
+  XiMpLe Copyright (C) 2023 Meik Michalke, released under the
   GNU General Public License (GPL) version 3 or (at your option) any later version.
   .
   This software is distributed in the hope that it will be useful, but

@@ -1,5 +1,13 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.11-2 (2023-03-03)
+unreleased:
+  - this release is under development
+fixed:
+  - ChangeLog: removed again the entry from 0.11-1 that the ChangeLog was
+    fixed, because that was actually just caused by a temporary bug in
+    roxyPackage that was quickly found and fixed
+
 changes in version 0.11-1 (2023-03-02)
 breaking:
   - XMLNode(): first argument was renamed from "name" to "tag_name" to
@@ -48,8 +56,6 @@ added:
     of new("XiMpLe_node")/new("XiMpLe_doc")
   - XMLNode(): new argument "shine" now allows to change the shine level from
     a node onward, overwriting the level set with pasteXML() globally
-fixed:
-  - correctly itemized the ChangeLog, only took me 11+ years to notice
 
 changes in version 0.10-3 (2020-09-19)
 fixed:
