@@ -1,6 +1,21 @@
 \name{NEWS}
 \title{News for Package 'XiMpLe'}
 \encoding{UTF-8}
+\section{Changes in XiMpLe version 0.11-2 (2023-08-22)}{
+  \subsection{changed}{
+    \itemize{
+      \item dependencies: an old \code{paste0()} wrapper for R <= 2.15 was removed, the
+        package now requires at least R 3.0
+    }
+  }
+  \subsection{fixed}{
+    \itemize{
+      \item ChangeLog: removed again the entry from 0.11-1 that the ChangeLog was
+        fixed, because that was actually just caused by a temporary bug in
+        roxyPackage that was quickly found and fixed
+    }
+  }
+}
 \section{Changes in XiMpLe version 0.11-1 (2023-03-02)}{
   \subsection{breaking}{
     \itemize{
@@ -17,17 +32,17 @@
       \item \code{XMLNode()}: you can now define attributes in the dots argument as well by
         using a named character string; the attrs argument can still be used as
         before, it just doesn't have a NULL default value any more
-      \item \code{XMLNode()}: defining an attribute value as \code{character()} will result in an
+        \code{XMLNode()}: defining an attribute value as \code{character()} will result in an
         empty attribute
-      \item \code{parseXMLTree()}: is now able to deal with empty attributes; to silently
+        \code{parseXMLTree()}: is now able to deal with empty attributes; to silently
         drop empty attributes instead, you can use the new
         drop=\code{"empty_attributes"} option
-      \item \code{pasteXML()}/pasteXMLTag(): re-wrote most oft the pasting routine resulting
+        \code{pasteXML()}/pasteXMLTag(): re-wrote most oft the pasting routine resulting
         in better formatted output
-      \item \code{XMLValidity()}: constructor function is now directly derived from the
+        \code{XMLValidity()}: constructor function is now directly derived from the
         class definition instead of a separate function/file
-      \item \code{XMLNode()}: arguments are no longer NULL if unused (formals)
-        code was re-written and cleaned up all over the place
+        \code{XMLNode()}: arguments are no longer NULL if unused (formals) code was
+        re-written and cleaned up all over the place
     }
   }
   \subsection{added}{
@@ -38,37 +53,31 @@
         \code{"shine"} level on each node individually (see \code{XMLNode()} below);
         XiMpLe.node and XiMpLe.doc should no longer be used, they are currently
         still around only for backwards compatibility
-      \item \code{as_XiMpLe_node()}/as_XiMpLe_doc(): methods to recursively update old
+        \code{as_XiMpLe_node()}/as_XiMpLe_doc(): methods to recursively update old
         XiMpLe.node and XiMpLe.doc objects into XiMpLe_node and XiMpLe_doc
-      \item \code{gen_tag_functions()}: generate shortcut functions to create XML tags with
+        \code{gen_tag_functions()}: generate shortcut functions to create XML tags with
         less typing and better readability of your code
-      \item \code{provide_file()}: function to keep referenced files up to date in a project
+        \code{provide_file()}: function to keep referenced files up to date in a project
         directory
-      \item \code{pasteXML()}/pasteXMLTag(): new arguments \code{"as_script"}, \code{"func_name"}, and
+        \code{pasteXML()}/pasteXMLTag(): new arguments \code{"as_script"}, \code{"func_name"}, and
         \code{"func_rename"}; if "as_script=TRUE" you will not get XML code but R script
         code that can be used together with \code{gen_tag_functions()} to re-generate
         the XiMpLe object. a use case is existing XML code you would like to
         maintain with XiMpLe: import it with \code{parseXMLTree()} and make an initial
-        script with pasteXML(as_script=TRUE)
-        you can now define the default indentation character by setting the
-        global option \code{"XiMpLe_indent"}
-      \item \code{XiMpLe_node()}/XiMpLe_doc(): new constructor functions to be used instead
+        script with pasteXML(as_script=TRUE) you can now define the default
+        indentation character by setting the global option \code{"XiMpLe_indent"}
+        XiMpLe_node()/\code{XiMpLe_doc()}: new constructor functions to be used instead
         of new(\code{"XiMpLe_node"})/new(\code{"XiMpLe_doc"})
-      \item \code{XMLNode()}: new argument \code{"shine"} now allows to change the shine level from
+        \code{XMLNode()}: new argument \code{"shine"} now allows to change the shine level from
         a node onward, overwriting the level set with \code{pasteXML()} globally
-    }
-  }
-  \subsection{fixed}{
-    \itemize{
-      \item correctly itemized the ChangeLog, only took me 11+ years to notice
     }
   }
 }
 \section{Changes in XiMpLe version 0.10-3 (2020-09-19)}{
   \subsection{fixed}{
     \itemize{
-      \item *-package.R/.Rd: use macros like \\packageDescription\{\}
-        \code{pasteXMLTag()}: fixed warning when tag contains only whitespace chars
+      \item *-package.R/.Rd: use macros like \\packageDescription\{\} \code{pasteXMLTag()}:
+        fixed warning when tag contains only whitespace chars
     }
   }
   \subsection{added}{
@@ -95,19 +104,19 @@
 \section{Changes in XiMpLe version 0.10-1 (2017-04-10)}{
   \subsection{fixed}{
     \itemize{
-      \item \code{XMLValue()} didn't return values in "!value!" special child nodes
-        adjusted internal function \code{XML.nodes()} to work with R 3.3 (embedding S4
-        objects in lists)
+      \item \code{XMLValue()} didn't return values in "!value!" special child nodes adjusted
+        internal function \code{XML.nodes()} to work with R 3.3 (embedding S4 objects in
+        lists)
     }
   }
   \subsection{added}{
     \itemize{
       \item new method \code{validXML()} for some basic validity checks
-      \item new class XiMpLe.validity to define valid child nodes and attributes
-      \item new function \code{is.XiMpLe.validity()}
-      \item new method \code{XMLgenerators()} for objects of class XiMpLe.validity
-      \item new tests for validity checks
-      \item \code{XMLTree()} (and hence objects of class XiMpLe.doc) now also accept a list
+        new class XiMpLe.validity to define valid child nodes and attributes
+        new function \code{is.XiMpLe.validity()}
+        new method \code{XMLgenerators()} for objects of class XiMpLe.validity
+        new tests for validity checks
+        \code{XMLTree()} (and hence objects of class XiMpLe.doc) now also accept a list
         of XiMpLe nodes with <?... ?> style tags as the \code{"xml"} slot
     }
   }
@@ -115,11 +124,11 @@
     \itemize{
       \item moved documentation of \code{is.XiMpLe.node()} and \code{is.XiMpLe.doc()} to the
         respective classes
-      \item \code{pasteXML()} gained support for tag names starting with "?" and ends them
+        \code{pasteXML()} gained support for tag names starting with "?" and ends them
         with "?>" instead of "/>"
-      \item \code{parseXMLTree()} now accepts more than one XML declaration at the beginning
+        \code{parseXMLTree()} now accepts more than one XML declaration at the beginning
         of a file
-      \item version number took a big jump only because of the CRAN policies!
+        version number took a big jump only because of the CRAN policies!
     }
   }
 }
@@ -134,9 +143,9 @@
       \item \code{XMLScanDeep()} was said to examine node names, children and values as well
         as attributes, but in fact it was hard-wired on attributes only. removed
         children from the list and added support for names and values
-      \item corrected internal function \code{setMinIndent()} and \code{pasteXMLTag()} for better
+        corrected internal function \code{setMinIndent()} and \code{pasteXMLTag()} for better
         indentation for comments
-      \item internal function \code{indent()} can now handle negative levels
+        internal function \code{indent()} can now handle negative levels
     }
   }
 }
@@ -160,15 +169,15 @@
       \item new attribute \code{"as.list"} added to \code{XMLScan()}, if TRUE forces the return
         value to be a list of length 1 (default is still to directly return the
         single node).
-      \item new method \code{XMLScanDeep()} recursively scans for attributes and returns all
+        new method \code{XMLScanDeep()} recursively scans for attributes and returns all
         which were found
     }
   }
   \subsection{changed}{
     \itemize{
-      \item added a proper GPL notice at the beginning of each R file
-        the vignette was moved from inst/doc to inst/vignettes
-      \item synced names of Author: and Maintainer: in DESCRIPTION with Autors@R:
+      \item added a proper GPL notice at the beginning of each R file the vignette
+        was moved from inst/doc to inst/vignettes
+        synced names of Author: and Maintainer: in DESCRIPTION with Autors@R:
     }
   }
 }
@@ -198,7 +207,7 @@
   \subsection{added}{
     \itemize{
       \item added setter methods XML*()<- to all getter methods
-      \item added tests for getter/setter methods
+        added tests for getter/setter methods
     }
   }
 }
@@ -206,7 +215,7 @@
   \subsection{added}{
     \itemize{
       \item added proper \code{is.XiMpLe.node()} and \code{is.XiMpLe.doc()} functions
-      \item added getter functions for all slots in XiMpLe.node and XiMpLe.doc
+        added getter functions for all slots in XiMpLe.node and XiMpLe.doc
         objects (e.g., \code{getXMLName()} to get the name slot of a XiMpLe.node object)
     }
   }
@@ -215,19 +224,19 @@
   \subsection{added}{
     \itemize{
       \item added examples to all functions
-      \item added a vignette
-      \item additional tests for \code{node()}<-
+        added a vignette
+        additional tests for \code{node()}<-
     }
   }
   \subsection{fixed}{
     \itemize{
       \item fixed dropping of last tag/text value if XML was incomplete, e.g., just
         an excerpt of a full tree
-      \item fixed handling of empty tags completely without space, e.g. "<br/>"
+        fixed handling of empty tags completely without space, e.g. "<br/>"
         instead of "<br />"
-      \item parsing error for DOCTYPE nodes mixed up elements and previously ignored
+        parsing error for DOCTYPE nodes mixed up elements and previously ignored
         the \code{"decl"} value
-      \item \code{node()}<- now replaces both text values and pseudo tags with a new value.
+        \code{node()}<- now replaces both text values and pseudo tags with a new value.
         this can still be problematic for child nodes which contain a mix of
         pseudo and actual tags, so a warning will be given until this is resolved
     }
@@ -270,22 +279,21 @@
   \subsection{added}{
     \itemize{
       \item added a LICENSE file
-      \item debianized the sources
+        debianized the sources
     }
   }
   \subsection{changed}{
     \itemize{
-      \item \code{parseXMLTree()} now takes connections as \code{"file"} parameter
-        commented CDATA tags (like they're used in XHTML) can now be detected and
-        pasted
-      \item \code{pasteXMLTag()} adjusts indentation level of value tags and comments
+      \item \code{parseXMLTree()} now takes connections as \code{"file"} parameter commented CDATA
+        tags (like they're used in XHTML) can now be detected and pasted
+        \code{pasteXMLTag()} adjusts indentation level of value tags and comments
     }
   }
   \subsection{fixed}{
     \itemize{
       \item feeding internet addresses to \code{parseXMLTree()} no longer throws an error,
-        skipping \code{normalize.path()} then now
-        \code{parseXMLTree()} now preserves newlines in value tags and comments
+        skipping \code{normalize.path()} then now \code{parseXMLTree()} now preserves newlines
+        in value tags and comments
     }
   }
 }
@@ -293,22 +301,22 @@
   \itemize{
     \item \code{node()} now also works with single XiMpLe.node objects (not only full
       trees)
-    \item added pasteXML methods to paste objects of classes XiMpLe.node and
+      added pasteXML methods to paste objects of classes XiMpLe.node and
       XiMpLe.doc in a more general manner. the former functions \code{pasteXMLNode()}
       and \code{pasteXMLTree()} are replaced by mere wrapper frunctions to \code{pasteXML()}
       and should not be used any longer.
-    \item fixed dropped text value if node also had child nodes in \code{pasteXML()}
-    \item fixed missing quotes in DOCTYPE id (\code{pasteXML()})
+      fixed dropped text value if node also had child nodes in \code{pasteXML()}
+      fixed missing quotes in DOCTYPE id (\code{pasteXML()})
   }
 }
 \section{Changes in XiMpLe version 0.03-11 (2012-03-14)}{
   \itemize{
     \item added functions \code{XMLNode()} and \code{XMLTree()} as constructor functions for XML
       nodes and trees.
-    \item added opton \code{"object"} to \code{parseXMLTree()}, to be able to parse XML trees not
+      added opton \code{"object"} to \code{parseXMLTree()}, to be able to parse XML trees not
       only from files, but also character vectors
-    \item output of internal function \code{XML.single.tags()} has no colname any more
-    \item text values of nodes are no longer followed by an empty newline in
+      output of internal function \code{XML.single.tags()} has no colname any more
+      text values of nodes are no longer followed by an empty newline in
       \code{pasteXMLNode()}
   }
 }
@@ -336,7 +344,7 @@
   \itemize{
     \item added "&" to the special characters for \code{"tidy"} (only applies if theres
       space before and after)
-    \item \code{"tidy"} now also indents text in comments and CDATA if it includes the
+      \code{"tidy"} now also indents text in comments and CDATA if it includes the
       newline character
   }
 }
@@ -361,9 +369,9 @@
   \itemize{
     \item changed default 'shine' value of \code{pasteXMLNode()} and \code{pasteXMLTree()} from 2
       to 1
-    \item \code{pasteXMLNode()} and \code{pasteXMLTree()} now try to call each other if fed with
+      \code{pasteXMLNode()} and \code{pasteXMLTree()} now try to call each other if fed with
       the wrong class object, but a warning is given
-    \item changed handling of 'value' in \code{pasteXMLNode()}, now reflects 'shine'
+      changed handling of 'value' in \code{pasteXMLNode()}, now reflects 'shine'
       setting/indentation
   }
 }
@@ -375,27 +383,27 @@
 \section{Changes in XiMpLe version 0.03-1 (2011-09-11)}{
   \itemize{
     \item fixed outstanding issue with complex value structures
-    \item changed "Author@R" to "Authors@R" in DESCRIPTION (for R >= 2.14)
+      changed "Author@R" to "Authors@R" in DESCRIPTION (for R >= 2.14)
   }
 }
 \section{Changes in XiMpLe version 0.02-2 (2011-09-01)}{
   \itemize{
     \item fixed missing \code{"methods"} dependecy
-    \item adjusted docs a little
+      adjusted docs a little
   }
 }
 \section{Changes in XiMpLe version 0.02-1 (2011-08-30)}{
   \itemize{
     \item added option \code{"indent.by"} to the paste functions, in case one prefers
       space over tab.
-    \item moved all rk.* functions out of this package and into its own
+      moved all rk.* functions out of this package and into its own
       (rkwardplugdev)
   }
 }
 \section{Changes in XiMpLe version 0.01-9 (2011-08-28)}{
   \itemize{
     \item tiny improvements to XML formatting
-    \item added functions \code{rk.XML.tabbook()}, \code{rk.XML.dropdown()}, \code{rk.XML.plugin()}
+      added functions \code{rk.XML.tabbook()}, \code{rk.XML.dropdown()}, \code{rk.XML.plugin()}
       rk.\code{XML.pluginmap()} and \code{rk.plugin.skeleton()} [to be moved again]
   }
 }
@@ -407,15 +415,15 @@
 \section{Changes in XiMpLe version 0.01-7 (2011-08-24)}{
   \itemize{
     \item fixed typo bug in \code{XML.single.tags()}
-    \item improved support for comments and CDATA
-    \item improved XML formatting
+      improved support for comments and CDATA
+      improved XML formatting
   }
 }
 \section{Changes in XiMpLe version 0.01-6 (2011-08-23)}{
   \itemize{
     \item added functions \code{pasteXMLTree()} and \code{pasteXMLNode()}
-    \item added validity checks for classes XiMpLe.doc and XiMpLe.node
-    \item added function \code{rk.XML.about()} [which will probably be moved out of the
+      added validity checks for classes XiMpLe.doc and XiMpLe.node
+      added function \code{rk.XML.about()} [which will probably be moved out of the
       package]
   }
 }
@@ -432,7 +440,7 @@
 \section{Changes in XiMpLe version 0.01-3 (2011-08-18)}{
   \itemize{
     \item checks XML and DTD declaration now
-    \item added \code{getNode()} method
+      added \code{getNode()} method
   }
 }
 \section{Changes in XiMpLe version 0.01-2 (2011-08-15)}{
