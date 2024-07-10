@@ -1,10 +1,15 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.11-3 (2024-07-10)
+unreleased:
+  - this release is under development
+fixed:
+  - XMLNode(): named attributes with NULL value are now removed
+
 changes in version 0.11-2 (2023-08-22)
 changed:
   - dependencies: an old paste0() wrapper for R <= 2.15 was removed, the
     package now requires at least R 3.0
-fixed:
   - ChangeLog: removed again the entry from 0.11-1 that the ChangeLog was
     fixed, because that was actually just caused by a temporary bug in
     roxyPackage that was quickly found and fixed
@@ -21,16 +26,16 @@ changed:
   - XMLNode(): you can now define attributes in the dots argument as well by
     using a named character string; the attrs argument can still be used as
     before, it just doesn't have a NULL default value any more
-    XMLNode(): defining an attribute value as character() will result in an
+  - XMLNode(): defining an attribute value as character() will result in an
     empty attribute
-    parseXMLTree(): is now able to deal with empty attributes; to silently
+  - parseXMLTree(): is now able to deal with empty attributes; to silently
     drop empty attributes instead, you can use the new
     drop="empty_attributes" option
-    pasteXML()/pasteXMLTag(): re-wrote most oft the pasting routine resulting
+  - pasteXML()/pasteXMLTag(): re-wrote most oft the pasting routine resulting
     in better formatted output
-    XMLValidity(): constructor function is now directly derived from the
+  - XMLValidity(): constructor function is now directly derived from the
     class definition instead of a separate function/file
-    XMLNode(): arguments are no longer NULL if unused (formals) code was
+  - XMLNode(): arguments are no longer NULL if unused (formals) code was
     re-written and cleaned up all over the place
 added:
   - XiMpLe_node/XiMpLe_doc: New object classes inheriting from XiMpLe.node
@@ -39,22 +44,22 @@ added:
     "shine" level on each node individually (see XMLNode() below);
     XiMpLe.node and XiMpLe.doc should no longer be used, they are currently
     still around only for backwards compatibility
-    as_XiMpLe_node()/as_XiMpLe_doc(): methods to recursively update old
+  - as_XiMpLe_node()/as_XiMpLe_doc(): methods to recursively update old
     XiMpLe.node and XiMpLe.doc objects into XiMpLe_node and XiMpLe_doc
     gen_tag_functions(): generate shortcut functions to create XML tags with
     less typing and better readability of your code
-    provide_file(): function to keep referenced files up to date in a project
+  - provide_file(): function to keep referenced files up to date in a project
     directory
-    pasteXML()/pasteXMLTag(): new arguments "as_script", "func_name", and
+  - pasteXML()/pasteXMLTag(): new arguments "as_script", "func_name", and
     "func_rename"; if "as_script=TRUE" you will not get XML code but R script
     code that can be used together with gen_tag_functions() to re-generate
     the XiMpLe object. a use case is existing XML code you would like to
     maintain with XiMpLe: import it with parseXMLTree() and make an initial
     script with pasteXML(as_script=TRUE) you can now define the default
     indentation character by setting the global option "XiMpLe_indent"
-    XiMpLe_node()/XiMpLe_doc(): new constructor functions to be used instead
+  - XiMpLe_node()/XiMpLe_doc(): new constructor functions to be used instead
     of new("XiMpLe_node")/new("XiMpLe_doc")
-    XMLNode(): new argument "shine" now allows to change the shine level from
+  - XMLNode(): new argument "shine" now allows to change the shine level from
     a node onward, overwriting the level set with pasteXML() globally
 
 changes in version 0.10-3 (2020-09-19)

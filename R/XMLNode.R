@@ -119,6 +119,8 @@ XMLNode <- function(
     } else {
         attrs <- append(dots_attrs, as.list(attrs))
     }
+    # remove entries from attrs that are NULL
+    attrs <- Filter(Negate(is.null), attrs)
 
     extra <- list()
     if(!missing(shine)){
