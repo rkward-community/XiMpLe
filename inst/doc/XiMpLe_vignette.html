@@ -12,7 +12,7 @@
 
 <meta name="author" content="m.eik michalke" />
 
-<meta name="date" content="2023-08-22" />
+<meta name="date" content="2024-07-18" />
 
 <title>The XiMpLe Package</title>
 
@@ -351,7 +351,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">The XiMpLe Package</h1>
 <h4 class="author">m.eik michalke</h4>
-<h4 class="date">2023-08-22</h4>
+<h4 class="date">2024-07-18</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>This package provides basic tools for parsing and generating XML into
@@ -642,10 +642,10 @@ a package. For safety reasons, i.e. to not collide with existing
 objects, these functions by default are named with a trailing underscore
 and are not created if an object by that name already exists.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_tag_functions</span>(<span class="fu">c</span>(<span class="st">&quot;html&quot;</span>, <span class="st">&quot;head&quot;</span>, <span class="st">&quot;body&quot;</span>, <span class="st">&quot;a&quot;</span>))</span></code></pre></div>
-<pre><code>## Creating new function: &quot;html_&quot;</code></pre>
-<pre><code>## Creating new function: &quot;head_&quot;</code></pre>
-<pre><code>## Creating new function: &quot;body_&quot;</code></pre>
-<pre><code>## Creating new function: &quot;a_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;html_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;head_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;body_&quot;</code></pre>
+<pre><code>## Object exists, skipping: &quot;a_&quot;</code></pre>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see them in action</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>(sample_XML_tree2 <span class="ot">&lt;-</span> <span class="fu">html_</span>(</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head_</span>(),</span>
