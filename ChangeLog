@@ -44,7 +44,7 @@ added:
     still around only for backwards compatibility
   - as_XiMpLe_node()/as_XiMpLe_doc(): methods to recursively update old
     XiMpLe.node and XiMpLe.doc objects into XiMpLe_node and XiMpLe_doc
-    gen_tag_functions(): generate shortcut functions to create XML tags with
+  - gen_tag_functions(): generate shortcut functions to create XML tags with
     less typing and better readability of your code
   - provide_file(): function to keep referenced files up to date in a project
     directory
