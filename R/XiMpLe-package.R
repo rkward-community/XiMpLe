@@ -8,8 +8,8 @@
 #' \tabular{ll}{
 #' Package: \tab XiMpLe\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.11-3\cr
-#' Date: \tab 2024-07-18\cr
+#' Version: \tab 0.11-4\cr
+#' Date: \tab 2024-07-23\cr
 #' Depends: \tab R (>= 3.0.0)\cr
 #' Encoding: \tab UTF-8\cr
 #' License: \tab GPL (>= 3)\cr

@@ -1,5 +1,9 @@
 ChangeLog for package XiMpLe
 
+changes in version 0.11-4 (2024-07-18)
+unreleased:
+  - this release is under development
+
 changes in version 0.11-3 (2024-07-18)
 fixed:
   - XMLNode(): named attributes with NULL value are now removed
