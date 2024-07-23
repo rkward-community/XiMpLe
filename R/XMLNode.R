@@ -1,4 +1,4 @@
-# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2024 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -119,6 +119,8 @@ XMLNode <- function(
     } else {
         attrs <- append(dots_attrs, as.list(attrs))
     }
+    # remove entries from attrs that are NULL
+    attrs <- Filter(Negate(is.null), attrs)
 
     extra <- list()
     if(!missing(shine)){

@@ -1,6 +1,24 @@
 \name{NEWS}
 \title{News for Package 'XiMpLe'}
 \encoding{UTF-8}
+\section{Changes in XiMpLe version 0.11-3 (2024-07-18)}{
+  \subsection{fixed}{
+    \itemize{
+      \item \code{XMLNode()}: named attributes with NULL value are now removed
+    }
+  }
+}
+\section{Changes in XiMpLe version 0.11-2 (2023-08-22)}{
+  \subsection{changed}{
+    \itemize{
+      \item dependencies: an old \code{paste0()} wrapper for R <= 2.15 was removed, the
+        package now requires at least R 3.0
+      \item ChangeLog: removed again the entry from 0.11-1 that the ChangeLog was
+        fixed, because that was actually just caused by a temporary bug in
+        roxyPackage that was quickly found and fixed
+    }
+  }
+}
 \section{Changes in XiMpLe version 0.11-1 (2023-03-02)}{
   \subsection{breaking}{
     \itemize{
@@ -26,8 +44,8 @@
         in better formatted output
       \item \code{XMLValidity()}: constructor function is now directly derived from the
         class definition instead of a separate function/file
-      \item \code{XMLNode()}: arguments are no longer NULL if unused (formals)
-        code was re-written and cleaned up all over the place
+      \item \code{XMLNode()}: arguments are no longer NULL if unused (formals) code was
+        re-written and cleaned up all over the place
     }
   }
   \subsection{added}{
@@ -49,18 +67,12 @@
         code that can be used together with \code{gen_tag_functions()} to re-generate
         the XiMpLe object. a use case is existing XML code you would like to
         maintain with XiMpLe: import it with \code{parseXMLTree()} and make an initial
-        script with pasteXML(as_script=TRUE)
-        you can now define the default indentation character by setting the
-        global option \code{"XiMpLe_indent"}
+        script with pasteXML(as_script=TRUE) you can now define the default
+        indentation character by setting the global option \code{"XiMpLe_indent"}
       \item \code{XiMpLe_node()}/XiMpLe_doc(): new constructor functions to be used instead
         of new(\code{"XiMpLe_node"})/new(\code{"XiMpLe_doc"})
       \item \code{XMLNode()}: new argument \code{"shine"} now allows to change the shine level from
         a node onward, overwriting the level set with \code{pasteXML()} globally
-    }
-  }
-  \subsection{fixed}{
-    \itemize{
-      \item correctly itemized the ChangeLog, only took me 11+ years to notice
     }
   }
 }

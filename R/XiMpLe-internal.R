@@ -1,4 +1,4 @@
-# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2023 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -17,16 +17,6 @@
 
 
 ## internal functions, not exported
-
-## wrapper for paste0() needed?
-if(isTRUE(R_system_version(getRversion()) < 2.15)){
-  # if this is an older R version, we need a wrapper function for paste0()
-  # which was introduced with R 2.15 as a more efficient shortcut to paste(..., sep="")
-  paste0 <- function(..., collapse=NULL){
-    return(paste(..., sep="", collapse=collapse))
-  }
-} else {}
-
 
 ## function child.list()
 # convenience function to let single children be provided without list()

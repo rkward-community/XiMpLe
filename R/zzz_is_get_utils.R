@@ -1,4 +1,4 @@
-# Copyright 2011-2022 Meik Michalke <meik.michalke@hhu.de>
+# Copyright 2011-2024 Meik Michalke <meik.michalke@hhu.de>
 #
 # This file is part of the R package XiMpLe.
 #
@@ -132,7 +132,11 @@ setMethod("as_XiMpLe_doc",
 #' 
 #' These are convenience methods to get or set slots from XML objects without using the \code{@@} operator.
 #'
+<<<<<<< HEAD
 #' \itemize{
+=======
+#' \describe{
+>>>>>>> develop
 #'    \item{\code{XMLName()}: }{get/set the XML node name (slot \code{name} of class \code{XiMpLe_node})}
 #'    \item{\code{XMLAttrs()}: }{get/set the XML node attributes (slot \code{attrs} of class \code{XiMpLe_node})}
 #'    \item{\code{XMLValue()}: }{get/set the XML node value (slot \code{value} of class \code{XiMpLe_node})}
@@ -145,7 +149,7 @@ setMethod("as_XiMpLe_doc",
 #'
 #' Another special method can scan a node/document tree object for appearances of nodes with a particular name:
 #'
-#' \itemize{
+#' \describe{
 #'    \item{\code{XMLScan(obj, name, as.list=FALSE)}: }{get/set the XML nodes by name (recursively searches slot \code{name} of both classes
 #'      \code{XiMpLe_node} and  \code{XiMpLe_doc}). If \code{as.list=TRUE} allways returns a list (or NULL), otherwise if exactly one result is found,
 #'      it will be returned as as single \code{XiMpLe_node}.}
@@ -154,7 +158,7 @@ setMethod("as_XiMpLe_doc",
 #' Finally, there is a method to scan for certain values in XiMpLe objects and just list them. For instance, it can be used to
 #' list all instances of a certain attribute type in a document tree:
 #'
-#' \itemize{
+#' \describe{
 #'    \item{\code{XMLScanDeep(obj, find, search="attributes")}: }{returns all found instances of \code{find} in all slots defined by \code{search}.}
 #' }
 #' @param obj An object of class \code{XiMpLe_node} or \code{XiMpLe_doc}
